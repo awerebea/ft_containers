@@ -68,9 +68,7 @@ namespace ft {
 
 	public:
 
-		/*
-		* Iterators
-		*/
+		/* Iterators */
 
 		class const_iterator;
 
@@ -339,9 +337,7 @@ namespace ft {
 			t_node *	getNode() const { return node; }
 		}; // class const_reverse_iterator
 
-		/*
-		* Constructors:
-		*/
+		/* Constructors: */
 
 		/* default (1) */
 		explicit	List(const allocator_type& alloc = allocator_type()) {
@@ -358,9 +354,21 @@ namespace ft {
 		}
 
 		/* range (3) */
-		// template <class InputIterator>
-		//                     List (InputIterator first, InputIterator last,
-		//                     const allocator_type& alloc = allocator_type());
+		explicit	List(iterator first, iterator last,
+							const allocator_type& alloc = allocator_type()) {
+			end_node_init();
+			while (first != last) {
+				push_back(*first++);
+			}
+		}
+
+		explicit	List(reverse_iterator first, reverse_iterator last,
+							const allocator_type& alloc = allocator_type()) {
+			end_node_init();
+			while (first != last) {
+				push_back(*first++);
+			}
+		}
 
 		/* copy (4) */
 					List(const List& other) {
@@ -388,9 +396,7 @@ namespace ft {
 			return *this;
 		}
 
-		/*
-		* Iterators
-		*/
+		/* Iterators */
 
 		iterator		begin() { return iterator(end_node->next); }
 
@@ -416,9 +422,7 @@ namespace ft {
 			return const_reverse_iterator(end_node);
 		}
 
-		/*
-		* Modifiers
-		*/
+		/* Modifiers */
 
 		void		push_back(const value_type &val) {
 			t_node * tmp = end_node->prev;
@@ -462,6 +466,30 @@ namespace ft {
 			t_node * node_end = last.getNode();
 			t_node * tmp = NULL;
 			iterator ret = ++last;
+			node_curr->prev->next = node_end;
+			node_end->prev = node_curr->prev;
+			while (node_curr != node_end) {
+				tmp = node_curr->next;
+				del_node(node_curr);
+				node_curr = tmp;
+			}
+			return ret;
+		}
+
+		const_iterator erase(const_iterator position) {
+			t_node * tmp = position.getNode();
+			const_iterator ret = ++position;
+			tmp->prev->next = tmp->next;
+			tmp->next->prev = tmp->prev;
+			del_node(tmp);
+			return ret;
+		}
+
+		const_iterator erase(const_iterator first, const_iterator last) {
+			t_node * node_curr = first.getNode();
+			t_node * node_end = last.getNode();
+			t_node * tmp = NULL;
+			const_iterator ret = ++last;
 			node_curr->prev->next = node_end;
 			node_end->prev = node_curr->prev;
 			while (node_curr != node_end) {

@@ -48,6 +48,24 @@ TEST(List, Constructor_Copy) {
 	EXPECT_EQ(*lst_std_copy.begin(), *lst_ft_copy.begin());
 }
 
+TEST(List, Constructor_Range) {
+	std::list<int>	lst_std;
+	lst_std.push_back(1);
+	lst_std.push_back(2);
+	lst_std.push_back(3);
+	lst_std.push_back(4);
+	std::list<int>	lst_std_copy(++lst_std.rbegin(), --lst_std.rend());
+
+	ft::List<int>	lst_ft;
+	lst_ft.push_back(1);
+	lst_ft.push_back(2);
+	lst_ft.push_back(3);
+	lst_ft.push_back(4);
+	ft::List<int>	lst_ft_copy(++lst_ft.rbegin(), --lst_ft.rend());
+
+	EXPECT_EQ(*lst_std_copy.begin(), *lst_ft_copy.begin());
+}
+
 TEST(List, Destructor) {
 	std::list<int>	* lst_std = new std::list<int>(5, 5);
 	ft::List<int>	* lst_ft = new ft::List<int>(5, 5);
