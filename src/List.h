@@ -59,6 +59,13 @@ namespace ft {
 			return new_node;
 		}
 
+		void			del_node(t_node * node) {
+			alloc.destroy(node->data);
+			alloc.deallocate(node->data, 1);
+			alloc_rebind.deallocate(node, 1);
+			size = size - 1;
+		}
+
 	public:
 
 		/*
@@ -143,7 +150,7 @@ namespace ft {
 
 			~const_iterator() {}
 
-			const_iterator&	operator=(const const_iterator& other) {
+			const_iterator&		operator=(const const_iterator& other) {
 				if (this != &other) { node = other.node; }
 				return *this;
 			}
@@ -197,6 +204,141 @@ namespace ft {
 			t_node *			getNode() const { return node; }
 		}; // class const_iterator
 
+		class const_reverse_iterator;
+
+		class reverse_iterator : public std::bidirectional_iterator_tag {
+			t_node *	node;
+		public:
+			reverse_iterator(): node(NULL) {}
+
+			explicit reverse_iterator(t_node * node): node(node) {}
+
+			reverse_iterator(const reverse_iterator& other) { *this = other; }
+
+			~reverse_iterator() {}
+
+			reverse_iterator&		operator=(const reverse_iterator& other) {
+				if (this != &other) { node = other.node; }
+				return *this;
+			}
+
+			bool		operator==(const reverse_iterator& other) const {
+				return node == other.node;
+			};
+
+			bool		operator==(const const_reverse_iterator& other) const {
+				return node == other.getNode();
+			};
+
+			bool		operator!=(const reverse_iterator& other) const {
+				return node != other.node;
+			};
+
+			bool		operator!=(const const_reverse_iterator& other) const {
+				return node != other.getNode();
+			};
+
+			value_type&	operator*() const {
+				return *node->data;
+			};
+
+			value_type *			operator->() const {
+				return node->data;
+			};
+
+			reverse_iterator&		operator++() {
+				node = node->prev;
+				return *this;
+			};
+
+			reverse_iterator		operator++(int) {
+				reverse_iterator	ret = *this;
+				node = node->prev;
+				return ret;
+			};
+
+			reverse_iterator&		operator--() {
+				node = node->next;
+				return *this;
+			};
+
+			reverse_iterator		operator--(int) {
+				reverse_iterator	ret = *this;
+				node = node->next;
+				return ret;
+			};
+
+			t_node *	getNode() const { return node; }
+		}; // class reverse_iterator
+
+		class const_reverse_iterator : public std::bidirectional_iterator_tag {
+			t_node *	node;
+		public:
+			const_reverse_iterator(): node(NULL) {}
+
+			explicit const_reverse_iterator(t_node * node): node(node) {}
+
+			const_reverse_iterator(const const_reverse_iterator& other)
+			{ *this = other; }
+
+			~const_reverse_iterator() {}
+
+			const_reverse_iterator&	operator=(const const_reverse_iterator&
+																		other) {
+				if (this != &other) { node = other.node; }
+				return *this;
+			}
+
+			bool		operator==(const const_reverse_iterator& other) const {
+				return node == other.node;
+			};
+
+			bool		operator==(const reverse_iterator& other) const {
+				return node == other.getNode();
+			};
+
+			bool		operator!=(const const_reverse_iterator& other) const {
+				return node != other.node;
+			};
+
+			bool		operator!=(const reverse_iterator& other)
+				const {
+				return node != other.getNode();
+			};
+
+			const value_type&		operator*() const {
+				return *node->data;
+			};
+
+			const value_type *		operator->() const {
+				return node->data;
+			};
+
+			const_reverse_iterator&	operator++() {
+				node = node->prev;
+				return *this;
+			};
+
+			const_reverse_iterator	operator++(int) {
+				const_reverse_iterator	ret = *this;
+				node = node->prev;
+				return ret;
+			};
+
+			const_reverse_iterator&	operator--() {
+				node = node->next;
+				return *this;
+			};
+
+			const_reverse_iterator	operator--(int) {
+				const_reverse_iterator	ret = *this;
+				node = node->next;
+				return ret;
+			}; // class const_reverse_iterator
+
+			t_node *	getNode() const { return node; }
+		}; // class const_reverse_iterator
+
 		/*
 		* Constructors:
 		*/
@@ -221,7 +363,10 @@ namespace ft {
 		//                     const allocator_type& alloc = allocator_type());
 
 		/* copy (4) */
-					List(const List& other) { *this = other; }
+					List(const List& other) {
+						end_node_init();
+						*this = other;
+					}
 
 					~List() {
 						clear();
@@ -247,9 +392,29 @@ namespace ft {
 		* Iterators
 		*/
 
-		iterator	begin() { return iterator(end_node->next); }
+		iterator		begin() { return iterator(end_node->next); }
 
-		iterator	end() { return iterator(end_node); }
+		const_iterator	begin() const { return const_iterator(end_node->next); }
+
+		iterator		end() { return iterator(end_node); }
+
+		const_iterator	end() const { return const_iterator(end_node); }
+
+		reverse_iterator		rbegin() {
+			return reverse_iterator(end_node->prev);
+		}
+
+		const_reverse_iterator	rbegin() const {
+			return const_reverse_iterator(end_node->prev);
+		}
+
+		reverse_iterator		rend() {
+			return reverse_iterator(end_node);
+		}
+
+		const_reverse_iterator	rend() const {
+			return const_reverse_iterator(end_node);
+		}
 
 		/*
 		* Modifiers
@@ -275,14 +440,36 @@ namespace ft {
 
 		void		clear() {
 			t_node * tmp;
-			for (; size > 0; --size) {
+			for (; size > 0;) {
 				tmp = end_node->next->next;
-				alloc.destroy(end_node->next->data);
-				alloc.deallocate(end_node->next->data, 1);
-				alloc_rebind.deallocate(end_node->next, 1);
+				del_node(end_node->next);
 				end_node->next = tmp;
 			}
 			end_node->prev = end_node;
+		}
+
+		iterator erase(iterator position) {
+			t_node * tmp = position.getNode();
+			iterator ret = ++position;
+			tmp->prev->next = tmp->next;
+			tmp->next->prev = tmp->prev;
+			del_node(tmp);
+			return ret;
+		}
+
+		iterator erase(iterator first, iterator last) {
+			t_node * node_curr = first.getNode();
+			t_node * node_end = last.getNode();
+			t_node * tmp = NULL;
+			iterator ret = ++last;
+			node_curr->prev->next = node_end;
+			node_end->prev = node_curr->prev;
+			while (node_curr != node_end) {
+				tmp = node_curr->next;
+				del_node(node_curr);
+				node_curr = tmp;
+			}
+			return ret;
 		}
 
 	}; // class List
