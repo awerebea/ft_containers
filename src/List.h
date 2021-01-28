@@ -14,6 +14,7 @@
 #define FT_LIST_H
 
 #include <iostream>
+# include <limits>
 
 namespace ft {
 	template <class T, class Alloc = std::allocator<T> > class List {
@@ -37,7 +38,7 @@ namespace ft {
 		typedef typename allocator_type::template rebind<t_node>::other
 																node_allocator;
 
-		size_type		size;
+		size_type		m_size;
 		t_node *		end_node;
 		node_allocator	alloc_rebind;
 		allocator_type	alloc;
@@ -48,14 +49,14 @@ namespace ft {
 			alloc.construct(end_node->data, value_type());
 			end_node->next = end_node;
 			end_node->prev = end_node;
-			size = 0;
+			m_size = 0;
 		}
 
 		t_node *		new_node_init(const value_type& val) {
 			t_node * new_node = alloc_rebind.allocate(1);
 			new_node->data = alloc.allocate(1);
 			alloc.construct(new_node->data, val);
-			size += 1;
+			m_size += 1;
 			return new_node;
 		}
 
@@ -63,7 +64,7 @@ namespace ft {
 			alloc.destroy(node->data);
 			alloc.deallocate(node->data, 1);
 			alloc_rebind.deallocate(node, 1);
-			size = size - 1;
+			m_size = m_size - 1;
 		}
 
 	public:
@@ -385,14 +386,7 @@ namespace ft {
 
 		List&				operator=(const List& other) {
 			if (this == &other) { return *this; }
-			clear();
-			t_node * curr_this = end_node->next;
-			t_node * curr_other = other.end_node->next;
-			for (size_type i = 0; i < other.size; ++i) {
-				push_back(*curr_other->data);
-				curr_this = curr_this->next;
-				curr_other = curr_other->next;
-			}
+			assign(other.begin(), other.end());
 			return *this;
 		}
 
@@ -424,27 +418,40 @@ namespace ft {
 
 		/* Modifiers */
 
-		void		push_back(const value_type &val) {
-			t_node * tmp = end_node->prev;
-			t_node * new_node = new_node_init(val);
-			new_node->prev = end_node->prev;
-			new_node->next = end_node;
-			tmp->next = new_node;
-			end_node->prev = new_node;
+		void			assign(iterator first, iterator last) {
+			if (m_size) {
+				clear();
+			}
+			while (first != last) {
+				insert(end(), *first++);
+			}
 		}
 
-		void		push_front(const value_type &val) {
-			t_node * tmp = end_node->next;
-			t_node * new_node = new_node_init(val);
-			new_node->prev = end_node;
-			new_node->next = end_node->next;
-			tmp->prev = new_node;
-			end_node->next = new_node;
+		void			assign(const_iterator first, const_iterator last) {
+			if (m_size) {
+				clear();
+			}
+			while (first != last) {
+				insert(end(), *first++);
+			}
 		}
 
-		void		clear() {
+		void			assign(size_type n, const value_type& val) {
+			if (m_size) {
+				clear();
+			}
+			for (size_type i = 0; i < n; ++i) {
+				insert(end(), val);
+			}
+		}
+
+		void		push_back(const value_type &val) { insert(end(), val); }
+
+		void		push_front(const value_type &val) { insert(begin(), val); }
+
+		void			clear() {
 			t_node * tmp;
-			for (; size > 0;) {
+			for (; m_size > 0;) {
 				tmp = end_node->next->next;
 				del_node(end_node->next);
 				end_node->next = tmp;
@@ -452,7 +459,36 @@ namespace ft {
 			end_node->prev = end_node;
 		}
 
-		iterator erase(iterator position) {
+		iterator		insert(iterator position, const value_type& val) {
+			t_node * tmp = position.getNode();
+			t_node * new_node = new_node_init(val);
+			tmp->prev->next = new_node;
+			new_node->prev = tmp->prev;
+			tmp->prev = new_node;
+			new_node->next = tmp;
+			return iterator(new_node);
+		}
+
+		void	insert(iterator position, size_type n, const value_type& val) {
+			for (size_type i = 0; i < n; ++i) {
+				insert(position, val);
+			}
+		}
+
+		void	insert(iterator position, iterator first, iterator last) {
+			while (first != last) {
+				insert(position, *first++);
+			}
+		}
+
+		void	insert(iterator position,
+									const_iterator first, const_iterator last) {
+			while (first != last) {
+				insert(position, *first++);
+			}
+		}
+
+		iterator		erase(iterator position) {
 			t_node * tmp = position.getNode();
 			iterator ret = ++position;
 			tmp->prev->next = tmp->next;
@@ -461,22 +497,15 @@ namespace ft {
 			return ret;
 		}
 
-		iterator erase(iterator first, iterator last) {
-			t_node * node_curr = first.getNode();
-			t_node * node_end = last.getNode();
-			t_node * tmp = NULL;
-			iterator ret = ++last;
-			node_curr->prev->next = node_end;
-			node_end->prev = node_curr->prev;
-			while (node_curr != node_end) {
-				tmp = node_curr->next;
-				del_node(node_curr);
-				node_curr = tmp;
+		iterator		erase(iterator first, iterator last) {
+			iterator ret = first;
+			while (first != last) {
+				ret = erase(first++);
 			}
 			return ret;
 		}
 
-		const_iterator erase(const_iterator position) {
+		const_iterator	erase(const_iterator position) {
 			t_node * tmp = position.getNode();
 			const_iterator ret = ++position;
 			tmp->prev->next = tmp->next;
@@ -485,20 +514,39 @@ namespace ft {
 			return ret;
 		}
 
-		const_iterator erase(const_iterator first, const_iterator last) {
-			t_node * node_curr = first.getNode();
-			t_node * node_end = last.getNode();
-			t_node * tmp = NULL;
-			const_iterator ret = ++last;
-			node_curr->prev->next = node_end;
-			node_end->prev = node_curr->prev;
-			while (node_curr != node_end) {
-				tmp = node_curr->next;
-				del_node(node_curr);
-				node_curr = tmp;
+		const_iterator	erase(const_iterator first, const_iterator last) {
+			const_iterator ret = first;
+			while (first != last) {
+				ret = erase(first++);
 			}
 			return ret;
 		}
+
+		void			pop_front() { erase(begin()); }
+
+		void			pop_back() { erase(--end()); }
+
+		/* Element access */
+
+		reference		front() { return *begin(); }
+
+		const_reference	front() const { return *begin(); }
+
+		reference		back() { return *(--end()); }
+
+		const_reference	back() const { return *(--end()); }
+
+		/* Capacity */
+
+		size_type		size() const { return m_size; }
+
+		// TODO formula adjusted to std list behavior
+		/* size_type max_size(void) const {                    */
+		/*     return (std::numeric_limits<size_type>::max() / */
+		/*             (sizeof(t_node) - sizeof(pointer)));    */
+		/* }                                                   */
+
+		bool			empty() const { return m_size == 0; }
 
 	}; // class List
 } // namespace ft
