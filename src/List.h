@@ -522,6 +522,21 @@ namespace ft {
 			return ret;
 		}
 
+		void			swap(List& other) {
+			List tmp = other;
+			other = *this;
+			*this = tmp;
+		}
+
+		void			resize(size_type n, value_type val = value_type()) {
+			while (m_size < n) {
+				insert(end(), val);
+			}
+			while (m_size > n) {
+				erase(--end());
+			}
+		}
+
 		void			pop_front() { erase(begin()); }
 
 		void			pop_back() { erase(--end()); }

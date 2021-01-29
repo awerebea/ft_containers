@@ -363,13 +363,13 @@ TEST(List, Modifiers_Insert_Fill) {
 	std::cout << "----- INSERT (fill) -----" << std::endl;
 	std::cout << "List std before insert:";
 	for (std::list<int>::iterator it = lst_std.begin();
-		 it != lst_std.end(); ++it) {
+			it != lst_std.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
 	std::cout << "List ft before insert:";
 	for (ft::List<int>::iterator it = lst_ft.begin();
-		 it != lst_ft.end(); ++it) {
+			it != lst_ft.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
@@ -377,13 +377,13 @@ TEST(List, Modifiers_Insert_Fill) {
 	lst_ft.insert(++lst_ft.begin(), 5, 7);
 	std::cout << "List std after insert:";
 	for (std::list<int>::iterator it = lst_std.begin();
-		 it != lst_std.end(); ++it) {
+			it != lst_std.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
 	std::cout << "List ft after insert:";
 	for (ft::List<int>::iterator it = lst_ft.begin();
-		 it != lst_ft.end(); ++it) {
+			it != lst_ft.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
@@ -411,34 +411,258 @@ TEST(List, Modifiers_Insert_Range) {
 
 	std::cout << "----- INSERT (range) -----" << std::endl;
 	std::cout << "List std before insert:";
-	for (std::list<int>::iterator it = lst_std_2.begin();
-											it != lst_std_2.end(); ++it) {
+	for (std::list<int>::iterator it = lst_std.begin();
+			it != lst_std.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
 	std::cout << "List ft before insert:";
-	for (ft::List<int>::iterator it = lst_ft_2.begin();
-		 it != lst_ft_2.end(); ++it) {
+	for (ft::List<int>::iterator it = lst_ft.begin();
+			it != lst_ft.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
-	lst_std_2.insert(++lst_std_2.begin(), lst_std.begin(), lst_std.end());
-	lst_ft_2.insert(++lst_ft_2.begin(), lst_ft.begin(), lst_ft.end());
+	lst_std.insert(++lst_std.begin(), lst_std_2.begin(), lst_std_2.end());
+	lst_ft.insert(++lst_ft.begin(), lst_ft_2.begin(), lst_ft_2.end());
 	std::cout << "List std after insert:";
-	for (std::list<int>::iterator it = lst_std_2.begin();
-		 it != lst_std_2.end(); ++it) {
+	for (std::list<int>::iterator it = lst_std.begin();
+			it != lst_std.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
 	std::cout << "List ft after insert:";
-	for (ft::List<int>::iterator it = lst_ft_2.begin();
-		 it != lst_ft_2.end(); ++it) {
+	for (ft::List<int>::iterator it = lst_ft.begin();
+			it != lst_ft.end(); ++it) {
 		std::cout << " " << *it;
 	}
 	std::cout << std::endl;
 
 	EXPECT_EQ(*(++lst_std.begin()), *(++lst_ft.begin()));
 	EXPECT_EQ(lst_std.size(), lst_ft.size());
+}
+
+TEST(List, Modifiers_Swap) {
+	std::list<int>	lst_std_1;
+	lst_std_1.push_back(1);
+	lst_std_1.push_back(2);
+	lst_std_1.push_back(3);
+	std::list<int>	lst_std_2;
+	lst_std_2.push_back(7);
+	lst_std_2.push_back(8);
+
+	ft::List<int>	lst_ft_1;
+	lst_ft_1.push_back(1);
+	lst_ft_1.push_back(2);
+	lst_ft_1.push_back(3);
+	ft::List<int>	lst_ft_2;
+	lst_ft_2.push_back(7);
+	lst_ft_2.push_back(8);
+
+	std::cout << "----- SWAP -----" << std::endl;
+	std::cout << "List 1 std before swap:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+			it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std before swap:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+			it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft before swap:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+			it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft before swap:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+			it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	lst_std_1.swap(lst_std_2);
+	lst_ft_1.swap(lst_ft_2);
+	std::cout << std::endl;
+	std::cout << "List 1 std after swap:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+			it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std after swap:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+			it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft after swap:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+			it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft after swap:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+			it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+
+	EXPECT_EQ(*lst_std_1.begin(), *lst_ft_1.begin());
+	EXPECT_EQ(*lst_std_2.begin(), *lst_ft_2.begin());
+	EXPECT_EQ(lst_std_1.size(), lst_ft_1.size());
+	EXPECT_EQ(lst_std_2.size(), lst_ft_2.size());
+}
+
+TEST(List, Modifiers_Resize) {
+	{
+		std::list<int> lst_std;
+		lst_std.push_back(1);
+		lst_std.push_back(2);
+		lst_std.push_back(3);
+		lst_std.push_back(4);
+		lst_std.push_back(5);
+
+		ft::List<int> lst_ft;
+		lst_ft.push_back(1);
+		lst_ft.push_back(2);
+		lst_ft.push_back(3);
+		lst_ft.push_back(4);
+		lst_ft.push_back(5);
+
+		std::cout << "----- RESIZE (reduce) -----" << std::endl;
+		std::cout << "List std before resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft before resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+
+		lst_std.resize(2);
+		lst_ft.resize(2);
+		std::cout << std::endl;
+		std::cout << "List std after resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft after resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+	}
+	{
+		std::list<int> lst_std;
+		lst_std.push_back(1);
+		lst_std.push_back(2);
+		lst_std.push_back(3);
+
+		ft::List<int> lst_ft;
+		lst_ft.push_back(1);
+		lst_ft.push_back(2);
+		lst_ft.push_back(3);
+
+		std::cout << "----- RESIZE (incrase default) -----" << std::endl;
+		std::cout << "List std before resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft before resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+
+		lst_std.resize(5);
+		lst_ft.resize(5);
+		std::cout << std::endl;
+		std::cout << "List std after resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft after resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+	}
+	{
+		std::list<int> lst_std;
+		lst_std.push_back(1);
+		lst_std.push_back(2);
+		lst_std.push_back(3);
+
+		ft::List<int> lst_ft;
+		lst_ft.push_back(1);
+		lst_ft.push_back(2);
+		lst_ft.push_back(3);
+
+		std::cout << "----- RESIZE (incrase fill) -----" << std::endl;
+		std::cout << "List std before resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft before resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+
+		lst_std.resize(5, 7);
+		lst_ft.resize(5, 7);
+		std::cout << std::endl;
+		std::cout << "List std after resize:";
+		for (std::list<int>::iterator it = lst_std.begin();
+				it != lst_std.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+		std::cout << "List ft after resize:";
+		for (ft::List<int>::iterator it = lst_ft.begin();
+				it != lst_ft.end(); ++it) {
+			std::cout << " " << *it;
+		}
+		std::cout << std::endl;
+
+		EXPECT_EQ(*lst_std.begin(), *lst_ft.begin());
+		EXPECT_EQ(lst_std.size(), lst_ft.size());
+	}
 }
 
 TEST(List, Capacity_Size) {
