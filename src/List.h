@@ -17,6 +17,18 @@
 # include <limits>
 
 namespace ft {
+
+	// template<bool B, class T = void>
+	// struct enable_if {};
+
+	// template<class T>
+	// struct enable_if<true, T> { typedef T type; };
+
+	template <bool, class T = void>
+	struct enable_if {};
+	template <class T>
+	struct enable_if<true, T> { typedef T type; };
+
 	template <class T, class Alloc = std::allocator<T> > class List {
 	public:
 		typedef T											value_type;
@@ -73,7 +85,8 @@ namespace ft {
 
 		class const_iterator;
 
-		class iterator : public std::bidirectional_iterator_tag {
+		class iterator :
+			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
 			t_node *	node;
 		public:
 			iterator(): node(NULL) {}
@@ -138,7 +151,8 @@ namespace ft {
 			t_node *			getNode() const { return node; }
 		}; // class iterator
 
-		class const_iterator : public std::bidirectional_iterator_tag {
+		class const_iterator :
+			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
 			t_node *	node;
 		public:
 			const_iterator(): node(NULL) {}
@@ -205,7 +219,8 @@ namespace ft {
 
 		class const_reverse_iterator;
 
-		class reverse_iterator : public std::bidirectional_iterator_tag {
+		class reverse_iterator :
+			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
 			t_node *	node;
 		public:
 			reverse_iterator(): node(NULL) {}
@@ -270,7 +285,8 @@ namespace ft {
 			t_node *	getNode() const { return node; }
 		}; // class reverse_iterator
 
-		class const_reverse_iterator : public std::bidirectional_iterator_tag {
+		class const_reverse_iterator :
+			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
 			t_node *	node;
 		public:
 			const_reverse_iterator(): node(NULL) {}
@@ -350,24 +366,19 @@ namespace ft {
 						const allocator_type& alloc = allocator_type()) {
 			end_node_init();
 			for (size_type i = 0; i < n; ++i) {
-				push_back(val);
+				insert(end(), val);
 			}
 		}
 
 		/* range (3) */
-		explicit	List(iterator first, iterator last,
-							const allocator_type& alloc = allocator_type()) {
+		template <class InputIterator>
+		List (InputIterator first, InputIterator last,
+				const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
+				value>::type* = 0) {
 			end_node_init();
 			while (first != last) {
-				push_back(*first++);
-			}
-		}
-
-		explicit	List(reverse_iterator first, reverse_iterator last,
-							const allocator_type& alloc = allocator_type()) {
-			end_node_init();
-			while (first != last) {
-				push_back(*first++);
+				insert(end(), *first++);
 			}
 		}
 
@@ -475,14 +486,11 @@ namespace ft {
 			}
 		}
 
-		void	insert(iterator position, iterator first, iterator last) {
-			while (first != last) {
-				insert(position, *first++);
-			}
-		}
-
+		template <class InputIterator>
 		void	insert(iterator position,
-									const_iterator first, const_iterator last) {
+				InputIterator first, InputIterator last,
+				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
+				value>::type* = 0) {
 			while (first != last) {
 				insert(position, *first++);
 			}
@@ -523,9 +531,13 @@ namespace ft {
 		}
 
 		void			swap(List& other) {
-			List tmp = other;
-			other = *this;
-			*this = tmp;
+			t_node *	tmp_node = other.end_node;
+			other.end_node = this->end_node;
+			this->end_node = tmp_node;
+
+			size_type	tmp_size = other.m_size;
+			other.m_size = this->m_size;
+			this->m_size = tmp_size;
 		}
 
 		void			resize(size_type n, value_type val = value_type()) {
