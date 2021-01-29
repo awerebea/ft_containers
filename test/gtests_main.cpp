@@ -665,6 +665,182 @@ TEST(List, Modifiers_Resize) {
 	}
 }
 
+TEST(List, Operations_Splice_entire_list) {
+	std::list<int>	lst_std_1;
+	lst_std_1.push_back(1);
+	lst_std_1.push_back(2);
+	lst_std_1.push_back(3);
+	std::list<int>::iterator it_pos_std = ++lst_std_1.begin();
+	std::list<int>	lst_std_2;
+	lst_std_2.push_back(7);
+	lst_std_2.push_back(8);
+
+	ft::List<int>	lst_ft_1;
+	lst_ft_1.push_back(1);
+	lst_ft_1.push_back(2);
+	lst_ft_1.push_back(3);
+	ft::List<int>::iterator it_pos_ft = ++lst_ft_1.begin();
+	ft::List<int>	lst_ft_2;
+	lst_ft_2.push_back(7);
+	lst_ft_2.push_back(8);
+
+	std::cout << "----- SPLICE (entire_list) -----" << std::endl;
+	std::cout << "List 1 std before splice:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+		 it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std before splice:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+		 it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 std pos iterator (data) before splice: ";
+	std::cout << *it_pos_std << std::endl;
+	std::cout << "List 1 ft before splice:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+		 it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft before splice:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+		 it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft pos iterator (data) before splice: ";
+	std::cout << *it_pos_ft << std::endl;
+
+	lst_std_1.splice(it_pos_std, lst_std_2);
+	lst_ft_1.splice(it_pos_ft, lst_ft_2);
+
+	std::cout << std::endl;
+	std::cout << "List 1 std after splice:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+		 it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std after splice:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+		 it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 std pos iterator (data) after splice: ";
+	std::cout << *it_pos_std << std::endl;
+	std::cout << "List 1 ft after splice:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+		 it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft after splice:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+		 it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft pos iterator (data) after splice: ";
+	std::cout << *it_pos_ft << std::endl;
+
+	EXPECT_EQ(*lst_std_1.begin(), *lst_ft_1.begin());
+	EXPECT_EQ(*lst_std_2.begin(), *lst_ft_2.begin());
+	EXPECT_EQ(lst_std_1.size(), lst_ft_1.size());
+	EXPECT_EQ(lst_std_2.size(), lst_ft_2.size());
+}
+
+TEST(List, Operations_Splice_single_element) {
+	std::list<int>	lst_std_1;
+	lst_std_1.push_back(1);
+	lst_std_1.push_back(2);
+	lst_std_1.push_back(3);
+	std::list<int>::iterator it_pos_std = ++lst_std_1.begin();
+	std::list<int>	lst_std_2;
+	lst_std_2.push_back(7);
+	lst_std_2.push_back(8);
+
+	ft::List<int>	lst_ft_1;
+	lst_ft_1.push_back(1);
+	lst_ft_1.push_back(2);
+	lst_ft_1.push_back(3);
+	ft::List<int>::iterator it_pos_ft = ++lst_ft_1.begin();
+	ft::List<int>	lst_ft_2;
+	lst_ft_2.push_back(7);
+	lst_ft_2.push_back(8);
+
+	std::cout << "----- SPLICE (single_element) -----" << std::endl;
+	std::cout << "List 1 std before splice:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+		 it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std before splice:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+		 it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 std pos iterator (data) before splice: ";
+	std::cout << *it_pos_std << std::endl;
+	std::cout << "List 1 ft before splice:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+		 it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft before splice:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+		 it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft pos iterator (data) before splice: ";
+	std::cout << *it_pos_ft << std::endl;
+
+	lst_std_2.splice(lst_std_2.begin(), lst_std_1, it_pos_std);
+	lst_ft_2.splice(lst_ft_2.begin(), lst_ft_1, it_pos_ft);
+
+	std::cout << std::endl;
+	std::cout << "List 1 std after splice:";
+	for (std::list<int>::iterator it = lst_std_1.begin();
+		 it != lst_std_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 std after splice:";
+	for (std::list<int>::iterator it = lst_std_2.begin();
+		 it != lst_std_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 std pos iterator (data) after splice: ";
+	std::cout << *it_pos_std << std::endl;
+	std::cout << "List 1 ft after splice:";
+	for (ft::List<int>::iterator it = lst_ft_1.begin();
+		 it != lst_ft_1.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 2 ft after splice:";
+	for (ft::List<int>::iterator it = lst_ft_2.begin();
+		 it != lst_ft_2.end(); ++it) {
+		std::cout << " " << *it;
+	}
+	std::cout << std::endl;
+	std::cout << "List 1 ft pos iterator (data) after splice: ";
+	std::cout << *it_pos_ft << std::endl;
+
+	EXPECT_EQ(*lst_std_1.begin(), *lst_ft_1.begin());
+	EXPECT_EQ(*lst_std_2.begin(), *lst_ft_2.begin());
+	EXPECT_EQ(lst_std_1.size(), lst_ft_1.size());
+	EXPECT_EQ(lst_std_2.size(), lst_ft_2.size());
+}
+
 TEST(List, Capacity_Size) {
 	std::list<int>	lst_std(2, 5);
 	ft::List<int>	lst_ft(2, 5);
@@ -693,3 +869,7 @@ TEST(List, Capacity_Empty) {
 		EXPECT_EQ(lst_std.empty(), lst_ft.empty());
 	}
 }
+
+//TEST(INF_LOOP, Loop) {
+//	while (1) {}
+//}

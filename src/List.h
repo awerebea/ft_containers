@@ -18,16 +18,13 @@
 
 namespace ft {
 
-	// template<bool B, class T = void>
-	// struct enable_if {};
-
-	// template<class T>
-	// struct enable_if<true, T> { typedef T type; };
-
+#ifdef __APPLE__
 	template <bool, class T = void>
 	struct enable_if {};
+
 	template <class T>
 	struct enable_if<true, T> { typedef T type; };
+#endif
 
 	template <class T, class Alloc = std::allocator<T> > class List {
 	public:
@@ -371,16 +368,32 @@ namespace ft {
 		}
 
 		/* range (3) */
+#ifdef __APPLE__
 		template <class InputIterator>
 		List (InputIterator first, InputIterator last,
 				const allocator_type& alloc = allocator_type(),
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
-				value>::type* = 0) {
+				value>::type* = 0)
+#elif __linux__
+		List(iterator first, iterator last,
+				const allocator_type& alloc = allocator_type())
+#endif
+		{
 			end_node_init();
 			while (first != last) {
 				insert(end(), *first++);
 			}
 		}
+
+#ifdef __linux__
+		List(reverse_iterator first, reverse_iterator last,
+				const allocator_type& alloc = allocator_type()) {
+			end_node_init();
+			while (first != last) {
+				insert(end(), *first++);
+			}
+		}
+#endif
 
 		/* copy (4) */
 					List(const List& other) {
@@ -486,15 +499,29 @@ namespace ft {
 			}
 		}
 
+#ifdef __APPLE__
 		template <class InputIterator>
 		void	insert(iterator position,
 				InputIterator first, InputIterator last,
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
-				value>::type* = 0) {
+				value>::type* = 0)
+#elif __linux__
+		void	insert(iterator position, iterator first, iterator last)
+#endif
+		{
 			while (first != last) {
 				insert(position, *first++);
 			}
 		}
+
+#ifdef __linux__
+		void	insert(reverse_iterator position, reverse_iterator first,
+																iterator last) {
+			while (first != last) {
+				insert(position, *first++);
+			}
+		}
+#endif
 
 		iterator		erase(iterator position) {
 			t_node * tmp = position.getNode();
@@ -552,6 +579,35 @@ namespace ft {
 		void			pop_front() { erase(begin()); }
 
 		void			pop_back() { erase(--end()); }
+
+		/* Operations */
+
+		void			splice(iterator position, List& other) {
+			splice(position, other, other.begin(), other.end());
+		}
+
+		void			splice(iterator position, List& other, iterator i) {
+			if (other.m_size) {
+				t_node * pos_node = position.getNode();
+				t_node * other_node = i.getNode();
+				other_node->prev->next = other_node->next;
+				other_node->next->prev = other_node->prev;
+
+				pos_node->prev->next = other_node;
+				other_node->prev = pos_node->prev;
+				pos_node->prev = other_node;
+				other_node->next = pos_node;
+				other.m_size--;
+				m_size++;
+			}
+		}
+
+		void			splice(iterator position, List& other,
+											iterator first, iterator last) {
+			for (iterator it = first; it != last; NULL) {
+				splice(position, other, it++);
+			}
+		}
 
 		/* Element access */
 
