@@ -76,6 +76,19 @@ namespace ft {
 			m_size = m_size - 1;
 		}
 
+		void			swap_with_prev(t_node* node) {
+			t_node * new_prev = NULL;
+			t_node * new_next = NULL;
+			new_next = node->prev;
+			node->prev->next = node->next;
+			node->next->prev = new_next;
+			new_prev = node->prev->prev;
+			node->prev->prev = node;
+			node->prev = new_prev;
+			node->prev->next = node;
+			node->next = new_next;
+		}
+
 	public:
 
 		/* Iterators */
@@ -607,6 +620,145 @@ namespace ft {
 			for (iterator it = first; it != last; NULL) {
 				splice(position, other, it++);
 			}
+		}
+
+		void			remove(const value_type& val) {
+			for (iterator it = begin(); it != end(); NULL) {
+				if (*it == val) {
+					erase(it);
+				}
+				++it;
+			}
+		}
+
+		template <class Predicate>
+		void			remove_if(Predicate pred) {
+			for (iterator it = begin(); it != end(); NULL) {
+				if ((*pred)(*it)) {
+					erase(it);
+				}
+				++it;
+			}
+		}
+
+		void			unique() {
+			iterator it_prev = begin();
+			for (iterator it = ++begin(); it != end(); NULL) {
+				if (*it == *it_prev) {
+					erase(it);
+				} else {
+					++it_prev;
+				}
+				++it;
+			}
+		}
+
+		template <class BinaryPredicate>
+		void			unique(BinaryPredicate binary_pred) {
+			iterator it_prev = begin();
+			for (iterator it = ++begin(); it != end(); NULL) {
+				if ((*binary_pred)(*it, *it_prev)) {
+					erase(it);
+				} else {
+					++it_prev;
+				}
+				++it;
+			}
+		}
+
+		void			merge(List& other) {
+			if (this == &other) { return ; }
+			iterator it_other = other.begin();
+			if (it_other == other.end()) { return ; };
+			for (iterator it = begin(); it != end(); NULL) {
+				if (*it_other < *it) {
+					splice(it, other, it_other++);
+					if (it_other == other.end()) { return ; };
+				} else {
+					++it;
+				}
+			}
+			splice(end(), other, it_other, other.end());
+		}
+
+		template <class Compare>
+		void			merge(List& other, Compare comp) {
+			if (this == &other) { return ; }
+			iterator it_other = other.begin();
+			for (iterator it = begin(); it != end(); NULL) {
+				if ((*comp)(*it_other, *it)) {
+					splice(it, other, it_other++);
+					if (it_other == other.end()) { return ; };
+				} else {
+					++it;
+				}
+			}
+			splice(end(), other, it_other, other.end());
+		}
+
+		void			sort() { //bubble sort used
+			if (m_size < 2) { return ; }
+			size_type is_changed = 1;
+			iterator it_first;
+			iterator it_second;
+			iterator it_stop = end();
+			while (it_stop != begin()) {
+				if (!is_changed) { return ; }
+				is_changed = 0;
+				it_second = begin();
+				while (it_second != it_stop) {
+					it_first = it_second++;
+					if (it_second == it_stop) { break ; }
+					if (*it_second < *it_first) {
+						swap_with_prev(it_second.getNode());
+						is_changed = 1;
+					}
+				}
+				--it_stop;
+			}
+		}
+
+		template <class Compare>
+		void			sort(Compare comp) { //bubble sort used
+			if (m_size < 2) { return ; }
+			size_type is_changed = 1;
+			iterator it_first;
+			iterator it_second;
+			iterator it_stop = end();
+			while (it_stop != begin()) {
+				if (!is_changed) { return ; }
+				is_changed = 0;
+				it_second = begin();
+				while (it_second != it_stop) {
+					it_first = it_second++;
+					if (it_second == it_stop) { break ; }
+					if ((*comp)(*it_second, *it_first)) {
+						swap_with_prev(it_second.getNode());
+						is_changed = 1;
+					}
+				}
+				--it_stop;
+			}
+		}
+
+		void			reverse() {
+			if (m_size < 2) { return ; }
+			iterator it;
+			iterator it_stop = end();
+			while (it_stop != begin()) {
+				it = begin();
+				while (++it != it_stop) {
+					swap_with_prev(it.getNode());
+					++it;
+				}
+				--it_stop;
+			}
+		}
+
+		/* Observers */
+
+		allocator_type	get_allocator() const {
+			return alloc;
 		}
 
 		/* Element access */
