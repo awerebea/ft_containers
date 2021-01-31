@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   List.h                                             :+:      :+:    :+:   */
+/*   List.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awerebea <awerebea@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LIST_H
-#define FT_LIST_H
+#ifndef FT_LIST_HPP
+#define FT_LIST_HPP
 
 #include <iostream>
 # include <limits>
@@ -39,16 +39,16 @@ namespace ft {
 
 	private:
 		typedef struct	s_node {
-			value_type *	data;
-			s_node *		prev;
-			s_node *		next;
+			value_type*		data;
+			s_node*			prev;
+			s_node*			next;
 		}				t_node;
 
 		typedef typename allocator_type::template rebind<t_node>::other
 																node_allocator;
 
 		size_type		m_size;
-		t_node *		end_node;
+		t_node*			end_node;
 		node_allocator	alloc_rebind;
 		allocator_type	alloc;
 
@@ -61,15 +61,15 @@ namespace ft {
 			m_size = 0;
 		}
 
-		t_node *		new_node_init(const value_type& val) {
-			t_node * new_node = alloc_rebind.allocate(1);
+		t_node*			new_node_init(const value_type& val) {
+			t_node* new_node = alloc_rebind.allocate(1);
 			new_node->data = alloc.allocate(1);
 			alloc.construct(new_node->data, val);
 			m_size += 1;
 			return new_node;
 		}
 
-		void			del_node(t_node * node) {
+		void			del_node(t_node* node) {
 			alloc.destroy(node->data);
 			alloc.deallocate(node->data, 1);
 			alloc_rebind.deallocate(node, 1);
@@ -77,8 +77,8 @@ namespace ft {
 		}
 
 		void			swap_with_prev(t_node* node) {
-			t_node * new_prev = NULL;
-			t_node * new_next = NULL;
+			t_node* new_prev = NULL;
+			t_node* new_next = NULL;
 			new_next = node->prev;
 			node->prev->next = node->next;
 			node->next->prev = new_next;
@@ -97,11 +97,11 @@ namespace ft {
 
 		class iterator :
 			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
-			t_node *	node;
+			t_node* node;
 		public:
 			iterator(): node(NULL) {}
 
-			explicit iterator(t_node * node): node(node) {}
+			explicit iterator(t_node* node): node(node) {}
 
 			iterator(const iterator& other) { *this = other; }
 
@@ -128,11 +128,11 @@ namespace ft {
 				return node != other.getNode();
 			};
 
-			value_type&		operator*() const {
+			value_type&			operator*() const {
 				return *node->data;
 			};
 
-			value_type *		operator->() const {
+			value_type*			operator->() const {
 				return node->data;
 			};
 
@@ -142,7 +142,7 @@ namespace ft {
 			};
 
 			iterator			operator++(int) {
-				iterator	ret = *this;
+				iterator ret = *this;
 				node = node->next;
 				return ret;
 			};
@@ -153,21 +153,21 @@ namespace ft {
 			};
 
 			iterator			operator--(int) {
-				iterator	ret = *this;
+				iterator ret = *this;
 				node = node->prev;
 				return ret;
 			};
 
-			t_node *			getNode() const { return node; }
+			t_node*				getNode() const { return node; }
 		}; // class iterator
 
 		class const_iterator :
 			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
-			t_node *	node;
+			t_node* node;
 		public:
 			const_iterator(): node(NULL) {}
 
-			explicit const_iterator(t_node * node): node(node) {}
+			explicit const_iterator(t_node* node): node(node) {}
 
 			const_iterator(const const_iterator& other) { *this = other; }
 
@@ -198,44 +198,44 @@ namespace ft {
 				return *node->data;
 			};
 
-			const value_type *	operator->() const {
+			const value_type*	operator->() const {
 				return node->data;
 			};
 
-			const_iterator&	operator++() {
+			const_iterator&		operator++() {
 				node = node->next;
 				return *this;
 			};
 
 			const_iterator		operator++(int) {
-				const_iterator	ret = *this;
+				const_iterator ret = *this;
 				node = node->next;
 				return ret;
 			};
 
-			const_iterator&	operator--() {
+			const_iterator&		operator--() {
 				node = node->prev;
 				return *this;
 			};
 
 			const_iterator		operator--(int) {
-				const_iterator	ret = *this;
+				const_iterator ret = *this;
 				node = node->prev;
 				return ret;
 			};
 
-			t_node *			getNode() const { return node; }
+			t_node*				getNode() const { return node; }
 		}; // class const_iterator
 
 		class const_reverse_iterator;
 
 		class reverse_iterator :
 			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
-			t_node *	node;
+			t_node* node;
 		public:
 			reverse_iterator(): node(NULL) {}
 
-			explicit reverse_iterator(t_node * node): node(node) {}
+			explicit reverse_iterator(t_node* node): node(node) {}
 
 			reverse_iterator(const reverse_iterator& other) { *this = other; }
 
@@ -266,7 +266,7 @@ namespace ft {
 				return *node->data;
 			};
 
-			value_type *			operator->() const {
+			value_type*				operator->() const {
 				return node->data;
 			};
 
@@ -276,7 +276,7 @@ namespace ft {
 			};
 
 			reverse_iterator		operator++(int) {
-				reverse_iterator	ret = *this;
+				reverse_iterator ret = *this;
 				node = node->prev;
 				return ret;
 			};
@@ -287,21 +287,21 @@ namespace ft {
 			};
 
 			reverse_iterator		operator--(int) {
-				reverse_iterator	ret = *this;
+				reverse_iterator ret = *this;
 				node = node->next;
 				return ret;
 			};
 
-			t_node *	getNode() const { return node; }
+			t_node*		getNode() const { return node; }
 		}; // class reverse_iterator
 
 		class const_reverse_iterator :
 			public std::iterator<std:: bidirectional_iterator_tag, value_type> {
-			t_node *	node;
+			t_node* node;
 		public:
 			const_reverse_iterator(): node(NULL) {}
 
-			explicit const_reverse_iterator(t_node * node): node(node) {}
+			explicit const_reverse_iterator(t_node* node): node(node) {}
 
 			const_reverse_iterator(const const_reverse_iterator& other)
 			{ *this = other; }
@@ -335,7 +335,7 @@ namespace ft {
 				return *node->data;
 			};
 
-			const value_type *		operator->() const {
+			const value_type*		operator->() const {
 				return node->data;
 			};
 
@@ -345,7 +345,7 @@ namespace ft {
 			};
 
 			const_reverse_iterator	operator++(int) {
-				const_reverse_iterator	ret = *this;
+				const_reverse_iterator ret = *this;
 				node = node->prev;
 				return ret;
 			};
@@ -356,12 +356,12 @@ namespace ft {
 			};
 
 			const_reverse_iterator	operator--(int) {
-				const_reverse_iterator	ret = *this;
+				const_reverse_iterator ret = *this;
 				node = node->next;
 				return ret;
 			}; // class const_reverse_iterator
 
-			t_node *	getNode() const { return node; }
+			t_node*		getNode() const { return node; }
 		}; // class const_reverse_iterator
 
 		/* Constructors: */
@@ -393,35 +393,31 @@ namespace ft {
 #endif
 		{
 			end_node_init();
-			while (first != last) {
-				insert(end(), *first++);
-			}
+			while (first != last) { insert(end(), *first++); }
 		}
 
 #ifdef __linux__
 		List(reverse_iterator first, reverse_iterator last,
 				const allocator_type& alloc = allocator_type()) {
 			end_node_init();
-			while (first != last) {
-				insert(end(), *first++);
-			}
+			while (first != last) { insert(end(), *first++); }
 		}
 #endif
 
 		/* copy (4) */
-					List(const List& other) {
-						end_node_init();
-						*this = other;
-					}
+		List(const List& other) {
+			end_node_init();
+			*this = other;
+		}
 
-					~List() {
-						clear();
-						alloc.destroy(end_node->data);
-						alloc.deallocate(end_node->data, 1);
-						alloc_rebind.deallocate(end_node, 1);
-					}
+		~List() {
+			clear();
+			alloc.destroy(end_node->data);
+			alloc.deallocate(end_node->data, 1);
+			alloc_rebind.deallocate(end_node, 1);
+		}
 
-		List&				operator=(const List& other) {
+		List&			operator=(const List& other) {
 			if (this == &other) { return *this; }
 			assign(other.begin(), other.end());
 			return *this;
@@ -455,39 +451,27 @@ namespace ft {
 
 		/* Modifiers */
 
-		void			assign(iterator first, iterator last) {
-			if (m_size) {
-				clear();
-			}
-			while (first != last) {
-				insert(end(), *first++);
-			}
+		void		assign(iterator first, iterator last) {
+			if (m_size) { clear(); }
+			while (first != last) { insert(end(), *first++); }
 		}
 
-		void			assign(const_iterator first, const_iterator last) {
-			if (m_size) {
-				clear();
-			}
-			while (first != last) {
-				insert(end(), *first++);
-			}
+		void		assign(const_iterator first, const_iterator last) {
+			if (m_size) { clear(); }
+			while (first != last) { insert(end(), *first++); }
 		}
 
-		void			assign(size_type n, const value_type& val) {
-			if (m_size) {
-				clear();
-			}
-			for (size_type i = 0; i < n; ++i) {
-				insert(end(), val);
-			}
+		void		assign(size_type n, const value_type& val) {
+			if (m_size) { clear(); }
+			for (size_type i = 0; i < n; ++i) { insert(end(), val); }
 		}
 
 		void		push_back(const value_type &val) { insert(end(), val); }
 
 		void		push_front(const value_type &val) { insert(begin(), val); }
 
-		void			clear() {
-			t_node * tmp;
+		void		clear() {
+			t_node* tmp;
 			for (; m_size > 0;) {
 				tmp = end_node->next->next;
 				del_node(end_node->next);
@@ -496,9 +480,9 @@ namespace ft {
 			end_node->prev = end_node;
 		}
 
-		iterator		insert(iterator position, const value_type& val) {
-			t_node * tmp = position.getNode();
-			t_node * new_node = new_node_init(val);
+		iterator	insert(iterator position, const value_type& val) {
+			t_node* tmp = position.getNode();
+			t_node* new_node = new_node_init(val);
 			tmp->prev->next = new_node;
 			new_node->prev = tmp->prev;
 			tmp->prev = new_node;
@@ -507,9 +491,7 @@ namespace ft {
 		}
 
 		void	insert(iterator position, size_type n, const value_type& val) {
-			for (size_type i = 0; i < n; ++i) {
-				insert(position, val);
-			}
+			for (size_type i = 0; i < n; ++i) { insert(position, val); }
 		}
 
 #ifdef __APPLE__
@@ -522,22 +504,18 @@ namespace ft {
 		void	insert(iterator position, iterator first, iterator last)
 #endif
 		{
-			while (first != last) {
-				insert(position, *first++);
-			}
+			while (first != last) { insert(position, *first++); }
 		}
 
 #ifdef __linux__
 		void	insert(reverse_iterator position, reverse_iterator first,
 																iterator last) {
-			while (first != last) {
-				insert(position, *first++);
-			}
+			while (first != last) { insert(position, *first++); }
 		}
 #endif
 
 		iterator		erase(iterator position) {
-			t_node * tmp = position.getNode();
+			t_node* tmp = position.getNode();
 			iterator ret = ++position;
 			tmp->prev->next = tmp->next;
 			tmp->next->prev = tmp->prev;
@@ -547,14 +525,12 @@ namespace ft {
 
 		iterator		erase(iterator first, iterator last) {
 			iterator ret = first;
-			while (first != last) {
-				ret = erase(first++);
-			}
+			while (first != last) { ret = erase(first++); }
 			return ret;
 		}
 
 		const_iterator	erase(const_iterator position) {
-			t_node * tmp = position.getNode();
+			t_node* tmp = position.getNode();
 			const_iterator ret = ++position;
 			tmp->prev->next = tmp->next;
 			tmp->next->prev = tmp->prev;
@@ -564,14 +540,12 @@ namespace ft {
 
 		const_iterator	erase(const_iterator first, const_iterator last) {
 			const_iterator ret = first;
-			while (first != last) {
-				ret = erase(first++);
-			}
+			while (first != last) { ret = erase(first++); }
 			return ret;
 		}
 
 		void			swap(List& other) {
-			t_node *	tmp_node = other.end_node;
+			t_node*	tmp_node = other.end_node;
 			other.end_node = this->end_node;
 			this->end_node = tmp_node;
 
@@ -581,12 +555,8 @@ namespace ft {
 		}
 
 		void			resize(size_type n, value_type val = value_type()) {
-			while (m_size < n) {
-				insert(end(), val);
-			}
-			while (m_size > n) {
-				erase(--end());
-			}
+			while (m_size < n) { insert(end(), val); }
+			while (m_size > n) { erase(--end()); }
 		}
 
 		void			pop_front() { erase(begin()); }
@@ -601,8 +571,8 @@ namespace ft {
 
 		void			splice(iterator position, List& other, iterator i) {
 			if (other.m_size) {
-				t_node * pos_node = position.getNode();
-				t_node * other_node = i.getNode();
+				t_node* pos_node = position.getNode();
+				t_node* other_node = i.getNode();
 				other_node->prev->next = other_node->next;
 				other_node->next->prev = other_node->prev;
 
@@ -624,9 +594,7 @@ namespace ft {
 
 		void			remove(const value_type& val) {
 			for (iterator it = begin(); it != end(); NULL) {
-				if (*it == val) {
-					erase(it);
-				}
+				if (*it == val) { erase(it); }
 				++it;
 			}
 		}
@@ -634,9 +602,7 @@ namespace ft {
 		template <class Predicate>
 		void			remove_if(Predicate pred) {
 			for (iterator it = begin(); it != end(); NULL) {
-				if ((*pred)(*it)) {
-					erase(it);
-				}
+				if ((*pred)(*it)) { erase(it); }
 				++it;
 			}
 		}
@@ -644,11 +610,8 @@ namespace ft {
 		void			unique() {
 			iterator it_prev = begin();
 			for (iterator it = ++begin(); it != end(); NULL) {
-				if (*it == *it_prev) {
-					erase(it);
-				} else {
-					++it_prev;
-				}
+				if (*it == *it_prev) { erase(it); }
+				else { ++it_prev; }
 				++it;
 			}
 		}
@@ -657,11 +620,8 @@ namespace ft {
 		void			unique(BinaryPredicate binary_pred) {
 			iterator it_prev = begin();
 			for (iterator it = ++begin(); it != end(); NULL) {
-				if ((*binary_pred)(*it, *it_prev)) {
-					erase(it);
-				} else {
-					++it_prev;
-				}
+				if ((*binary_pred)(*it, *it_prev)) { erase(it); }
+				else { ++it_prev; }
 				++it;
 			}
 		}
@@ -674,9 +634,8 @@ namespace ft {
 				if (*it_other < *it) {
 					splice(it, other, it_other++);
 					if (it_other == other.end()) { return ; };
-				} else {
-					++it;
 				}
+				else { ++it; }
 			}
 			splice(end(), other, it_other, other.end());
 		}
@@ -689,9 +648,8 @@ namespace ft {
 				if ((*comp)(*it_other, *it)) {
 					splice(it, other, it_other++);
 					if (it_other == other.end()) { return ; };
-				} else {
-					++it;
 				}
+				else { ++it; }
 			}
 			splice(end(), other, it_other, other.end());
 		}
@@ -779,17 +737,17 @@ namespace ft {
 	}; // class List
 
 	template <class T, class Alloc>
-	void	swap(List<T, Alloc>& x, List<T, Alloc>& y) {
+	void	swap(List<T,Alloc>& x, List<T,Alloc>& y) {
 		x.swap(y);
 	}
 
 	template <class T, class Alloc>
-	bool	operator==(const List<T, Alloc>& lhs, const List<T, Alloc>& rhs) {
+	bool	operator==(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
 		if (lhs.size() != rhs.size()) {
 			return false;
 		}
-		typename List<T, Alloc>::const_iterator it_lhs = lhs.begin();
-		typename List<T, Alloc>::const_iterator it_rhs = rhs.begin();
+		typename List<T,Alloc>::const_iterator it_lhs = lhs.begin();
+		typename List<T,Alloc>::const_iterator it_rhs = rhs.begin();
 		for (; it_lhs != lhs.end(); NULL) {
 			if (*it_lhs++ != *it_rhs++) { return false; }
 		}
@@ -804,12 +762,12 @@ namespace ft {
 	template <class InputIterator1, class InputIterator2>
 	bool	lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 								InputIterator2 first2, InputIterator2 last2) {
-		while (first1!=last1) {
-			if (first2==last2 || *first2<*first1) return false;
-			else if (*first1<*first2) return true;
+		while (first1 != last1) {
+			if (first2 == last2 || *first2 < *first1) { return false; }
+			else if (*first1 < *first2) { return true; }
 			++first1; ++first2;
 		}
-		return (first2!=last2);
+		return (first2 != last2);
 	}
 
 	template <class T, class Alloc>
@@ -835,4 +793,4 @@ namespace ft {
 
 } // namespace ft
 
-#endif //FT_CONTAINERS_FT_LIST_H
+#endif //FT_CONTAINERS_FT_LIST_HPP

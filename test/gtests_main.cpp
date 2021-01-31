@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <gtest/gtest.h>
-#include "List.h"
+#include "List.hpp"
 #include <list>
 
 class Test_List : public ::testing::Test {
