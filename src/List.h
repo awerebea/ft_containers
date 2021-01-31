@@ -755,12 +755,6 @@ namespace ft {
 			}
 		}
 
-		/* Observers */
-
-		allocator_type	get_allocator() const {
-			return alloc;
-		}
-
 		/* Element access */
 
 		reference		front() { return *begin(); }
@@ -775,15 +769,70 @@ namespace ft {
 
 		size_type		size() const { return m_size; }
 
-		// TODO formula adjusted to std list behavior
-		/* size_type max_size(void) const {                    */
-		/*     return (std::numeric_limits<size_type>::max() / */
-		/*             (sizeof(t_node) - sizeof(pointer)));    */
-		/* }                                                   */
+		size_type max_size(void) const {
+			return (std::numeric_limits<size_type>::max() /
+					(sizeof(t_node) + sizeof(pointer)));
+		}
 
 		bool			empty() const { return m_size == 0; }
 
 	}; // class List
+
+	template <class T, class Alloc>
+	void	swap(List<T, Alloc>& x, List<T, Alloc>& y) {
+		x.swap(y);
+	}
+
+	template <class T, class Alloc>
+	bool	operator==(const List<T, Alloc>& lhs, const List<T, Alloc>& rhs) {
+		if (lhs.size() != rhs.size()) {
+			return false;
+		}
+		typename List<T, Alloc>::const_iterator it_lhs = lhs.begin();
+		typename List<T, Alloc>::const_iterator it_rhs = rhs.begin();
+		for (; it_lhs != lhs.end(); NULL) {
+			if (*it_lhs++ != *it_rhs++) { return false; }
+		}
+		return true;
+	}
+
+	template <class T, class Alloc>
+	bool	operator!=(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+		return !(lhs == rhs);
+	}
+
+	template <class InputIterator1, class InputIterator2>
+	bool	lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
+								InputIterator2 first2, InputIterator2 last2) {
+		while (first1!=last1) {
+			if (first2==last2 || *first2<*first1) return false;
+			else if (*first1<*first2) return true;
+			++first1; ++first2;
+		}
+		return (first2!=last2);
+	}
+
+	template <class T, class Alloc>
+	bool	operator<(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+		return (ft::lexicographical_compare(lhs.begin(), lhs.end(),
+					rhs.begin(), rhs.end()));
+	}
+
+	template <class T, class Alloc>
+	bool	operator<=(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+		return !(rhs < lhs);
+	}
+
+	template <class T, class Alloc>
+	bool	operator>(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+		return (rhs < lhs);
+	}
+
+	template <class T, class Alloc>
+	bool	operator>=(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
+		return !(lhs < rhs);
+	}
+
 } // namespace ft
 
 #endif //FT_CONTAINERS_FT_LIST_H

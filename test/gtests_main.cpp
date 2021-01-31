@@ -25,7 +25,7 @@ protected:
 		for (int i = 0; i < 5; ++i) {
 			list_int_sort_ft->push_back(i + 1);
 		}
-		int unsort_int_array[] = { 3, 5, 1, 4, 2 };
+		int unsort_int_array[] = { 8, 0, 6, 9, 7 };
 		list_int_unsort_std = new std::list<int>;
 		for (int i = 0; i < 5; ++i) {
 			list_int_unsort_std->push_back(unsort_int_array[i]);
@@ -1303,12 +1303,11 @@ TEST_F(Test_List, Capacity_size) {
 	EXPECT_EQ(list_int_sort_std->size(), list_int_sort_ft->size());
 }
 
-//TEST_F(Test_List, Capacity_Max_size) { // TODO
-//	std::list<int>	lst_std(2);
-//	ft::List<int>	lst_ft(2);
-//
-//	EXPECT_EQ(lst_std.max_size(), lst_ft.size());
-//}
+TEST_F(Test_List, Capacity_max_size) {
+	std::cout << "----- MAX SIZE -----" << std::endl;
+	ft::List<int>	lst_ft;
+	std::cout << " ft max_size: " << lst_ft.max_size() << std::endl;
+}
 
 TEST_F(Test_List, Capacity_empty) {
 	std::cout << "----- EMPTY -----" << std::endl;
@@ -1340,6 +1339,300 @@ TEST_F(Test_List, Capacity_empty) {
 
 	EXPECT_EQ(list_int_sort_std->size(), list_int_sort_ft->size());
 	EXPECT_EQ(list_int_sort_std->empty(), list_int_sort_ft->empty());
+}
+
+TEST_F(Test_List, Non_member_overload_swap) {
+	std::cout << "----- NON-MEMBER OVERLOAD SWAP -----" << std::endl;
+	std::cout << "std_first before:"; print_container(*list_int_sort_std);
+	std::cout << " ft_first before:"; print_container(*list_int_sort_ft);
+	std::cout << std::endl;
+	std::cout << "std_second before:"; print_container(*list_int_unsort_std);
+	std::cout << " ft_second before:"; print_container(*list_int_unsort_ft);
+
+	std::list<int>::iterator it_std_first = ++list_int_sort_std->begin();
+	std::list<int>::iterator it_std_second = ++list_int_unsort_std->begin();
+	ft::List<int>::iterator it_ft_first = ++list_int_sort_ft->begin();
+	ft::List<int>::iterator it_ft_second = ++list_int_unsort_ft->begin();
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+	std::cout << "it_std_first before: " << *it_std_first << std::endl;
+	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
+	std::cout << "it_std_second before:" << *it_std_second << std::endl;
+	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+
+	EXPECT_EQ(*list_int_sort_std->begin(), *list_int_sort_ft->begin());
+	EXPECT_EQ(*list_int_unsort_std->begin(), *list_int_unsort_ft->begin());
+	EXPECT_EQ(list_int_sort_std->size(), list_int_sort_ft->size());
+	EXPECT_EQ(list_int_unsort_std->size(), list_int_unsort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "Swap first and second objects" << std::endl;
+
+	std::swap(*list_int_sort_std, *list_int_unsort_std);
+	ft::swap(*list_int_sort_ft, *list_int_unsort_ft);
+
+	std::cout << "std_first after:"; print_container(*list_int_sort_std);
+	std::cout << " ft_first after:"; print_container(*list_int_sort_ft);
+	std::cout << std::endl;
+	std::cout << "std_second after:"; print_container(*list_int_unsort_std);
+	std::cout << " ft_second after:"; print_container(*list_int_unsort_ft);
+	std::cout << std::endl;
+	std::cout << "Check iterators (should be the same)" << std::endl;
+	std::cout << "it_std_first after: " << *it_std_first << std::endl;
+	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
+	std::cout << "it_std_second after:" << *it_std_second << std::endl;
+	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+
+	EXPECT_EQ(*list_int_sort_std->begin(), *list_int_sort_ft->begin());
+	EXPECT_EQ(*list_int_unsort_std->begin(), *list_int_unsort_ft->begin());
+	EXPECT_EQ(list_int_sort_std->size(), list_int_sort_ft->size());
+	EXPECT_EQ(list_int_unsort_std->size(), list_int_unsort_ft->size());
+}
+
+TEST_F(Test_List, relational_operators_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (list_int_sort_std == list_int_unsort_std) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft == list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std == *list_int_unsort_std), 0);
+		EXPECT_EQ((*list_int_sort_ft == *list_int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (*list_int_sort_std == lst_std_copy) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft == lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std == lst_std_copy), 1);
+		EXPECT_EQ((*list_int_sort_ft == lst_ft_copy), 1);
+	}
+}
+
+TEST_F(Test_List, relational_operators_not_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (list_int_sort_std != list_int_unsort_std) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft != list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std != *list_int_unsort_std), 1);
+		EXPECT_EQ((*list_int_sort_ft != *list_int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (*list_int_sort_std != lst_std_copy) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft != lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std != lst_std_copy), 0);
+		EXPECT_EQ((*list_int_sort_ft != lst_ft_copy), 0);
+	}
+}
+
+TEST_F(Test_List, relational_operators_less) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (list_int_sort_std < list_int_unsort_std) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft < list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std < *list_int_unsort_std), 1);
+		EXPECT_EQ((*list_int_sort_ft < *list_int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (*list_int_sort_std < lst_std_copy) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft < lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std < lst_std_copy), 0);
+		EXPECT_EQ((*list_int_sort_ft < lst_ft_copy), 0);
+	}
+}
+
+TEST_F(Test_List, relational_operators_less_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (list_int_sort_std <= list_int_unsort_std) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft <= list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std <= *list_int_unsort_std), 1);
+		EXPECT_EQ((*list_int_sort_ft <= *list_int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (*list_int_sort_std <= lst_std_copy) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft <= lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std <= lst_std_copy), 1);
+		EXPECT_EQ((*list_int_sort_ft <= lst_ft_copy), 1);
+	}
+}
+
+TEST_F(Test_List, relational_operators_more) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (list_int_sort_std > list_int_unsort_std) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft > list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std > *list_int_unsort_std), 0);
+		EXPECT_EQ((*list_int_sort_ft > *list_int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (*list_int_sort_std > lst_std_copy) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft > lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std > lst_std_copy), 0);
+		EXPECT_EQ((*list_int_sort_ft > lst_ft_copy), 0);
+	}
+}
+
+TEST_F(Test_List, relational_operators_more_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+		std::cout << "std_second:"; print_container(*list_int_unsort_std);
+		std::cout << " ft_second:"; print_container(*list_int_unsort_ft);
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (list_int_sort_std > list_int_unsort_std) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (list_int_sort_ft > list_int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std > *list_int_unsort_std), 0);
+		EXPECT_EQ((*list_int_sort_ft > *list_int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
+		std::cout << "std_first:"; print_container(*list_int_sort_std);
+		std::cout << " ft_first:"; print_container(*list_int_sort_ft);
+		std::cout << std::endl;
+
+		std::list<int>	lst_std_copy(*list_int_sort_std);
+		ft::List<int>	lst_ft_copy(*list_int_sort_ft);
+
+		std::cout << "std_first_copy:"; print_container(lst_std_copy);
+		std::cout << " ft_first_copy:"; print_container(lst_ft_copy);
+
+		std::cout << std::endl;
+		std::cout << "std_first >= std_second: " << std::boolalpha
+			<< (*list_int_sort_std >= lst_std_copy) << std::endl;
+		std::cout << " ft_first >=  ft_second: " << std::boolalpha
+			<< (*list_int_sort_ft >= lst_ft_copy) << std::endl;
+
+		EXPECT_EQ((*list_int_sort_std >= lst_std_copy), 1);
+		EXPECT_EQ((*list_int_sort_ft >= lst_ft_copy), 1);
+	}
 }
 
 //TEST(INF_LOOP, Loop) {
