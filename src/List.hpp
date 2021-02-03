@@ -14,7 +14,7 @@
 #define FT_LIST_HPP
 
 #include <iostream>
-# include <limits>
+#include <limits>
 
 namespace ft {
 
@@ -39,7 +39,7 @@ namespace ft {
 
 	private:
 		typedef struct	s_node {
-			value_type*		data;
+			pointer			data;
 			s_node*			prev;
 			s_node*			next;
 		}				t_node;
@@ -61,7 +61,7 @@ namespace ft {
 			m_size = 0;
 		}
 
-		t_node*			new_node_init(const value_type& val) {
+		t_node*			new_node_init(const_reference val) {
 			t_node* new_node = alloc_rebind.allocate(1);
 			new_node->data = alloc.allocate(1);
 			alloc.construct(new_node->data, val);
@@ -128,11 +128,11 @@ namespace ft {
 				return node != other.getNode();
 			};
 
-			value_type&			operator*() const {
+			reference			operator*() const {
 				return *node->data;
 			};
 
-			value_type*			operator->() const {
+			pointer				operator->() const {
 				return node->data;
 			};
 
@@ -194,11 +194,11 @@ namespace ft {
 				return node != other.getNode();
 			};
 
-			const value_type&	operator*() const {
+			const_reference		operator*() const {
 				return *node->data;
 			};
 
-			const value_type*	operator->() const {
+			const_pointer		operator->() const {
 				return node->data;
 			};
 
@@ -241,7 +241,7 @@ namespace ft {
 
 			~reverse_iterator() {}
 
-			reverse_iterator&		operator=(const reverse_iterator& other) {
+			reverse_iterator&	operator=(const reverse_iterator& other) {
 				if (this != &other) { node = other.node; }
 				return *this;
 			}
@@ -262,37 +262,37 @@ namespace ft {
 				return node != other.getNode();
 			};
 
-			value_type&	operator*() const {
+			reference			operator*() const {
 				return *node->data;
 			};
 
-			value_type*				operator->() const {
+			pointer				operator->() const {
 				return node->data;
 			};
 
-			reverse_iterator&		operator++() {
+			reverse_iterator&	operator++() {
 				node = node->prev;
 				return *this;
 			};
 
-			reverse_iterator		operator++(int) {
+			reverse_iterator	operator++(int) {
 				reverse_iterator ret = *this;
 				node = node->prev;
 				return ret;
 			};
 
-			reverse_iterator&		operator--() {
+			reverse_iterator&	operator--() {
 				node = node->next;
 				return *this;
 			};
 
-			reverse_iterator		operator--(int) {
+			reverse_iterator	operator--(int) {
 				reverse_iterator ret = *this;
 				node = node->next;
 				return ret;
 			};
 
-			t_node*		getNode() const { return node; }
+			t_node*				getNode() const { return node; }
 		}; // class reverse_iterator
 
 		class const_reverse_iterator :
@@ -331,11 +331,11 @@ namespace ft {
 				return node != other.getNode();
 			};
 
-			const value_type&		operator*() const {
+			const_reference			operator*() const {
 				return *node->data;
 			};
 
-			const value_type*		operator->() const {
+			const_pointer			operator->() const {
 				return node->data;
 			};
 
@@ -372,7 +372,7 @@ namespace ft {
 		}
 
 		/* fill (2) */
-		explicit	List(size_type n, const value_type& val = value_type(),
+		explicit	List(size_type n, const_reference val = value_type(),
 						const allocator_type& alloc = allocator_type()) {
 			end_node_init();
 			for (size_type i = 0; i < n; ++i) {
@@ -461,7 +461,7 @@ namespace ft {
 			while (first != last) { insert(end(), *first++); }
 		}
 
-		void		assign(size_type n, const value_type& val) {
+		void		assign(size_type n, const_reference val) {
 			if (m_size) { clear(); }
 			for (size_type i = 0; i < n; ++i) { insert(end(), val); }
 		}
@@ -480,7 +480,7 @@ namespace ft {
 			end_node->prev = end_node;
 		}
 
-		iterator	insert(iterator position, const value_type& val) {
+		iterator	insert(iterator position, const_reference val) {
 			t_node* tmp = position.getNode();
 			t_node* new_node = new_node_init(val);
 			tmp->prev->next = new_node;
@@ -490,7 +490,7 @@ namespace ft {
 			return iterator(new_node);
 		}
 
-		void	insert(iterator position, size_type n, const value_type& val) {
+		void	insert(iterator position, size_type n, const_reference val) {
 			for (size_type i = 0; i < n; ++i) { insert(position, val); }
 		}
 
@@ -592,7 +592,7 @@ namespace ft {
 			}
 		}
 
-		void			remove(const value_type& val) {
+		void			remove(const_reference val) {
 			for (iterator it = begin(); it != end(); NULL) {
 				if (*it == val) { erase(it); }
 				++it;
