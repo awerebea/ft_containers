@@ -451,15 +451,26 @@ namespace ft {
 
 		/* Modifiers */
 
-		void		assign(iterator first, iterator last) {
+#ifdef __APPLE__
+		template <class InputIterator>
+		void	assign(iterator position,
+				InputIterator first, InputIterator last,
+				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
+				value>::type* = 0)
+#elif __linux__
+		void	assign(iterator first, iterator last)
+#endif
+		{
 			if (m_size) { clear(); }
 			while (first != last) { insert(end(), *first++); }
 		}
 
-		void		assign(const_iterator first, const_iterator last) {
+#ifdef __linux__
+		void	assign(const_iterator first, const_iterator last) {
 			if (m_size) { clear(); }
 			while (first != last) { insert(end(), *first++); }
 		}
+#endif
 
 		void		assign(size_type n, const_reference val) {
 			if (m_size) { clear(); }
