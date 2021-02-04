@@ -11,7 +11,8 @@ include_directories(googletest/googletest/include
         )
 
 set(SOURCE_FILES
-        test/gtests_main.cpp
+        test/test_list.cpp
+        test/test_vector.cpp
         )
 
 add_executable(ft_containers ${SOURCE_FILES})
