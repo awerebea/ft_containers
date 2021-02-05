@@ -383,7 +383,7 @@ namespace ft {
 		/* range (3) */
 #ifdef __APPLE__
 		template <class InputIterator>
-		List (InputIterator first, InputIterator last,
+		List(InputIterator first, InputIterator last,
 				const allocator_type& alloc = allocator_type(),
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
 				value>::type* = 0)
@@ -449,6 +449,26 @@ namespace ft {
 			return const_reverse_iterator(end_node);
 		}
 
+		/* Capacity */
+
+		bool			empty() const { return m_size == 0; }
+
+		size_type		size() const { return m_size; }
+
+		size_type		max_size(void) const {
+			return node_allocator().max_size();
+		}
+
+		/* Element access */
+
+		reference		front() { return *begin(); }
+
+		const_reference	front() const { return *begin(); }
+
+		reference		back() { return *(--end()); }
+
+		const_reference	back() const { return *(--end()); }
+
 		/* Modifiers */
 
 #ifdef __APPLE__
@@ -477,19 +497,13 @@ namespace ft {
 			for (size_type i = 0; i < n; ++i) { insert(end(), val); }
 		}
 
-		void		push_back(const value_type &val) { insert(end(), val); }
-
 		void		push_front(const value_type &val) { insert(begin(), val); }
 
-		void		clear() {
-			t_node* tmp;
-			for (; m_size > 0;) {
-				tmp = end_node->next->next;
-				del_node(end_node->next);
-				end_node->next = tmp;
-			}
-			end_node->prev = end_node;
-		}
+		void		pop_front() { erase(begin()); }
+
+		void		push_back(const value_type &val) { insert(end(), val); }
+
+		void		pop_back() { erase(--end()); }
 
 		iterator	insert(iterator position, const_reference val) {
 			t_node* tmp = position.getNode();
@@ -570,9 +584,15 @@ namespace ft {
 			while (m_size > n) { erase(--end()); }
 		}
 
-		void			pop_front() { erase(begin()); }
-
-		void			pop_back() { erase(--end()); }
+		void			clear() {
+			t_node* tmp;
+			for ( ; m_size > 0; ) {
+				tmp = end_node->next->next;
+				del_node(end_node->next);
+				end_node->next = tmp;
+			}
+			end_node->prev = end_node;
+		}
 
 		/* Operations */
 
@@ -598,13 +618,13 @@ namespace ft {
 
 		void			splice(iterator position, List& other,
 											iterator first, iterator last) {
-			for (iterator it = first; it != last; NULL) {
+			for (iterator it = first; it != last; ) {
 				splice(position, other, it++);
 			}
 		}
 
 		void			remove(const_reference val) {
-			for (iterator it = begin(); it != end(); NULL) {
+			for (iterator it = begin(); it != end(); ) {
 				if (*it == val) { erase(it); }
 				++it;
 			}
@@ -612,7 +632,7 @@ namespace ft {
 
 		template <class Predicate>
 		void			remove_if(Predicate pred) {
-			for (iterator it = begin(); it != end(); NULL) {
+			for (iterator it = begin(); it != end(); ) {
 				if ((*pred)(*it)) { erase(it); }
 				++it;
 			}
@@ -620,7 +640,7 @@ namespace ft {
 
 		void			unique() {
 			iterator it_prev = begin();
-			for (iterator it = ++begin(); it != end(); NULL) {
+			for (iterator it = ++begin(); it != end(); ) {
 				if (*it == *it_prev) { erase(it); }
 				else { ++it_prev; }
 				++it;
@@ -630,7 +650,7 @@ namespace ft {
 		template <class BinaryPredicate>
 		void			unique(BinaryPredicate binary_pred) {
 			iterator it_prev = begin();
-			for (iterator it = ++begin(); it != end(); NULL) {
+			for (iterator it = ++begin(); it != end(); ) {
 				if ((*binary_pred)(*it, *it_prev)) { erase(it); }
 				else { ++it_prev; }
 				++it;
@@ -641,7 +661,7 @@ namespace ft {
 			if (this == &other) { return ; }
 			iterator it_other = other.begin();
 			if (it_other == other.end()) { return ; };
-			for (iterator it = begin(); it != end(); NULL) {
+			for (iterator it = begin(); it != end(); ) {
 				if (*it_other < *it) {
 					splice(it, other, it_other++);
 					if (it_other == other.end()) { return ; };
@@ -655,7 +675,7 @@ namespace ft {
 		void			merge(List& other, Compare comp) {
 			if (this == &other) { return ; }
 			iterator it_other = other.begin();
-			for (iterator it = begin(); it != end(); NULL) {
+			for (iterator it = begin(); it != end(); ) {
 				if ((*comp)(*it_other, *it)) {
 					splice(it, other, it_other++);
 					if (it_other == other.end()) { return ; };
@@ -665,7 +685,7 @@ namespace ft {
 			splice(end(), other, it_other, other.end());
 		}
 
-		void			sort() { //bubble sort used
+		void			sort() { // INFO bubble sort used
 			if (m_size < 2) { return ; }
 			size_type is_changed = 1;
 			iterator it_first;
@@ -688,7 +708,7 @@ namespace ft {
 		}
 
 		template <class Compare>
-		void			sort(Compare comp) { //bubble sort used
+		void			sort(Compare comp) { // INFO bubble sort used
 			if (m_size < 2) { return ; }
 			size_type is_changed = 1;
 			iterator it_first;
@@ -724,33 +744,14 @@ namespace ft {
 			}
 		}
 
-		/* Element access */
-
-		reference		front() { return *begin(); }
-
-		const_reference	front() const { return *begin(); }
-
-		reference		back() { return *(--end()); }
-
-		const_reference	back() const { return *(--end()); }
-
-		/* Capacity */
-
-		size_type		size() const { return m_size; }
-
-		size_type max_size(void) const {
-			return (std::numeric_limits<size_type>::max() /
-					(sizeof(t_node) + sizeof(pointer)));
-		}
-
-		bool			empty() const { return m_size == 0; }
-
 	}; // class List
 
 	template <class T, class Alloc>
 	void	swap(List<T,Alloc>& x, List<T,Alloc>& y) {
 		x.swap(y);
 	}
+
+	/* relational operators */
 
 	template <class T, class Alloc>
 	bool	operator==(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {
@@ -759,7 +760,7 @@ namespace ft {
 		}
 		typename List<T,Alloc>::const_iterator it_lhs = lhs.begin();
 		typename List<T,Alloc>::const_iterator it_rhs = rhs.begin();
-		for (; it_lhs != lhs.end(); NULL) {
+		for ( ; it_lhs != lhs.end(); ) {
 			if (*it_lhs++ != *it_rhs++) { return false; }
 		}
 		return true;
