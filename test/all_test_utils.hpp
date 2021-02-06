@@ -24,21 +24,33 @@ void print_container(T& obj) {
 }
 
 template <typename S, typename F>
-void compare_content(S& std, F& ft, const std::string& text = "") {
-	std::cout << "std" << text << ":"; print_container(std);
-	std::cout << " ft" << text << ":"; print_container(ft);
+void compare_content(S& std, F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << ":"; print_container(std);
+	std::cout << " ft" << txt << ":"; print_container(ft);
 }
 
 template <typename S, typename F>
-void compare_capacity(const S& std, const F& ft, const std::string& text = "") {
-	std::cout << "std" << text << " (capacity): " << std.capacity() << std::endl;
-	std::cout << " ft" << text << " (capacity): " << ft.capacity() << std::endl;
+void compare_capacity(const S& std, const F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << " (capacity): " << std.capacity() << std::endl;
+	std::cout << " ft" << txt << " (capacity): " << ft.capacity() << std::endl;
 }
 
 template <typename S, typename F>
-void compare_size(const S& std, const F& ft, const std::string& text = "") {
-	std::cout << "std" << text << " (size): " << std.size() << std::endl;
-	std::cout << " ft" << text << " (size): " << ft.size() << std::endl;
+void compare_iterators(const S& std, const F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << " (iterator): " << *std << std::endl;
+	std::cout << " ft" << txt << " (iterator): " << *ft << std::endl;
+}
+
+template <typename S, typename F>
+void compare_elements(const S& std, const F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << " (element value): " << std << std::endl;
+	std::cout << " ft" << txt << " (element value): " << ft << std::endl;
+}
+
+template <typename S, typename F>
+void compare_size(const S& std, const F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << " (size): " << std.size() << std::endl;
+	std::cout << " ft" << txt << " (size): " << ft.size() << std::endl;
 }
 
 #endif //FT_CONTAINERS_ALL_TEST_UTILS_HPP

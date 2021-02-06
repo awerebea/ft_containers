@@ -26,14 +26,14 @@ protected:
 		for (int i = 0; i < 5; ++i) {
 			int_sort_ft->push_back(i + 1);
 		}
-		int unsort_int_array[] = { 8, 0, 6, 9, 7, 33, 11, 22 };
+		int unsort_int_arr[] = { 8, 0, 6, 9, 7, 33, 44, 11, 22 };
 		int_unsort_std = new std::vector<int>;
-		for (int i = 0; i < 6; ++i) {
-			int_unsort_std->push_back(unsort_int_array[i]);
+		for (int i = 0; i < 9; ++i) {
+			int_unsort_std->push_back(unsort_int_arr[i]);
 		}
 		int_unsort_ft = new ft::Vector<int>;
-		for (int i = 0; i < 6; ++i) {
-			int_unsort_ft->push_back(unsort_int_array[i]);
+		for (int i = 0; i < 9; ++i) {
+			int_unsort_ft->push_back(unsort_int_arr[i]);
 		}
 	}
 	void TearDown() {
@@ -51,96 +51,249 @@ protected:
 };
 
 TEST_F(Test_Vector, Constructor_default) {
-	std::vector<int> cnt_std;
-	ft::Vector<int> cnt_ft;
+	std::vector<int> ctnr_std;
+	ft::Vector<int> ctnr_ft;
 	std::cout << "----- CONSTRUCTOR (default) -----" << std::endl;
-	compare_size(cnt_std, cnt_ft);
+	compare_size(ctnr_std, ctnr_ft);
 
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 TEST_F(Test_Vector, Constructor_fill) {
 	{
-		std::vector<int> cnt_std(5);
-		ft::Vector<int> cnt_ft(5);
+		std::vector<int> ctnr_std(5);
+		ft::Vector<int> ctnr_ft(5);
 
 		std::cout << "----- CONSTRUCTOR (fill) -----" << std::endl;
-		compare_content(cnt_std, cnt_ft);
+		compare_content(ctnr_std, ctnr_ft);
 
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 	}
 	{
-		std::vector<std::string> cnt_std(2, "test");
-		ft::Vector<std::string> cnt_ft(2, "test");
+		std::vector<std::string> ctnr_std(2, "test");
+		ft::Vector<std::string> ctnr_ft(2, "test");
 
 		std::cout << "----- CONSTRUCTOR (fill) -----" << std::endl;
-		compare_content(cnt_std, cnt_ft);
+		compare_content(ctnr_std, ctnr_ft);
 
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 	}
 }
 
 TEST_F(Test_Vector, Constructor_range) {
-	std::vector<int>	cnt_std_cpy(++(*int_sort_std).begin(),
+	std::vector<int>	ctnr_std_cpy(++(*int_sort_std).begin(),
 									--(*int_sort_std).end());
-	ft::Vector<int>	cnt_ft_cpy(++(*int_sort_ft).begin(),
+	ft::Vector<int>	ctnr_ft_cpy(++(*int_sort_ft).begin(),
 								--(*int_sort_ft).end());
 
 	std::cout << "----- CONSTRUCTOR (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " original");
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " ranged");
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " ranged");
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-	EXPECT_EQ(cnt_std_cpy.size(), cnt_ft_cpy.size());
-	EXPECT_EQ(cnt_std_cpy.capacity(), cnt_ft_cpy.capacity());
+	EXPECT_EQ(ctnr_std_cpy.size(), ctnr_ft_cpy.size());
+	EXPECT_EQ(ctnr_std_cpy.capacity(), ctnr_ft_cpy.capacity());
 }
 
-TEST_F(Test_Vector, Constructor_cpy) {
-	std::vector<int>	cnt_std_cpy(*int_unsort_std);
-	ft::Vector<int>		cnt_ft_cpy(*int_unsort_ft);
+TEST_F(Test_Vector, Constructor_copy) {
+	std::vector<int>	ctnr_std_cpy(*int_unsort_std);
+	ft::Vector<int>		ctnr_ft_cpy(*int_unsort_ft);
 
 	std::cout << "----- CONSTRUCTOR (copy) -----" << std::endl;
 	compare_content(*int_unsort_std, *int_unsort_ft, " original");
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " copy");
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
-	EXPECT_EQ(int_unsort_std->size(), cnt_std_cpy.size());
-	EXPECT_EQ(int_unsort_ft->size(), cnt_ft_cpy.size());
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " copy");
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
+	EXPECT_EQ(int_unsort_std->size(), ctnr_std_cpy.size());
+	EXPECT_EQ(int_unsort_ft->size(), ctnr_ft_cpy.size());
 }
 
 TEST_F(Test_Vector, Destructor) {
-	std::vector<int>*	cnt_std = new std::vector<int>(5, 5);
-	ft::Vector<int>*	cnt_ft = new ft::Vector<int>(5, 5);
+	std::vector<int>*	ctnr_std = new std::vector<int>(5, 5);
+	ft::Vector<int>*	ctnr_ft = new ft::Vector<int>(5, 5);
 
 	std::cout << "----- DESTRUCTOR -----" << std::endl;
-	delete(cnt_std);
-	delete(cnt_ft);
+	delete(ctnr_std);
+	delete(ctnr_ft);
 }
 
 TEST_F(Test_Vector, Operator_assign) {
-	std::vector<int>	cnt_std_cpy;
-	ft::Vector<int>		cnt_ft_cpy;
+	std::vector<int>	ctnr_std_cpy;
+	ft::Vector<int>		ctnr_ft_cpy;
 
-	cnt_std_cpy = *int_sort_std;
-	cnt_ft_cpy = *int_sort_ft;
+	ctnr_std_cpy = *int_sort_std;
+	ctnr_ft_cpy = *int_sort_ft;
 
 	std::cout << "----- OPERATOR =  -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
 	compare_capacity(*int_sort_std, *int_sort_ft);
 	std::cout << std::endl;
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " copy");
-	compare_size(cnt_std_cpy, cnt_ft_cpy, " copy");
-	compare_capacity(cnt_std_cpy, cnt_ft_cpy, " copy");
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " copy");
+	compare_size(ctnr_std_cpy, ctnr_ft_cpy, " copy");
+	compare_capacity(ctnr_std_cpy, ctnr_ft_cpy, " copy");
 
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
-	EXPECT_EQ(int_sort_std->size(), cnt_std_cpy.size());
-	EXPECT_EQ(int_sort_ft->size(), cnt_ft_cpy.size());
-	EXPECT_EQ(cnt_std_cpy.capacity(), cnt_ft_cpy.capacity());
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
+	EXPECT_EQ(int_sort_std->size(), ctnr_std_cpy.size());
+	EXPECT_EQ(int_sort_ft->size(), ctnr_ft_cpy.size());
+	EXPECT_EQ(ctnr_std_cpy.capacity(), ctnr_ft_cpy.capacity());
+}
+
+TEST_F(Test_Vector, Iterators_begin) {
+	std::cout << "----- ITERATOR BEGIN -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(int_sort_std->begin(), int_sort_ft->begin(), "   begin");
+	compare_iterators(++int_sort_std->begin(), ++int_sort_ft->begin(),
+			" ++begin");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*(++int_sort_std->begin()), *(++int_sort_ft->begin()));
+}
+
+TEST_F(Test_Vector, Iterators_end) {
+	std::cout << "----- ITERATOR END -----" << std::endl;
+	std::vector<int>::iterator it_std = --int_sort_std->end();
+	ft::Vector<int>::iterator it_ft = --int_sort_ft->end();
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(it_std, it_ft, "    --end");
+	compare_iterators(--it_std, --it_ft, " --(--end)");
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
+	EXPECT_EQ(*(--it_std), *(--it_ft));
+}
+
+TEST_F(Test_Vector, Iterators_rbegin) {
+	std::cout << "----- ITERATOR RBEGIN -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(int_sort_std->rbegin(), int_sort_ft->rbegin(),
+			"   rbegin");
+	compare_iterators(++int_sort_std->rbegin(), ++int_sort_ft->rbegin(),
+			" ++rbegin");
+	EXPECT_EQ(*int_sort_std->rbegin(), *int_sort_ft->rbegin());
+	EXPECT_EQ(*(++int_sort_std->rbegin()), *(++int_sort_ft->rbegin()));
+}
+
+TEST_F(Test_Vector, Iterators_rend) {
+	std::cout << "----- ITERATOR REND -----" << std::endl;
+	std::vector<int>::reverse_iterator it_std = --int_sort_std->rend();
+	ft::Vector<int>::reverse_iterator it_ft = --int_sort_ft->rend();
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(it_std, it_ft, "    --rend");
+	compare_iterators(--it_std, --it_ft, " --(--rend)");
+	EXPECT_EQ(*(--int_sort_std->rend()), *(--int_sort_ft->rend()));
+	EXPECT_EQ(*(--it_std), *(--it_ft));
+}
+
+TEST_F(Test_Vector, Capacity_size) {
+	std::cout << "----- SIZE -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "Clear containers" << std::endl;
+	int_sort_std->clear();
+	int_sort_ft->clear();
+
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+}
+
+TEST_F(Test_Vector, Capacity_max_size) {
+	std::cout << "----- MAX SIZE -----" << std::endl;
+	std::cout << "std max_size: " << int_sort_std->max_size() << std::endl;
+	std::cout << " ft max_size: " << int_sort_ft->max_size() << std::endl;
+	EXPECT_EQ(int_sort_std->max_size(), int_sort_ft->max_size());
+}
+
+TEST_F(Test_Vector, Capacity_resize_reduce) {
+	std::cout << "----- RESIZE (reduce) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Downsize to 2" << std::endl;
+	int_sort_std->resize(2);
+	int_sort_ft->resize(2);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+}
+
+TEST_F(Test_Vector, Capacity_resize_incrase_default) {
+	std::cout << "----- RESIZE (incrase default) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Upsize to 11 with default type value for new elements"
+		<< std::endl;
+	int_sort_std->resize(11);
+	int_sort_ft->resize(11);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+}
+
+TEST_F(Test_Vector, Capacity_resize_incrase_fill) {
+	std::cout << "----- RESIZE (incrase fill) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Upsize to 10 with '7' value for new elements" << std::endl;
+	int_sort_std->resize(10, 7);
+	int_sort_ft->resize(10, 7);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+}
+
+TEST_F(Test_Vector, Capacity_capacity) {
+	std::cout << "----- CAPACITY -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_capacity(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Create empty containers" << std::endl;
+	std::vector<int>	ctnr_std;
+	ft::Vector<int>		ctnr_ft;
+
+	compare_content(ctnr_std, ctnr_ft);
+	compare_capacity(ctnr_std, ctnr_ft);
+
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
 }
 
 TEST_F(Test_Vector, Capacity_empty) {
@@ -209,53 +362,134 @@ TEST_F(Test_Vector, Capacity_reserve) {
 	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
 }
 
+TEST_F(Test_Vector, Element_access_operator_square_braskets) {
+	std::cout << "----- OPERATOR [] -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements((*int_sort_std)[1], (*int_sort_ft)[1], "[1]");
+	compare_elements((*int_sort_std)[3], (*int_sort_ft)[3], "[3]");
+	EXPECT_EQ((*int_sort_std)[1], (*int_sort_ft)[1]);
+	EXPECT_EQ((*int_sort_std)[3], (*int_sort_ft)[3]);
+}
+
+TEST_F(Test_Vector, Element_access_at) {
+	std::cout << "----- OPERATOR [] -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements(int_sort_std->at(4), int_sort_ft->at(4), "[4]");
+	std::cout << "Try to access out-of-range element, at(17)" << std::endl;
+	try { std::cout << "std: "; int_sort_std->at(17); }
+	catch (const std::out_of_range& e) { std::cout << e.what() << std::endl; }
+	try { std::cout << " ft: "; int_sort_ft->at(17); }
+	catch (const std::out_of_range& e) { std::cout << e.what() << std::endl; }
+	EXPECT_EQ(int_sort_std->at(4), int_sort_ft->at(4));
+}
+
+TEST_F(Test_Vector, Element_access_front) {
+	std::cout << "----- ELEMENT ACCESS FRONT -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements(int_sort_std->front(), int_sort_ft->front());
+	EXPECT_EQ(int_sort_std->front(), int_sort_ft->front());
+}
+
+TEST_F(Test_Vector, Element_access_back) {
+	std::cout << "----- ELEMENT ACCESS BACK -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements(int_sort_std->back(), int_sort_ft->back());
+	EXPECT_EQ(int_sort_std->back(), int_sort_ft->back());
+}
+
 TEST_F(Test_Vector, Modifiers_assign_range) {
 	std::cout << "----- ASSIGN (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " original");
 
-	std::vector<int>	cnt_std_second;
-	ft::Vector<int>		cnt_ft_second;
+	std::vector<int>	ctnr_std_second;
+	ft::Vector<int>		ctnr_ft_second;
 
 	std::cout << std::endl;
-	compare_size(cnt_std_second, cnt_ft_second, "_second before");
-	compare_capacity(cnt_std_second, cnt_ft_second, "_second before");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second before");
+	compare_capacity(ctnr_std_second, ctnr_ft_second, "_second before");
 
 	std::cout << std::endl;
 	std::cout << "Assign by range [++begin(), --end()) from original"
 		<< std::endl;
 
-	cnt_std_second.assign(++int_sort_std->begin(), --int_sort_std->end());
-	cnt_ft_second.assign(++int_sort_ft->begin(), --int_sort_ft->end());
+	ctnr_std_second.assign(++int_sort_std->begin(), --int_sort_std->end());
+	ctnr_ft_second.assign(++int_sort_ft->begin(), --int_sort_ft->end());
 
-	compare_content(cnt_std_second, cnt_ft_second, " assigned");
-	compare_size(cnt_std_second, cnt_ft_second, "_second after");
-	compare_capacity(cnt_std_second, cnt_ft_second, "_second after");
+	compare_content(ctnr_std_second, ctnr_ft_second, " assigned");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second after");
+	compare_capacity(ctnr_std_second, ctnr_ft_second, "_second after");
 
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
-	EXPECT_EQ(cnt_std_second.capacity(), cnt_ft_second.capacity());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
+	EXPECT_EQ(ctnr_std_second.capacity(), ctnr_ft_second.capacity());
 }
 
 TEST_F(Test_Vector, Modifiers_assign_fill) {
 	std::cout << "----- ASSIGN (fill) -----" << std::endl;
-	std::vector<int>	cnt_std;
-	ft::Vector<int>		cnt_ft;
-	compare_size(cnt_std, cnt_ft, " before");
-	compare_capacity(cnt_std, cnt_ft, " before");
+	std::vector<int>	ctnr_std;
+	ft::Vector<int>		ctnr_ft;
+	compare_size(ctnr_std, ctnr_ft, " before");
+	compare_capacity(ctnr_std, ctnr_ft, " before");
 
 	std::cout << std::endl;
 	std::cout << "Assign fill" << std::endl;
 
-	cnt_std.assign(5, 7);
-	cnt_ft.assign(5, 7);
+	ctnr_std.assign(5, 7);
+	ctnr_ft.assign(5, 7);
 
-	compare_content(cnt_std, cnt_ft, " assigned");
-	compare_size(cnt_std, cnt_ft, " after");
-	compare_capacity(cnt_std, cnt_ft, " after");
+	compare_content(ctnr_std, ctnr_ft, " assigned");
+	compare_size(ctnr_std, ctnr_ft, " after");
+	compare_capacity(ctnr_std, ctnr_ft, " after");
 
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
-	EXPECT_EQ(cnt_std.capacity(), cnt_ft.capacity());
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+	EXPECT_EQ(ctnr_std.capacity(), ctnr_ft.capacity());
+}
+
+TEST_F(Test_Vector, Modifiers_push_back) {
+	std::cout << "----- PUSH_BACK -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "push_back(7)" << std::endl;
+
+	int_sort_std->push_back(7);
+	int_sort_ft->push_back(7);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+}
+
+TEST_F(Test_Vector, Modifiers_pop_back) {
+	std::cout << "----- POP_BACK -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	int_sort_std->pop_back();
+	int_sort_ft->pop_back();
+
+	std::cout << std::endl;
+	std::cout << "pop_back" << std::endl;
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
 }
 
 TEST_F(Test_Vector, Modifiers_insert_single_element) {
@@ -283,25 +517,25 @@ TEST_F(Test_Vector, Modifiers_insert_single_element) {
 	}
 	{
 		std::cout << "----- INSERT (single element) -----" << std::endl;
-		std::vector<int>	cnt_std;
-		ft::Vector<int>		cnt_ft;
-		compare_size(cnt_std, cnt_ft, " before");
-		compare_capacity(cnt_std, cnt_ft, " before");
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
-		EXPECT_EQ(cnt_std.capacity(), cnt_ft.capacity());
+		std::vector<int>	ctnr_std;
+		ft::Vector<int>		ctnr_ft;
+		compare_size(ctnr_std, ctnr_ft, " before");
+		compare_capacity(ctnr_std, ctnr_ft, " before");
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+		EXPECT_EQ(ctnr_std.capacity(), ctnr_ft.capacity());
 
 		std::cout << std::endl;
 		std::cout << "Insert '8' before end() element" << std::endl;
 
-		cnt_std.insert(cnt_std.begin(), 8);
-		cnt_ft.insert(cnt_ft.begin(), 8);
+		ctnr_std.insert(ctnr_std.begin(), 8);
+		ctnr_ft.insert(ctnr_ft.begin(), 8);
 
-		compare_content(cnt_std, cnt_ft, " after");
-		compare_size(cnt_std, cnt_ft, " after");
-		compare_capacity(cnt_std, cnt_ft, " after");
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
-		EXPECT_EQ(cnt_std.capacity(), cnt_ft.capacity());
+		compare_content(ctnr_std, ctnr_ft, " after");
+		compare_size(ctnr_std, ctnr_ft, " after");
+		compare_capacity(ctnr_std, ctnr_ft, " after");
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+		EXPECT_EQ(ctnr_std.capacity(), ctnr_ft.capacity());
 	}
 }
 
@@ -358,31 +592,428 @@ TEST_F(Test_Vector, Modifiers_insert_range) {
 	}
 	{
 		std::cout << "----- INSERT (range) -----" << std::endl;
-		std::vector<int>	cnt_std(8, 7);
-		ft::Vector<int>		cnt_ft(8, 7);
-		compare_content(cnt_std, cnt_ft, "_first before");
-		compare_size(cnt_std, cnt_ft, "_first before");
-		compare_capacity(cnt_std, cnt_ft, "_first before");
+		std::vector<int>	ctnr_std(8, 7);
+		ft::Vector<int>		ctnr_ft(8, 7);
+		compare_content(ctnr_std, ctnr_ft, "_first before");
+		compare_size(ctnr_std, ctnr_ft, "_first before");
+		compare_capacity(ctnr_std, ctnr_ft, "_first before");
 		std::cout << std::endl;
 		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
-		EXPECT_EQ(cnt_std.capacity(), cnt_ft.capacity());
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+		EXPECT_EQ(ctnr_std.capacity(), ctnr_ft.capacity());
 
 		std::cout << std::endl;
 		std::cout << "Insert to first before ++begin() element "
 			<< "from second range [++begin(), --end())" << std::endl;
 
-		cnt_std.insert(++cnt_std.begin(),
+		ctnr_std.insert(++ctnr_std.begin(),
 						++int_unsort_std->begin(), --int_unsort_std->end());
-		cnt_ft.insert(++cnt_ft.begin(),
+		ctnr_ft.insert(++ctnr_ft.begin(),
 						++int_unsort_ft->begin(), --int_unsort_ft->end());
 
-		compare_content(cnt_std, cnt_ft, "_first after");
-		compare_size(cnt_std, cnt_ft, "_first after");
-		compare_capacity(cnt_std, cnt_ft, "_first after");
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
-		EXPECT_EQ(cnt_std.capacity(), cnt_ft.capacity());
+		compare_content(ctnr_std, ctnr_ft, "_first after");
+		compare_size(ctnr_std, ctnr_ft, "_first after");
+		compare_capacity(ctnr_std, ctnr_ft, "_first after");
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+		EXPECT_EQ(ctnr_std.capacity(), ctnr_ft.capacity());
 	}
+}
+
+TEST_F(Test_Vector, Modifiers_erase_position) {
+	std::cout << "----- ERASE (position) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::vector<int>::iterator it_std;
+	ft::Vector<int>::iterator it_ft;
+	it_std = int_sort_std->erase(int_sort_std->begin());
+	it_ft = int_sort_ft->erase(int_sort_ft->begin());
+
+	std::cout << std::endl;
+	std::cout << "Erase begin() element" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	std::cout << std::endl;
+	std::cout << "Compare iterators" << std::endl;
+	compare_iterators(it_std, it_ft);
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(*it_std, *it_ft);
+}
+
+TEST_F(Test_Vector, Modifiers_erase_range) {
+	std::cout << "----- ERASE (position) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::vector<int>::iterator it_std;
+	ft::Vector<int>::iterator it_ft;
+	it_std = int_sort_std->erase(++int_sort_std->begin(),
+			--int_sort_std->end());
+	it_ft = int_sort_ft->erase(++int_sort_ft->begin(), --int_sort_ft->end());
+
+	std::cout << std::endl;
+	std::cout << "Erase range [++begin(), --end())" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	std::cout << std::endl;
+	std::cout << "Compare iterators" << std::endl;
+	compare_iterators(it_std, it_ft);
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(*it_std, *it_ft);
+}
+
+TEST_F(Test_Vector, Modifiers_swap) {
+	std::cout << "----- SWAP -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, "_first before");
+	compare_size(*int_sort_std, *int_sort_ft, "_first before");
+	compare_capacity(*int_sort_std, *int_sort_ft, "_first before");
+	std::cout << std::endl;
+	compare_content(*int_unsort_std, *int_unsort_ft, "_second before");
+	compare_size(*int_unsort_std, *int_unsort_ft, "_second before");
+	compare_capacity(*int_unsort_std, *int_unsort_ft, "_second before");
+
+	std::vector<int>::iterator it_std_first = ++int_sort_std->begin();
+	std::vector<int>::iterator it_std_second = ++int_unsort_std->begin();
+	ft::Vector<int>::iterator it_ft_first = ++int_sort_ft->begin();
+	ft::Vector<int>::iterator it_ft_second = ++int_unsort_ft->begin();
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
+
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+	EXPECT_EQ(int_unsort_std->capacity(), int_unsort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Swap first and second objects" << std::endl;
+
+	int_sort_std->swap(*int_unsort_std);
+	int_sort_ft->swap(*int_unsort_ft);
+
+	compare_content(*int_sort_std, *int_sort_ft, "_first after");
+	compare_size(*int_sort_std, *int_sort_ft, "_first after");
+	compare_capacity(*int_sort_std, *int_sort_ft, "_first after");
+	std::cout << std::endl;
+	compare_content(*int_unsort_std, *int_unsort_ft, "_second after");
+	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
+	compare_capacity(*int_unsort_std, *int_unsort_ft, "_second after");
+	std::cout << std::endl;
+	std::cout << "Check iterators (should be the same)" << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
+
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+	EXPECT_EQ(int_unsort_std->capacity(), int_unsort_ft->capacity());
+}
+
+TEST_F(Test_Vector, Modifiers_clear) {
+	std::cout << "----- CLEAR -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	compare_capacity(*int_sort_std, *int_sort_ft, " before");
+
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Clear containers" << std::endl;
+	int_sort_std->clear();
+	int_sort_ft->clear();
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	compare_capacity(*int_sort_std, *int_sort_ft, " after");
+
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+}
+
+TEST_F(Test_Vector, relational_operators_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (*int_sort_std == *int_unsort_std) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (*int_sort_ft == *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std == *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft == *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (*int_sort_std == ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (*int_sort_ft == ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std == ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft == ctnr_ft_cpy), 1);
+	}
+}
+
+TEST_F(Test_Vector, relational_operators_not_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (*int_sort_std != *int_unsort_std) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft != *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std != *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft != *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (*int_sort_std != ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft != ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std != ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft != ctnr_ft_cpy), 0);
+	}
+}
+
+TEST_F(Test_Vector, relational_operators_less) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (*int_sort_std < *int_unsort_std) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (*int_sort_ft < *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std < *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft < *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (*int_sort_std < ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (*int_sort_ft < ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std < ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft < ctnr_ft_cpy), 0);
+	}
+}
+
+TEST_F(Test_Vector, relational_operators_less_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (*int_sort_std <= *int_unsort_std) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft <= *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std <= *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft <= *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (*int_sort_std <= ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft <= ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std <= ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft <= ctnr_ft_cpy), 1);
+	}
+}
+
+TEST_F(Test_Vector, relational_operators_more) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (*int_sort_std > *int_unsort_std) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std > *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft > *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (*int_sort_std > ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std > ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft > ctnr_ft_cpy), 0);
+	}
+}
+
+TEST_F(Test_Vector, relational_operators_more_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first >= std_second: " << std::boolalpha
+			<< (*int_sort_std > *int_unsort_std) << std::endl;
+		std::cout << " ft_first >=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std >= *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft >= *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::vector<int>	ctnr_std_cpy(*int_sort_std);
+		ft::Vector<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first >= std_second: " << std::boolalpha
+			<< (*int_sort_std >= ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first >=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft >= ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std >= ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft >= ctnr_ft_cpy), 1);
+	}
+}
+
+TEST_F(Test_Vector, Non_member_overload_swap) {
+	std::cout << "----- SWAP -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, "_first before");
+	compare_size(*int_sort_std, *int_sort_ft, "_first before");
+	compare_capacity(*int_sort_std, *int_sort_ft, "_first before");
+	std::cout << std::endl;
+	compare_content(*int_unsort_std, *int_unsort_ft, "_second before");
+	compare_size(*int_unsort_std, *int_unsort_ft, "_second before");
+	compare_capacity(*int_unsort_std, *int_unsort_ft, "_second before");
+
+	std::vector<int>::iterator it_std_first = ++int_sort_std->begin();
+	std::vector<int>::iterator it_std_second = ++int_unsort_std->begin();
+	ft::Vector<int>::iterator it_ft_first = ++int_sort_ft->begin();
+	ft::Vector<int>::iterator it_ft_second = ++int_unsort_ft->begin();
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
+
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+	EXPECT_EQ(int_unsort_std->capacity(), int_unsort_ft->capacity());
+
+	std::cout << std::endl;
+	std::cout << "Swap first and second objects" << std::endl;
+
+	swap(*int_sort_std, *int_unsort_std);
+	swap(*int_sort_ft, *int_unsort_ft);
+
+	compare_content(*int_sort_std, *int_sort_ft, "_first after");
+	compare_size(*int_sort_std, *int_sort_ft, "_first after");
+	compare_capacity(*int_sort_std, *int_sort_ft, "_first after");
+	std::cout << std::endl;
+	compare_content(*int_unsort_std, *int_unsort_ft, "_second after");
+	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
+	compare_capacity(*int_unsort_std, *int_unsort_ft, "_second after");
+	std::cout << std::endl;
+	std::cout << "Check iterators (should be the same)" << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
+
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
+	EXPECT_EQ(int_sort_std->capacity(), int_sort_ft->capacity());
+	EXPECT_EQ(int_unsort_std->capacity(), int_unsort_ft->capacity());
 }

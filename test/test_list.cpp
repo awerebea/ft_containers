@@ -26,14 +26,14 @@ protected:
 		for (int i = 0; i < 5; ++i) {
 			int_sort_ft->push_back(i + 1);
 		}
-		int unsort_int_array[] = { 8, 0, 6, 9, 7 };
+		int unsort_int_arr[] = { 8, 0, 6, 9, 7 };
 		int_unsort_std = new std::list<int>;
 		for (int i = 0; i < 5; ++i) {
-			int_unsort_std->push_back(unsort_int_array[i]);
+			int_unsort_std->push_back(unsort_int_arr[i]);
 		}
 		int_unsort_ft = new ft::List<int>;
 		for (int i = 0; i < 5; ++i) {
-			int_unsort_ft->push_back(unsort_int_array[i]);
+			int_unsort_ft->push_back(unsort_int_arr[i]);
 		}
 	}
 	void TearDown() {
@@ -51,115 +51,108 @@ protected:
 };
 
 TEST_F(Test_List, Constructor_default) {
-	std::list<int> cnt_std;
-	ft::List<int> cnt_ft;
+	std::list<int> ctnr_std;
+	ft::List<int> ctnr_ft;
 	std::cout << "----- CONSTRUCTOR (default) -----" << std::endl;
-	compare_size(cnt_std, cnt_ft);
+	compare_size(ctnr_std, ctnr_ft);
 
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 TEST_F(Test_List, Constructor_fill) {
 	{
-		std::list<int> cnt_std(2);
-		ft::List<int> cnt_ft(2);
+		std::list<int> ctnr_std(2);
+		ft::List<int> ctnr_ft(2);
 
 		std::cout << "----- CONSTRUCTOR (fill) -----" << std::endl;
-		compare_content(cnt_std, cnt_ft);
+		compare_content(ctnr_std, ctnr_ft);
 
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 	}
 	{
-		std::list<std::string> cnt_std(2, "test");
-		ft::List<std::string> cnt_ft(2, "test");
+		std::list<std::string> ctnr_std(2, "test");
+		ft::List<std::string> ctnr_ft(2, "test");
 
 		std::cout << "----- CONSTRUCTOR (fill) -----" << std::endl;
-		compare_content(cnt_std, cnt_ft);
+		compare_content(ctnr_std, ctnr_ft);
 
-		EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-		EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+		EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+		EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 	}
 }
 
 TEST_F(Test_List, Constructor_range) {
-	std::list<int>	cnt_std_cpy(++(*int_sort_std).begin(),
+	std::list<int>	ctnr_std_cpy(++(*int_sort_std).begin(),
 			--(*int_sort_std).end());
-	ft::List<int>	cnt_ft_cpy(++(*int_sort_ft).begin(),
+	ft::List<int>	ctnr_ft_cpy(++(*int_sort_ft).begin(),
 			--(*int_sort_ft).end());
 
 	std::cout << "----- CONSTRUCTOR (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " original");
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " ranged");
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " ranged");
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-	EXPECT_EQ(cnt_std_cpy.size(), cnt_ft_cpy.size());
+	EXPECT_EQ(ctnr_std_cpy.size(), ctnr_ft_cpy.size());
 }
 
-TEST_F(Test_List, Constructor_cpy) {
-	std::list<int>	cnt_std_cpy(*int_unsort_std);
-	ft::List<int>	cnt_ft_cpy(*int_unsort_ft);
+TEST_F(Test_List, Constructor_copy) {
+	std::list<int>	ctnr_std_cpy(*int_unsort_std);
+	ft::List<int>	ctnr_ft_cpy(*int_unsort_ft);
 
 	std::cout << "----- CONSTRUCTOR (copy) -----" << std::endl;
 	compare_content(*int_unsort_std, *int_unsort_ft, " original");
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " copy");
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
-	EXPECT_EQ(int_unsort_std->size(), cnt_std_cpy.size());
-	EXPECT_EQ(int_unsort_ft->size(), cnt_ft_cpy.size());
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " copy");
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
+	EXPECT_EQ(int_unsort_std->size(), ctnr_std_cpy.size());
+	EXPECT_EQ(int_unsort_ft->size(), ctnr_ft_cpy.size());
 }
 
 TEST_F(Test_List, Destructor) {
-	std::list<int>	* cnt_std = new std::list<int>(5, 5);
-	ft::List<int>	* cnt_ft = new ft::List<int>(5, 5);
+	std::list<int>	* ctnr_std = new std::list<int>(5, 5);
+	ft::List<int>	* ctnr_ft = new ft::List<int>(5, 5);
 
 	std::cout << "----- DESTRUCTOR -----" << std::endl;
-	delete(cnt_std);
-	delete(cnt_ft);
+	delete(ctnr_std);
+	delete(ctnr_ft);
 }
 
 TEST_F(Test_List, Operator_assign) {
-	std::list<int>	cnt_std_cpy;
-	ft::List<int>	cnt_ft_cpy;
+	std::list<int>	ctnr_std_cpy;
+	ft::List<int>	ctnr_ft_cpy;
 
-	cnt_std_cpy = *int_sort_std;
-	cnt_ft_cpy = *int_sort_ft;
+	ctnr_std_cpy = *int_sort_std;
+	ctnr_ft_cpy = *int_sort_ft;
 
 	std::cout << "----- OPERATOR =  -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " original");
-	compare_content(cnt_std_cpy, cnt_ft_cpy, " copy");
-	EXPECT_EQ(*cnt_std_cpy.begin(), *cnt_ft_cpy.begin());
-	EXPECT_EQ(*(--cnt_std_cpy.end()), *(--cnt_ft_cpy.end()));
-	EXPECT_EQ(int_sort_std->size(), cnt_std_cpy.size());
-	EXPECT_EQ(int_sort_ft->size(), cnt_ft_cpy.size());
+	compare_content(ctnr_std_cpy, ctnr_ft_cpy, " copy");
+	EXPECT_EQ(*ctnr_std_cpy.begin(), *ctnr_ft_cpy.begin());
+	EXPECT_EQ(*(--ctnr_std_cpy.end()), *(--ctnr_ft_cpy.end()));
+	EXPECT_EQ(int_sort_std->size(), ctnr_std_cpy.size());
+	EXPECT_EQ(int_sort_ft->size(), ctnr_ft_cpy.size());
 }
 
 TEST_F(Test_List, Iterators_begin) {
 	std::cout << "----- ITERATOR BEGIN -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
-	std::cout << "std   begin: " << *int_sort_std->begin() << std::endl;
-	std::cout << "std ++begin: " << *(++int_sort_std->begin())
-		<< std::endl;
-	std::cout << " ft   begin: " << *int_sort_ft->begin() << std::endl;
-	std::cout << " ft ++begin: " << *(++int_sort_ft->begin()) << std::endl;
+	compare_iterators(int_sort_std->begin(), int_sort_ft->begin(), "   begin");
+	compare_iterators(++int_sort_std->begin(), ++int_sort_ft->begin(),
+		" ++begin");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*(++int_sort_std->begin()), *(++int_sort_ft->begin()));
 }
 
 TEST_F(Test_List, Iterators_end) {
 	std::cout << "----- ITERATOR END -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft);
 	std::list<int>::iterator it_std = --int_sort_std->end();
-
-	std::cout << "std    --end:  " << *it_std << std::endl;
-	std::cout << "std --(--end): " << *(--it_std) << std::endl;
-
 	ft::List<int>::iterator it_ft = --int_sort_ft->end();
-	std::cout << " ft    --end:  " << *it_ft << std::endl;
-	std::cout << " ft --(--end): " << *(--it_ft) << std::endl;
-
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(it_std, it_ft, "    --end");
+	compare_iterators(--it_std, --it_ft, " --(--end)");
 	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 	EXPECT_EQ(*(--it_std), *(--it_ft));
 }
@@ -167,85 +160,140 @@ TEST_F(Test_List, Iterators_end) {
 TEST_F(Test_List, Iterators_rbegin) {
 	std::cout << "----- ITERATOR RBEGIN -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
-	std::cout << "std   rbegin: " << *int_sort_std->rbegin() << std::endl;
-	std::cout << "std ++rbegin: " << *(++int_sort_std->rbegin())
-		<< std::endl;
-	std::cout << " ft   rbegin: " << *int_sort_ft->rbegin() << std::endl;
-	std::cout << " ft ++rbegin: " << *(++int_sort_ft->rbegin())
-		<< std::endl;
+	compare_iterators(int_sort_std->rbegin(), int_sort_ft->rbegin(),
+		"   rbegin");
+	compare_iterators(++int_sort_std->rbegin(), ++int_sort_ft->rbegin(),
+		" ++rbegin");
 	EXPECT_EQ(*int_sort_std->rbegin(), *int_sort_ft->rbegin());
-	EXPECT_EQ(*(++int_sort_std->rbegin()),
-			*(++int_sort_ft->rbegin()));
+	EXPECT_EQ(*(++int_sort_std->rbegin()), *(++int_sort_ft->rbegin()));
 }
 
 TEST_F(Test_List, Iterators_rend) {
 	std::cout << "----- ITERATOR REND -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft);
 	std::list<int>::reverse_iterator it_std = --int_sort_std->rend();
-
-	std::cout << "std    --rend:  " << *it_std << std::endl;
-	std::cout << "std --(--rend): " << *(--it_std) << std::endl;
-
 	ft::List<int>::reverse_iterator it_ft = --int_sort_ft->rend();
-	std::cout << " ft    --rend:  " << *it_ft << std::endl;
-	std::cout << " ft --(--rend): " << *(--it_ft) << std::endl;
-
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_iterators(it_std, it_ft, "    --rend");
+	compare_iterators(--it_std, --it_ft, " --(--rend)");
 	EXPECT_EQ(*(--int_sort_std->rend()), *(--int_sort_ft->rend()));
 	EXPECT_EQ(*(--it_std), *(--it_ft));
 }
 
-TEST_F(Test_List, Modifiers_clear) {
-	std::cout << "----- CLEAR -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft, " before");
-	compare_size(*int_sort_std, *int_sort_ft, " before");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+TEST_F(Test_List, Capacity_empty) {
+	std::cout << "----- EMPTY -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
+		<< std::endl;
+	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
+		<< std::endl;
 
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
+
+	std::cout << std::endl;
+	std::cout << "Clear containers" << std::endl;
 	int_sort_std->clear();
 	int_sort_ft->clear();
 
-	std::cout << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft, " after");
-	compare_size(*int_sort_std, *int_sort_ft, " after");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
+		<< std::endl;
+	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
+		<< std::endl;
+
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
+}
+
+TEST_F(Test_List, Capacity_size) {
+	std::cout << "----- SIZE -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_erase_position) {
-	std::cout << "----- ERASE (position) -----" << std::endl;
+TEST_F(Test_List, Capacity_max_size) {
+	std::cout << "----- MAX SIZE -----" << std::endl;
+	std::cout << "std max_size: " << int_sort_std->max_size() << std::endl;
+	std::cout << " ft max_size: " << int_sort_ft->max_size() << std::endl;
+	EXPECT_EQ(int_sort_std->max_size(), int_sort_ft->max_size());
+}
+
+TEST_F(Test_List, Element_access_front) {
+	std::cout << "----- ELEMENT ACCESS FRONT -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements(int_sort_std->front(), int_sort_ft->front());
+	EXPECT_EQ(int_sort_std->front(), int_sort_ft->front());
+}
+
+TEST_F(Test_List, Element_access_back) {
+	std::cout << "----- ELEMENT ACCESS BACK -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft);
+	compare_elements(int_sort_std->back(), int_sort_ft->back());
+	EXPECT_EQ(int_sort_std->back(), int_sort_ft->back());
+}
+
+TEST_F(Test_List, Modifiers_assign_range) {
+	std::cout << "----- ASSIGN (range) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " original");
+
+	std::list<int>	ctnr_std_second;
+	ft::List<int>	ctnr_ft_second;
+
+	std::cout << std::endl;
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second before");
+	std::cout << std::endl;
+	std::cout << "Assign by range [++begin(), --end()) from original"
+		<< std::endl;
+
+	ctnr_std_second.assign(++int_sort_std->begin(), --int_sort_std->end());
+	ctnr_ft_second.assign(++int_sort_ft->begin(), --int_sort_ft->end());
+
+	compare_content(ctnr_std_second, ctnr_ft_second, " assigned");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second after");
+
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
+}
+
+TEST_F(Test_List, Modifiers_assign_fill) {
+	std::cout << "----- ASSIGN (fill) -----" << std::endl;
+	std::list<int>	ctnr_std;
+	ft::List<int>	ctnr_ft;
+	compare_size(ctnr_std, ctnr_ft, " before");
+
+	std::cout << std::endl;
+	std::cout << "Assign fill" << std::endl;
+
+	ctnr_std.assign(5, 7);
+	ctnr_ft.assign(5, 7);
+
+	compare_content(ctnr_std, ctnr_ft, " assigned");
+	compare_size(ctnr_std, ctnr_ft, " after");
+
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+}
+
+TEST_F(Test_List, Modifiers_push_front) {
+	std::cout << "----- PUSH_FRONT -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
-	int_sort_std->erase(int_sort_std->begin());
-	int_sort_ft->erase(int_sort_ft->begin());
-
 	std::cout << std::endl;
-	std::cout << "Erase begin() element" << std::endl;
+	std::cout << "push_front(7)" << std::endl;
+
+	int_sort_std->push_front(7);
+	int_sort_ft->push_front(7);
+
 	compare_content(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-}
-
-TEST_F(Test_List, Modifiers_erase_range) {
-	std::cout << "----- ERASE (position) -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft, " before");
-	compare_size(*int_sort_std, *int_sort_ft, " before");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-
-	int_sort_std->erase(++int_sort_std->begin(),
-			--int_sort_std->end());
-	int_sort_ft->erase(++int_sort_ft->begin(),
-			--int_sort_ft->end());
-
-	std::cout << std::endl;
-	std::cout << "Erase range [++begin(), --end())" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft, " after");
-	compare_size(*int_sort_std, *int_sort_ft, " after");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
@@ -266,6 +314,25 @@ TEST_F(Test_List, Modifiers_pop_front) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
+TEST_F(Test_List, Modifiers_push_back) {
+	std::cout << "----- PUSH_BACK -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "push_back(7)" << std::endl;
+
+	int_sort_std->push_back(7);
+	int_sort_ft->push_back(7);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+}
+
 TEST_F(Test_List, Modifiers_pop_back) {
 	std::cout << "----- POP_BACK -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
@@ -281,79 +348,6 @@ TEST_F(Test_List, Modifiers_pop_back) {
 	compare_size(*int_sort_std, *int_sort_ft, " after");
 	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-}
-
-TEST_F(Test_List, Modifiers_element_access_front) {
-	std::cout << "----- FRONT -----" << std::endl;
-	compare_content(*int_unsort_std, *int_unsort_ft);
-	std::cout << "std front: " << int_unsort_std->front() << std::endl;
-	std::cout << " ft front: " << int_unsort_ft->front() << std::endl;
-	EXPECT_EQ(int_unsort_std->front(), int_unsort_ft->front());
-
-	std::cout << "Modify data in element by increment reference" << std::endl;
-	++int_unsort_std->front();
-	++int_unsort_ft->front();
-	compare_content(*int_unsort_std, *int_unsort_ft);
-	EXPECT_EQ(int_unsort_std->front(), int_unsort_ft->front());
-}
-
-TEST_F(Test_List, Modifiers_element_access_back) {
-	std::cout << "----- BACK -----" << std::endl;
-	compare_content(*int_unsort_std, *int_unsort_ft);
-	std::cout << "std back: " << int_unsort_std->back() << std::endl;
-	std::cout << " ft back: " << int_unsort_ft->back() << std::endl;
-	EXPECT_EQ(int_unsort_std->back(), int_unsort_ft->back());
-
-	std::cout << std::endl;
-	std::cout << "Modify data in element by increment reference" << std::endl;
-	++int_unsort_std->back();
-	++int_unsort_ft->back();
-	compare_content(*int_unsort_std, *int_unsort_ft);
-	EXPECT_EQ(int_unsort_std->back(), int_unsort_ft->back());
-}
-
-TEST_F(Test_List, Modifiers_assign_range) {
-	std::cout << "----- ASSIGN (range) -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft, " original");
-
-	std::list<int>	cnt_std_second;
-	ft::List<int>	cnt_ft_second;
-
-	std::cout << std::endl;
-	compare_size(cnt_std_second, cnt_ft_second, "_second before");
-	std::cout << std::endl;
-	std::cout << "Assign by range [++begin(), --end()) from original"
-		<< std::endl;
-
-	cnt_std_second.assign(++int_sort_std->begin(),
-												--int_sort_std->end());
-	cnt_ft_second.assign(++int_sort_ft->begin(),
-												--int_sort_ft->end());
-
-	compare_content(cnt_std_second, cnt_ft_second, " assigned");
-	compare_size(cnt_std_second, cnt_ft_second, "_second after");
-
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
-}
-
-TEST_F(Test_List, Modifiers_assign_fill) {
-	std::cout << "----- ASSIGN (fill) -----" << std::endl;
-	std::list<int>	cnt_std;
-	ft::List<int>	cnt_ft;
-	compare_size(cnt_std, cnt_ft, " before");
-
-	std::cout << std::endl;
-	std::cout << "Assign fill" << std::endl;
-
-	cnt_std.assign(5, 7);
-	cnt_ft.assign(5, 7);
-
-	compare_content(cnt_std, cnt_ft, " assigned");
-	compare_size(cnt_std, cnt_ft, " after");
-
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
 }
 
 TEST_F(Test_List, Modifiers_insert_single_element) {
@@ -409,9 +403,9 @@ TEST_F(Test_List, Modifiers_insert_range) {
 		<< "from second range [++begin(), --end())" << std::endl;
 
 	int_sort_std->insert(++int_sort_std->begin(),
-				++int_unsort_std->begin(), --int_unsort_std->end());
+			++int_unsort_std->begin(), --int_unsort_std->end());
 	int_sort_ft->insert(++int_sort_ft->begin(),
-				++int_unsort_ft->begin(), --int_unsort_ft->end());
+			++int_unsort_ft->begin(), --int_unsort_ft->end());
 
 	compare_content(*int_sort_std, *int_sort_ft, "_first after");
 	compare_size(*int_sort_std, *int_sort_ft, "_first after");
@@ -420,6 +414,56 @@ TEST_F(Test_List, Modifiers_insert_range) {
 	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+}
+
+TEST_F(Test_List, Modifiers_erase_position) {
+	std::cout << "----- ERASE (position) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::list<int>::iterator it_std;
+	ft::List<int>::iterator it_ft;
+	it_std = int_sort_std->erase(int_sort_std->begin());
+	it_ft = int_sort_ft->erase(int_sort_ft->begin());
+
+	std::cout << std::endl;
+	std::cout << "Erase begin() element" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	std::cout << std::endl;
+	std::cout << "Compare iterators" << std::endl;
+	compare_iterators(it_std, it_ft);
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(*it_std, *it_ft);
+}
+
+TEST_F(Test_List, Modifiers_erase_range) {
+	std::cout << "----- ERASE (position) -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::list<int>::iterator it_std;
+	ft::List<int>::iterator it_ft;
+	it_std = int_sort_std->erase(++int_sort_std->begin(),
+			--int_sort_std->end());
+	it_ft = int_sort_ft->erase(++int_sort_ft->begin(),
+			--int_sort_ft->end());
+
+	std::cout << std::endl;
+	std::cout << "Erase range [++begin(), --end())" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	std::cout << std::endl;
+	std::cout << "Compare iterators" << std::endl;
+	compare_iterators(it_std, it_ft);
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+	EXPECT_EQ(*it_std, *it_ft);
 }
 
 TEST_F(Test_List, Modifiers_swap) {
@@ -434,10 +478,8 @@ TEST_F(Test_List, Modifiers_swap) {
 	ft::List<int>::iterator it_ft_second = ++int_unsort_ft->begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -450,15 +492,13 @@ TEST_F(Test_List, Modifiers_swap) {
 	int_sort_std->swap(*int_unsort_std);
 	int_sort_ft->swap(*int_unsort_ft);
 
-	compare_content(*int_sort_std, *int_sort_ft, "_first after");
+	compare_content(*int_sort_std, *int_sort_ft, "_first  after");
 	std::cout << std::endl;
 	compare_content(*int_unsort_std, *int_unsort_ft, "_second after");
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -466,11 +506,10 @@ TEST_F(Test_List, Modifiers_swap) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_resize_reduce) {
+TEST_F(Test_List, Capacity_resize_reduce) {
 	std::cout << "----- RESIZE (reduce) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
@@ -480,13 +519,12 @@ TEST_F(Test_List, Modifiers_resize_reduce) {
 	int_sort_ft->resize(2);
 
 	compare_content(*int_sort_std, *int_sort_ft, " after");
-	compare_size(*int_sort_std, *int_sort_ft, " after");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_resize_incrase_default) {
+TEST_F(Test_List, Capacity_resize_incrase_default) {
 	std::cout << "----- RESIZE (incrase default) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -494,10 +532,10 @@ TEST_F(Test_List, Modifiers_resize_incrase_default) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
 	std::cout << std::endl;
-	std::cout << "Upsize to 8 with default type value for new elements"
+	std::cout << "Upsize to 11 with default type value for new elements"
 		<< std::endl;
-	int_sort_std->resize(8);
-	int_sort_ft->resize(8);
+	int_sort_std->resize(11);
+	int_sort_ft->resize(11);
 
 	compare_content(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
@@ -505,7 +543,7 @@ TEST_F(Test_List, Modifiers_resize_incrase_default) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_resize_incrase_fill) {
+TEST_F(Test_List, Capacity_resize_incrase_fill) {
 	std::cout << "----- RESIZE (incrase fill) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -513,10 +551,27 @@ TEST_F(Test_List, Modifiers_resize_incrase_fill) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
 	std::cout << std::endl;
-	std::cout << "Upsize to 8 with '7' value for new elements" << std::endl;
-	int_sort_std->resize(8, 7);
-	int_sort_ft->resize(8, 7);
+	std::cout << "Upsize to 10 with '7' value for new elements" << std::endl;
+	int_sort_std->resize(10, 7);
+	int_sort_ft->resize(10, 7);
 
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+}
+
+TEST_F(Test_List, Modifiers_clear) {
+	std::cout << "----- CLEAR -----" << std::endl;
+	compare_content(*int_sort_std, *int_sort_ft, " before");
+	compare_size(*int_sort_std, *int_sort_ft, " before");
+	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	int_sort_std->clear();
+	int_sort_ft->clear();
+
+	std::cout << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
@@ -530,13 +585,6 @@ TEST_F(Test_List, Operations_splice_entire_list) {
 	std::cout << std::endl;
 	compare_content(*int_unsort_std, *int_unsort_ft, "_second before");
 	compare_size(*int_unsort_std, *int_unsort_ft, "_second before");
-	std::cout << std::endl;
-	std::cout << "std_second before:"; print_container(*int_unsort_std);
-	std::cout << " ft_second before:"; print_container(*int_unsort_ft);
-	std::cout << "std_second size before: " << int_unsort_std->size()
-		<< std::endl;
-	std::cout << " ft_second size before: " << int_unsort_ft->size()
-		<< std::endl;
 
 	std::list<int>::iterator it_std_first = ++int_sort_std->begin();
 	std::list<int>::iterator it_std_second = ++int_unsort_std->begin();
@@ -544,10 +592,8 @@ TEST_F(Test_List, Operations_splice_entire_list) {
 	ft::List<int>::iterator it_ft_second = ++int_unsort_ft->begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -569,10 +615,8 @@ TEST_F(Test_List, Operations_splice_entire_list) {
 	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -581,6 +625,7 @@ TEST_F(Test_List, Operations_splice_entire_list) {
 }
 
 TEST_F(Test_List, Operations_splice_single_element) {
+	std::cout << "----- SPLICE (single element) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
 	std::cout << std::endl;
@@ -593,10 +638,8 @@ TEST_F(Test_List, Operations_splice_single_element) {
 	ft::List<int>::iterator it_ft_second = ++int_unsort_ft->begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -619,10 +662,8 @@ TEST_F(Test_List, Operations_splice_single_element) {
 	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -644,10 +685,8 @@ TEST_F(Test_List, Operations_splice_range) {
 	ft::List<int>::iterator it_ft_second = ++int_unsort_ft->begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -672,10 +711,8 @@ TEST_F(Test_List, Operations_splice_range) {
 	compare_size(*int_unsort_std, *int_unsort_ft, "_second after");
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -727,52 +764,52 @@ TEST_F(Test_List, Operations_remove_if) {
 
 TEST_F(Test_List, Operations_unique_no_args_sorted) {
 	std::cout << "----- UNIQUE (no arguments sorted) -----" << std::endl;
-	std::list<int>	cnt_std;
-	ft::List<int>	cnt_ft;
+	std::list<int>	ctnr_std;
+	ft::List<int>	ctnr_ft;
 
-	int int_array[] = { 1, 1, 2, 3, 3, 3, 4, 4, 5};
-	for (int i = 0; i < 9; ++i) { cnt_std.push_back(int_array[i]); }
-	for (int i = 0; i < 9; ++i) { cnt_ft.push_back(int_array[i]); }
+	int int_arr[] = { 1, 1, 2, 3, 3, 3, 4, 4, 5};
+	for (int i = 0; i < 9; ++i) { ctnr_std.push_back(int_arr[i]); }
+	for (int i = 0; i < 9; ++i) { ctnr_ft.push_back(int_arr[i]); }
 
-	compare_content(cnt_std, cnt_ft, " before");
-	compare_size(cnt_std, cnt_ft, " before");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " before");
+	compare_size(ctnr_std, ctnr_ft, " before");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 
 	std::cout << std::endl;
 	std::cout << "Filter unique values" << std::endl;
-	cnt_std.unique();
-	cnt_ft.unique();
+	ctnr_std.unique();
+	ctnr_ft.unique();
 
-	compare_content(cnt_std, cnt_ft, " after");
-	compare_size(cnt_std, cnt_ft, " after");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " after");
+	compare_size(ctnr_std, ctnr_ft, " after");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 TEST_F(Test_List, Operations_unique_no_args_unsorted) {
 	std::cout << "----- UNIQUE (no arguments unsorted) -----" << std::endl;
-	std::list<int>	cnt_std;
-	ft::List<int>	cnt_ft;
+	std::list<int>	ctnr_std;
+	ft::List<int>	ctnr_ft;
 
-	int int_array[] = { 1, 2, 3, 3, 1, 3, 4, 4, 5 };
-	for (int i = 0; i < 9; ++i) { cnt_std.push_back(int_array[i]); }
-	for (int i = 0; i < 9; ++i) { cnt_ft.push_back(int_array[i]); }
+	int int_arr[] = { 1, 2, 3, 3, 1, 3, 4, 4, 5 };
+	for (int i = 0; i < 9; ++i) { ctnr_std.push_back(int_arr[i]); }
+	for (int i = 0; i < 9; ++i) { ctnr_ft.push_back(int_arr[i]); }
 
-	compare_content(cnt_std, cnt_ft, " before");
-	compare_size(cnt_std, cnt_ft, " before");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " before");
+	compare_size(ctnr_std, ctnr_ft, " before");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 
 	std::cout << std::endl;
 	std::cout << "Filter unique values" << std::endl;
-	cnt_std.unique();
-	cnt_ft.unique();
+	ctnr_std.unique();
+	ctnr_ft.unique();
 
-	compare_content(cnt_std, cnt_ft, " after");
-	compare_size(cnt_std, cnt_ft, " after");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " after");
+	compare_size(ctnr_std, ctnr_ft, " after");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 // a binary predicate implemented as a function:
@@ -782,159 +819,151 @@ bool	same_integral_part(double first, double second) {
 
 TEST_F(Test_List, Operations_unique_binary_pred) {
 	std::cout << "----- UNIQUE (binary predicate) -----" << std::endl;
-	std::list<double>	cnt_std;
-	ft::List<double>	cnt_ft;
+	std::list<double>	ctnr_std;
+	ft::List<double>	ctnr_ft;
 
-	double dbl_array[] = { 1.01, 1.05, 2.15, 2.25, 2.25, 3.40, 3.50, 4.70 };
-	for (int i = 0; i < 8; ++i) { cnt_std.push_back(dbl_array[i]); }
-	for (int i = 0; i < 8; ++i) { cnt_ft.push_back(dbl_array[i]); }
+	double dbl_arr[] = { 1.01, 1.05, 2.15, 2.25, 2.25, 3.40, 3.50, 4.70 };
+	for (int i = 0; i < 8; ++i) { ctnr_std.push_back(dbl_arr[i]); }
+	for (int i = 0; i < 8; ++i) { ctnr_ft.push_back(dbl_arr[i]); }
 
-	compare_content(cnt_std, cnt_ft, " before");
-	compare_size(cnt_std, cnt_ft, " before");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " before");
+	compare_size(ctnr_std, ctnr_ft, " before");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 
 	std::cout << std::endl;
 	std::cout << "Filter values with same integral part" << std::endl;
-	cnt_std.unique(same_integral_part);
-	cnt_ft.unique(same_integral_part);
+	ctnr_std.unique(same_integral_part);
+	ctnr_ft.unique(same_integral_part);
 
-	compare_content(cnt_std, cnt_ft, " after");
-	compare_size(cnt_std, cnt_ft, " after");
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(cnt_std.size(), cnt_ft.size());
+	compare_content(ctnr_std, ctnr_ft, " after");
+	compare_size(ctnr_std, ctnr_ft, " after");
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 TEST_F(Test_List, Operations_merge_no_args_sort_small_in_big) {
 	std::cout << "----- MERGE (no args sorted smaller into bigger) -----"
 		<< std::endl;
 
-	std::list<int>	cnt_std_first;
-	std::list<int>	cnt_std_second;
-	ft::List<int>	cnt_ft_first;
-	ft::List<int>	cnt_ft_second;
+	std::list<int>	ctnr_std_first;
+	std::list<int>	ctnr_std_second;
+	ft::List<int>	ctnr_ft_first;
+	ft::List<int>	ctnr_ft_second;
 
-	int int_array_first[] = { 1, 3, 4, 7, 9 };
-	for (int i = 0; i < 5; ++i) { cnt_std_first.push_back(int_array_first[i]); }
-	for (int i = 0; i < 5; ++i) { cnt_ft_first.push_back(int_array_first[i]); }
+	int int_arr_first[] = { 1, 3, 4, 7, 9 };
+	for (int i = 0; i < 5; ++i) { ctnr_std_first.push_back(int_arr_first[i]); }
+	for (int i = 0; i < 5; ++i) { ctnr_ft_first.push_back(int_arr_first[i]); }
 
-	int int_array_second[] = { 2, 5, 6, 8 };
+	int int_arr_second[] = { 2, 5, 6, 8 };
 	for (int i = 0; i < 4; ++i) {
-		cnt_std_second.push_back(int_array_second[i]);
+		ctnr_std_second.push_back(int_arr_second[i]);
 	}
 	for (int i = 0; i < 4; ++i) {
-		cnt_ft_second.push_back(int_array_second[i]);
+		ctnr_ft_second.push_back(int_arr_second[i]);
 	}
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first before");
-	compare_size(cnt_std_first, cnt_ft_first, "_first before");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first before");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first before");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second before");
-	compare_size(cnt_std_second, cnt_ft_second, "_second before");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second before");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second before");
 
-	std::list<int>::iterator it_std_first = ++cnt_std_first.begin();
-	std::list<int>::iterator it_std_second = ++cnt_std_second.begin();
-	ft::List<int>::iterator it_ft_first = ++cnt_ft_first.begin();
-	ft::List<int>::iterator it_ft_second = ++cnt_ft_second.begin();
+	std::list<int>::iterator it_std_first = ++ctnr_std_first.begin();
+	std::list<int>::iterator it_std_second = ++ctnr_std_second.begin();
+	ft::List<int>::iterator it_ft_first = ++ctnr_ft_first.begin();
+	ft::List<int>::iterator it_ft_second = ++ctnr_ft_second.begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 
 	std::cout << std::endl;
 	std::cout << "Merge second object into first" << std::endl;
 
-	cnt_std_first.merge(cnt_std_second);
-	cnt_ft_first.merge(cnt_ft_second);
+	ctnr_std_first.merge(ctnr_std_second);
+	ctnr_ft_first.merge(ctnr_ft_second);
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first after");
-	compare_size(cnt_std_first, cnt_ft_first, "_first after");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first after");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first after");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second after");
-	compare_size(cnt_std_second, cnt_ft_second, "_second after");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second after");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second after");
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
 TEST_F(Test_List, Operations_merge_no_args_unsort_big_in_small) {
 	std::cout << "----- MERGE (no args unsorted bigger into smaller) -----"
 		<< std::endl;
 
-	std::list<int>	cnt_std_first;
-	std::list<int>	cnt_std_second;
-	ft::List<int>	cnt_ft_first;
-	ft::List<int>	cnt_ft_second;
+	std::list<int>	ctnr_std_first;
+	std::list<int>	ctnr_std_second;
+	ft::List<int>	ctnr_ft_first;
+	ft::List<int>	ctnr_ft_second;
 
-	int int_array_first[] = { 1, 4, 3 };
-	for (int i = 0; i < 3; ++i) { cnt_std_first.push_back(int_array_first[i]); }
-	for (int i = 0; i < 3; ++i) { cnt_ft_first.push_back(int_array_first[i]); }
+	int int_arr_first[] = { 1, 4, 3 };
+	for (int i = 0; i < 3; ++i) { ctnr_std_first.push_back(int_arr_first[i]); }
+	for (int i = 0; i < 3; ++i) { ctnr_ft_first.push_back(int_arr_first[i]); }
 
-	int int_array_second[] = { 2, 9, 5, 7, 6, 8 };
+	int int_arr_second[] = { 2, 9, 5, 7, 6, 8 };
 	for (int i = 0; i < 6; ++i) {
-		cnt_std_second.push_back(int_array_second[i]);
+		ctnr_std_second.push_back(int_arr_second[i]);
 	}
 	for (int i = 0; i < 6; ++i) {
-		cnt_ft_second.push_back(int_array_second[i]);
+		ctnr_ft_second.push_back(int_arr_second[i]);
 	}
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first before");
-	compare_size(cnt_std_first, cnt_ft_first, "_first before");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first before");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first before");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second before");
-	compare_size(cnt_std_second, cnt_ft_second, "_second before");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second before");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second before");
 
-	std::list<int>::iterator it_std_first = ++cnt_std_first.begin();
-	std::list<int>::iterator it_std_second = ++cnt_std_second.begin();
-	ft::List<int>::iterator it_ft_first = ++cnt_ft_first.begin();
-	ft::List<int>::iterator it_ft_second = ++cnt_ft_second.begin();
+	std::list<int>::iterator it_std_first = ++ctnr_std_first.begin();
+	std::list<int>::iterator it_std_second = ++ctnr_std_second.begin();
+	ft::List<int>::iterator it_ft_first = ++ctnr_ft_first.begin();
+	ft::List<int>::iterator it_ft_second = ++ctnr_ft_second.begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 
 	std::cout << std::endl;
 	std::cout << "Merge second object into first" << std::endl;
 
-	cnt_std_first.merge(cnt_std_second);
-	cnt_ft_first.merge(cnt_ft_second);
+	ctnr_std_first.merge(ctnr_std_second);
+	ctnr_ft_first.merge(ctnr_ft_second);
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first after");
-	compare_size(cnt_std_first, cnt_ft_first, "_first after");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first after");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first after");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second after");
-	compare_size(cnt_std_second, cnt_ft_second, "_second after");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second after");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second after");
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
 // compare only integral part:
@@ -945,68 +974,64 @@ bool	mycomparison(double first, double second) {
 TEST_F(Test_List, Operations_merge_compare) {
 	std::cout << "----- MERGE (compare) -----" << std::endl;
 
-	std::list<double>	cnt_std_first;
-	std::list<double>	cnt_std_second;
-	ft::List<double>	cnt_ft_first;
-	ft::List<double>	cnt_ft_second;
+	std::list<double>	ctnr_std_first;
+	std::list<double>	ctnr_std_second;
+	ft::List<double>	ctnr_ft_first;
+	ft::List<double>	ctnr_ft_second;
 
-	double dbl_array_first[] = { 1.01, 1.05, 2.15, 3.75 };
-	for (int i = 0; i < 4; ++i) { cnt_std_first.push_back(dbl_array_first[i]); }
-	for (int i = 0; i < 4; ++i) { cnt_ft_first.push_back(dbl_array_first[i]); }
+	double dbl_arr_first[] = { 1.01, 1.05, 2.15, 3.75 };
+	for (int i = 0; i < 4; ++i) { ctnr_std_first.push_back(dbl_arr_first[i]); }
+	for (int i = 0; i < 4; ++i) { ctnr_ft_first.push_back(dbl_arr_first[i]); }
 
-	double dbl_array_second[] = { 2.25, 3.40, 3.50, 4.70 };
+	double dbl_arr_second[] = { 2.25, 3.40, 3.50, 4.70 };
 	for (int i = 0; i < 4; ++i) {
-		cnt_std_second.push_back(dbl_array_second[i]);
+		ctnr_std_second.push_back(dbl_arr_second[i]);
 	}
 	for (int i = 0; i < 4; ++i) {
-		cnt_ft_second.push_back(dbl_array_second[i]);
+		ctnr_ft_second.push_back(dbl_arr_second[i]);
 	}
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first before");
-	compare_size(cnt_std_first, cnt_ft_first, "_first before");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first before");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first before");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second before");
-	compare_size(cnt_std_second, cnt_ft_second, "_second before");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second before");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second before");
 
-	std::list<double>::iterator it_std_first = ++cnt_std_first.begin();
-	std::list<double>::iterator it_std_second = ++cnt_std_second.begin();
-	ft::List<double>::iterator it_ft_first = ++cnt_ft_first.begin();
-	ft::List<double>::iterator it_ft_second = ++cnt_ft_second.begin();
+	std::list<double>::iterator it_std_first = ++ctnr_std_first.begin();
+	std::list<double>::iterator it_std_second = ++ctnr_std_second.begin();
+	ft::List<double>::iterator it_ft_first = ++ctnr_ft_first.begin();
+	ft::List<double>::iterator it_ft_second = ++ctnr_ft_second.begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 
 	std::cout << std::endl;
 	std::cout
 		<< "Merge second object into first with comparing elements by function"
 		<< std::endl;
 
-	cnt_std_first.merge(cnt_std_second, mycomparison);
-	cnt_ft_first.merge(cnt_ft_second, mycomparison);
+	ctnr_std_first.merge(ctnr_std_second, mycomparison);
+	ctnr_ft_first.merge(ctnr_ft_second, mycomparison);
 
-	compare_content(cnt_std_first, cnt_ft_first, "_first after");
-	compare_size(cnt_std_first, cnt_ft_first, "_first after");
+	compare_content(ctnr_std_first, ctnr_ft_first, "_first after");
+	compare_size(ctnr_std_first, ctnr_ft_first, "_first after");
 	std::cout << std::endl;
-	compare_content(cnt_std_second, cnt_ft_second, "_second after");
-	compare_size(cnt_std_second, cnt_ft_second, "_second after");
+	compare_content(ctnr_std_second, ctnr_ft_second, "_second after");
+	compare_size(ctnr_std_second, ctnr_ft_second, "_second after");
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
-	EXPECT_EQ(*cnt_std_first.begin(), *cnt_ft_first.begin());
-	EXPECT_EQ(*cnt_std_second.begin(), *cnt_ft_second.begin());
-	EXPECT_EQ(cnt_std_first.size(), cnt_ft_first.size());
-	EXPECT_EQ(cnt_std_second.size(), cnt_ft_second.size());
+	EXPECT_EQ(*ctnr_std_first.begin(), *ctnr_ft_first.begin());
+	EXPECT_EQ(*ctnr_std_second.begin(), *ctnr_ft_second.begin());
+	EXPECT_EQ(ctnr_std_first.size(), ctnr_ft_first.size());
+	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
 TEST_F(Test_List, Operations_sort_no_args) {
@@ -1039,36 +1064,34 @@ bool	compare_nocase(const std::string& first, const std::string& second) {
 
 TEST_F(Test_List, Operations_sort_compare) {
 	std::cout << "----- SORT (compare) -----" << std::endl;
-	std::list<std::string>	cnt_std;
-	cnt_std.push_back ("one");
-	cnt_std.push_back ("two");
-	cnt_std.push_back ("Three");
-	std::list<std::string>::iterator it_std = ++cnt_std.begin();
+	std::list<std::string>	ctnr_std;
+	ctnr_std.push_back ("one");
+	ctnr_std.push_back ("two");
+	ctnr_std.push_back ("Three");
+	std::list<std::string>::iterator it_std = ++ctnr_std.begin();
 
-	ft::List<std::string>	cnt_ft;
-	cnt_ft.push_back ("one");
-	cnt_ft.push_back ("two");
-	cnt_ft.push_back ("Three");
-	ft::List<std::string>::iterator it_ft = ++cnt_ft.begin();
+	ft::List<std::string>	ctnr_ft;
+	ctnr_ft.push_back ("one");
+	ctnr_ft.push_back ("two");
+	ctnr_ft.push_back ("Three");
+	ft::List<std::string>::iterator it_ft = ++ctnr_ft.begin();
 
-	compare_content(cnt_std, cnt_ft, " before");
-	std::cout << "it_std before: " << *it_std << std::endl;
-	std::cout << "it_ft  before: " << *it_ft << std::endl;
+	compare_content(ctnr_std, ctnr_ft, " before");
+	compare_iterators(it_std, it_ft, " before");
 
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(*(--cnt_std.end()), *(--cnt_ft.end()));
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(*(--ctnr_std.end()), *(--ctnr_ft.end()));
 
 	std::cout << std::endl;
 	std::cout << "Sort with function compare_nocase" << std::endl;
-	cnt_std.sort(compare_nocase);
-	cnt_ft.sort(compare_nocase);
+	ctnr_std.sort(compare_nocase);
+	ctnr_ft.sort(compare_nocase);
 
-	compare_content(cnt_std, cnt_ft, " after");
-	std::cout << "it_std after: " << *it_std << std::endl;
-	std::cout << "it_ft  after: " << *it_ft << std::endl;
+	compare_content(ctnr_std, ctnr_ft, " after");
+	compare_iterators(it_std, it_ft, " after");
 
-	EXPECT_EQ(*cnt_std.begin(), *cnt_ft.begin());
-	EXPECT_EQ(*(--cnt_std.end()), *(--cnt_ft.end()));
+	EXPECT_EQ(*ctnr_std.begin(), *ctnr_ft.begin());
+	EXPECT_EQ(*(--ctnr_std.end()), *(--ctnr_ft.end()));
 }
 
 TEST_F(Test_List, Operations_reverse) {
@@ -1080,8 +1103,7 @@ TEST_F(Test_List, Operations_reverse) {
 	std::list<int>::iterator it_std = --int_sort_std->end();
 	ft::List<int>::iterator it_ft = --int_sort_ft->end();
 
-	std::cout << "it_std: " << *it_std << std::endl;
-	std::cout << "it_ft : " << *it_ft << std::endl;
+	compare_iterators(it_std, it_ft, " before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
@@ -1095,53 +1117,232 @@ TEST_F(Test_List, Operations_reverse) {
 
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std: " << *it_std << std::endl;
-	std::cout << "it_ft : " << *it_ft << std::endl;
+	compare_iterators(it_std, it_ft, " after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 }
 
-TEST_F(Test_List, Capacity_size) {
-	std::cout << "----- SIZE -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft);
-	compare_size(*int_sort_std, *int_sort_ft);
+TEST_F(Test_List, relational_operators_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
 
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (*int_sort_std == *int_unsort_std) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (*int_sort_ft == *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std == *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft == *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first == std_second: " << std::boolalpha
+			<< (*int_sort_std == ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first ==  ft_second: " << std::boolalpha
+			<< (*int_sort_ft == ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std == ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft == ctnr_ft_cpy), 1);
+	}
 }
 
-TEST_F(Test_List, Capacity_max_size) {
-	std::cout << "----- MAX SIZE -----" << std::endl;
-	ft::List<int>	cnt_ft;
-	std::cout << " ft max_size: " << cnt_ft.max_size() << std::endl;
+TEST_F(Test_List, relational_operators_not_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (*int_sort_std != *int_unsort_std) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft != *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std != *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft != *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first != std_second: " << std::boolalpha
+			<< (*int_sort_std != ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first !=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft != ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std != ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft != ctnr_ft_cpy), 0);
+	}
 }
 
-TEST_F(Test_List, Capacity_empty) {
-	std::cout << "----- EMPTY -----" << std::endl;
-	compare_content(*int_sort_std, *int_sort_ft);
-	compare_size(*int_sort_std, *int_sort_ft);
-	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
-		<< std::endl;
-	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
-		<< std::endl;
+TEST_F(Test_List, relational_operators_less) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
 
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (*int_sort_std < *int_unsort_std) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (*int_sort_ft < *int_unsort_ft) << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "Clear containers" << std::endl;
-	int_sort_std->clear();
-	int_sort_ft->clear();
+		EXPECT_EQ((*int_sort_std < *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft < *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
 
-	compare_content(*int_sort_std, *int_sort_ft);
-	compare_size(*int_sort_std, *int_sort_ft);
-	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
-		<< std::endl;
-	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
-		<< std::endl;
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
 
-	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
-	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first < std_second: " << std::boolalpha
+			<< (*int_sort_std < ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first <  ft_second: " << std::boolalpha
+			<< (*int_sort_ft < ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std < ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft < ctnr_ft_cpy), 0);
+	}
+}
+
+TEST_F(Test_List, relational_operators_less_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (*int_sort_std <= *int_unsort_std) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft <= *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std <= *int_unsort_std), 1);
+		EXPECT_EQ((*int_sort_ft <= *int_unsort_ft), 1);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first <= std_second: " << std::boolalpha
+			<< (*int_sort_std <= ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first <=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft <= ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std <= ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft <= ctnr_ft_cpy), 1);
+	}
+}
+
+TEST_F(Test_List, relational_operators_more) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (*int_sort_std > *int_unsort_std) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std > *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft > *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first > std_second: " << std::boolalpha
+			<< (*int_sort_std > ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first >  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std > ctnr_std_cpy), 0);
+		EXPECT_EQ((*int_sort_ft > ctnr_ft_cpy), 0);
+	}
+}
+
+TEST_F(Test_List, relational_operators_more_or_equal) {
+	{
+		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first >= std_second: " << std::boolalpha
+			<< (*int_sort_std > *int_unsort_std) << std::endl;
+		std::cout << " ft_first >=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft > *int_unsort_ft) << std::endl;
+
+		EXPECT_EQ((*int_sort_std >= *int_unsort_std), 0);
+		EXPECT_EQ((*int_sort_ft >= *int_unsort_ft), 0);
+	}
+	{
+		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
+		compare_content(*int_sort_std, *int_sort_ft, "_first");
+		std::cout << std::endl;
+
+		std::list<int>	ctnr_std_cpy(*int_sort_std);
+		ft::List<int>	ctnr_ft_cpy(*int_sort_ft);
+
+		compare_content(ctnr_std_cpy, ctnr_ft_cpy, "_second");
+
+		std::cout << std::endl;
+		std::cout << "std_first >= std_second: " << std::boolalpha
+			<< (*int_sort_std >= ctnr_std_cpy) << std::endl;
+		std::cout << " ft_first >=  ft_second: " << std::boolalpha
+			<< (*int_sort_ft >= ctnr_ft_cpy) << std::endl;
+
+		EXPECT_EQ((*int_sort_std >= ctnr_std_cpy), 1);
+		EXPECT_EQ((*int_sort_ft >= ctnr_ft_cpy), 1);
+	}
 }
 
 TEST_F(Test_List, Non_member_overload_swap) {
@@ -1156,10 +1357,8 @@ TEST_F(Test_List, Non_member_overload_swap) {
 	ft::List<int>::iterator it_ft_second = ++int_unsort_ft->begin();
 	std::cout << std::endl;
 	std::cout << "Create iterators" << std::endl;
-	std::cout << "it_std_first before: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first before:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second before:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second before: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  before");
+	compare_iterators(it_std_second, it_ft_second, "_second before");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
@@ -1177,239 +1376,11 @@ TEST_F(Test_List, Non_member_overload_swap) {
 	compare_content(*int_unsort_std, *int_unsort_ft, "_second after");
 	std::cout << std::endl;
 	std::cout << "Check iterators (should be the same)" << std::endl;
-	std::cout << "it_std_first after: " << *it_std_first << std::endl;
-	std::cout << "it_ft_first after:  " << *it_ft_first << std::endl;
-	std::cout << "it_std_second after:" << *it_std_second << std::endl;
-	std::cout << "it_ft_second after: " << *it_ft_second << std::endl;
+	compare_iterators(it_std_first, it_ft_first, "_first  after");
+	compare_iterators(it_std_second, it_ft_second, "_second after");
 
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*int_unsort_std->begin(), *int_unsort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
-
-TEST_F(Test_List, relational_operators_equal) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first == std_second: " << std::boolalpha
-			<< (int_sort_std == int_unsort_std) << std::endl;
-		std::cout << " ft_first ==  ft_second: " << std::boolalpha
-			<< (int_sort_ft == int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std == *int_unsort_std), 0);
-		EXPECT_EQ((*int_sort_ft == *int_unsort_ft), 0);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first == std_second: " << std::boolalpha
-			<< (*int_sort_std == cnt_std_cpy) << std::endl;
-		std::cout << " ft_first ==  ft_second: " << std::boolalpha
-			<< (*int_sort_ft == cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std == cnt_std_cpy), 1);
-		EXPECT_EQ((*int_sort_ft == cnt_ft_cpy), 1);
-	}
-}
-
-TEST_F(Test_List, relational_operators_not_equal) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first != std_second: " << std::boolalpha
-			<< (int_sort_std != int_unsort_std) << std::endl;
-		std::cout << " ft_first !=  ft_second: " << std::boolalpha
-			<< (int_sort_ft != int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std != *int_unsort_std), 1);
-		EXPECT_EQ((*int_sort_ft != *int_unsort_ft), 1);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first != std_second: " << std::boolalpha
-			<< (*int_sort_std != cnt_std_cpy) << std::endl;
-		std::cout << " ft_first !=  ft_second: " << std::boolalpha
-			<< (*int_sort_ft != cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std != cnt_std_cpy), 0);
-		EXPECT_EQ((*int_sort_ft != cnt_ft_cpy), 0);
-	}
-}
-
-TEST_F(Test_List, relational_operators_less) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first < std_second: " << std::boolalpha
-			<< (int_sort_std < int_unsort_std) << std::endl;
-		std::cout << " ft_first <  ft_second: " << std::boolalpha
-			<< (int_sort_ft < int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std < *int_unsort_std), 1);
-		EXPECT_EQ((*int_sort_ft < *int_unsort_ft), 1);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first < std_second: " << std::boolalpha
-			<< (*int_sort_std < cnt_std_cpy) << std::endl;
-		std::cout << " ft_first <  ft_second: " << std::boolalpha
-			<< (*int_sort_ft < cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std < cnt_std_cpy), 0);
-		EXPECT_EQ((*int_sort_ft < cnt_ft_cpy), 0);
-	}
-}
-
-TEST_F(Test_List, relational_operators_less_or_equal) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first <= std_second: " << std::boolalpha
-			<< (int_sort_std <= int_unsort_std) << std::endl;
-		std::cout << " ft_first <=  ft_second: " << std::boolalpha
-			<< (int_sort_ft <= int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std <= *int_unsort_std), 1);
-		EXPECT_EQ((*int_sort_ft <= *int_unsort_ft), 1);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first <= std_second: " << std::boolalpha
-			<< (*int_sort_std <= cnt_std_cpy) << std::endl;
-		std::cout << " ft_first <=  ft_second: " << std::boolalpha
-			<< (*int_sort_ft <= cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std <= cnt_std_cpy), 1);
-		EXPECT_EQ((*int_sort_ft <= cnt_ft_cpy), 1);
-	}
-}
-
-TEST_F(Test_List, relational_operators_more) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first > std_second: " << std::boolalpha
-			<< (int_sort_std > int_unsort_std) << std::endl;
-		std::cout << " ft_first >  ft_second: " << std::boolalpha
-			<< (int_sort_ft > int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std > *int_unsort_std), 0);
-		EXPECT_EQ((*int_sort_ft > *int_unsort_ft), 0);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first > std_second: " << std::boolalpha
-			<< (*int_sort_std > cnt_std_cpy) << std::endl;
-		std::cout << " ft_first >  ft_second: " << std::boolalpha
-			<< (*int_sort_ft > cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std > cnt_std_cpy), 0);
-		EXPECT_EQ((*int_sort_ft > cnt_ft_cpy), 0);
-	}
-}
-
-TEST_F(Test_List, relational_operators_more_or_equal) {
-	{
-		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-		compare_content(*int_unsort_std, *int_unsort_ft, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first >= std_second: " << std::boolalpha
-			<< (int_sort_std > int_unsort_std) << std::endl;
-		std::cout << " ft_first >=  ft_second: " << std::boolalpha
-			<< (int_sort_ft > int_unsort_ft) << std::endl;
-
-		EXPECT_EQ((*int_sort_std >= *int_unsort_std), 0);
-		EXPECT_EQ((*int_sort_ft >= *int_unsort_ft), 0);
-	}
-	{
-		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
-		compare_content(*int_sort_std, *int_sort_ft, "_first");
-		std::cout << std::endl;
-
-		std::list<int>	cnt_std_cpy(*int_sort_std);
-		ft::List<int>	cnt_ft_cpy(*int_sort_ft);
-
-		compare_content(cnt_std_cpy, cnt_ft_cpy, "_second");
-
-		std::cout << std::endl;
-		std::cout << "std_first >= std_second: " << std::boolalpha
-			<< (*int_sort_std >= cnt_std_cpy) << std::endl;
-		std::cout << " ft_first >=  ft_second: " << std::boolalpha
-			<< (*int_sort_ft >= cnt_ft_cpy) << std::endl;
-
-		EXPECT_EQ((*int_sort_std >= cnt_std_cpy), 1);
-		EXPECT_EQ((*int_sort_ft >= cnt_ft_cpy), 1);
-	}
-}
-
-//TEST(INF_LOOP, Loop) {
-//	while (1) {}
-//}
