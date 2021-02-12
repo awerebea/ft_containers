@@ -656,8 +656,7 @@ namespace ft {
 
 #ifdef __APPLE__
 		template <class InputIterator>
-		void		assign(iterator position,
-					InputIterator first, InputIterator last,
+		void		assign( InputIterator first, InputIterator last,
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
 					value>::type* = 0)
 #elif __linux__
@@ -713,8 +712,13 @@ namespace ft {
 				size_type new_capacity;
 				if (n == 1) {
 					new_capacity = (m_capacity > 0) ? m_capacity * 2 : 1;
+#ifdef __APPLE__
+				} else if (m_capacity * 2 > m_size + n) {
+					new_capacity = m_capacity * 2;
+#elif __linux__
 				} else if (m_size * 2 > m_size + n) {
 					new_capacity = m_size * 2;
+#endif
 				} else {
 					new_capacity = m_size + n;
 				}
@@ -763,8 +767,13 @@ namespace ft {
 				size_type new_capacity;
 				if (n == 1) {
 					new_capacity = (m_capacity > 0) ? m_capacity * 2 : 1;
-				} else if (m_size * 2 > m_size + n) {
+#ifdef __APPLE__
+				} else if (m_capacity * 2 > m_size + n) {
+					new_capacity = m_capacity * 2;
+#elif __linux__
+					} else if (m_size * 2 > m_size + n) {
 					new_capacity = m_size * 2;
+#endif
 				} else {
 					new_capacity = m_size + n;
 				}
@@ -896,11 +905,17 @@ namespace ft {
 					m_alloc.destroy(start_elem + --m_size);
 				}
 			} else if (n > m_size) {
+#ifdef __APPLE__
+				while (n > m_size) {
+					insert(end(), val);
+				}
+#elif __linux__
 				if (n <= m_capacity) { insert(end(), n - m_size, val); }
 				else {
 					reserve(n);
 					insert(end(), n - m_size, val);
 				}
+#endif
 			}
 		}
 
