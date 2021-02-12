@@ -27,13 +27,13 @@ namespace ft {
 #endif
 
 	template < class Key, class T, class Compare = std::less<Key>,
-			class Alloc = std::allocator<std::pair<const Key,T> > > class Map {
+			class Alloc = std::allocator<std::pair<const Key, T> > > class Map {
 
 		public:
 
 		typedef Key											key_type;
 		typedef T											mapped_type;
-		typedef std::pair<const key_type, mapped_type>		data_type;
+		typedef std::pair<const key_type, mapped_type>		value_type;
 		typedef Compare										key_compare;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
@@ -44,6 +44,23 @@ namespace ft {
 		typedef std::size_t									size_type;
 
 		private:
+
+		class value_compare {
+
+			public:
+
+			Compare comp;
+
+			explicit value_compare(Compare c) : comp(c) {}
+
+			typedef bool result_type;
+			typedef value_type first_argument_type;
+			typedef value_type second_argument_type;
+
+			bool operator() (const value_type& x, const value_type& y) const {
+				return comp(x.first, y.first);
+			}
+		};
 
 		class RBTree {
 
@@ -77,10 +94,10 @@ namespace ft {
 						compare(comp) {
 				start_node = alloc_rebind.allocate(1);
 				start_node->data = alloc.allocate(1);
-				alloc.construct(start_node->data, data_type());
+				alloc.construct(start_node->data, value_type());
 				end_node = alloc_rebind.allocate(1);
 				end_node->data = alloc.allocate(1);
-				alloc.construct(end_node->data, data_type());
+				alloc.construct(end_node->data, value_type());
 				init_extreme_nodes();
 				m_size = 0;
 				}
@@ -279,10 +296,18 @@ namespace ft {
 			}
 
 			void		delete_fixup(t_node* node) {
+				t_node empty_node;
+				empty_node.data = NULL;
+				empty_node.parent = NULL;
+				empty_node.left = &empty_node;
+				empty_node.right = &empty_node;
+				empty_node.is_black = true;
+
 				t_node* tmp = NULL;
 				while (node != root && node->is_black) {
 					if (node == node->parent->left) {
-						tmp = node->parent->right;
+						tmp = (node->parent->right) ?
+								node->parent->right : &empty_node;
 						if (tmp && !tmp->is_black) {
 							tmp->is_black = true;
 							node->parent->is_black = false;
@@ -302,12 +327,13 @@ namespace ft {
 							}
 							tmp->is_black = node->parent->is_black;
 							node->parent->is_black = true;
-							tmp->right->is_black = true;
+							if (tmp->right) { tmp->right->is_black = true; }
 							rotate_left(node->parent);
 							node = root;
 						}
 					} else {
-						tmp = node->parent->left;
+						tmp = (node->parent->left) ?
+								node->parent->left : &empty_node;
 						if (tmp && !tmp->is_black) {
 							tmp->is_black = true;
 							node->parent->is_black = false;
@@ -327,7 +353,7 @@ namespace ft {
 							}
 							tmp->is_black = node->parent->is_black;
 							node->parent->is_black = true;
-							tmp->left->is_black = true;
+							if (tmp->left) { tmp->left->is_black = true; }
 							rotate_right(node->parent);
 							node = root;
 						}
@@ -405,7 +431,7 @@ namespace ft {
 		class const_iterator;
 
 		class iterator : public std::iterator<std::bidirectional_iterator_tag,
-				data_type> {
+				value_type> {
 			t_node* node;
 
 			public:
@@ -498,7 +524,7 @@ namespace ft {
 
 		class const_iterator :
 				public std::iterator<std::bidirectional_iterator_tag,
-				data_type> {
+				value_type> {
 			t_node* node;
 
 			public:
@@ -593,7 +619,7 @@ namespace ft {
 
 		class reverse_iterator :
 				public std::iterator<std::bidirectional_iterator_tag,
-				data_type> {
+				value_type> {
 			t_node* node;
 
 			public:
@@ -684,7 +710,7 @@ namespace ft {
 
 		class const_reverse_iterator :
 				public std::iterator<std::bidirectional_iterator_tag,
-				data_type> {
+				value_type> {
 			t_node* node;
 
 			public:
@@ -850,19 +876,19 @@ namespace ft {
 		}
 
 		reverse_iterator		rbegin() {
-			return reverse_iterator(tree.end_node);
+			return reverse_iterator(tree.end_node->parent);
 		}
 
 		const_reverse_iterator	rbegin() const {
-			return const_reverse_iterator(tree.end_node);
+			return const_reverse_iterator(tree.end_node->parent);
 		}
 
 		reverse_iterator		rend() {
-			return reverse_iterator(tree.start_node->parent);
+			return reverse_iterator(tree.start_node);
 		}
 
 		const_reverse_iterator	rend() const {
-			return const_reverse_iterator(tree.start_node->parent);
+			return const_reverse_iterator(tree.start_node);
 		}
 
 		/* Capacity */
@@ -875,11 +901,21 @@ namespace ft {
 			return node_allocator().max_size();
 		}
 
+		/* Element access */
+
+		mapped_type&	operator[](const key_type& k) {
+			return (*((insert(std::make_pair(k,mapped_type()))).first)).second;
+		}
+
 		/* Modifiers */
 
-		std::pair<iterator,bool>	insert(const_reference inp_data) {
+		std::pair<iterator, bool>	insert(const_reference inp_data) {
 			std::pair<t_node*, bool> ret = tree.insert_node(inp_data);
 			return std::make_pair(iterator(ret.first), ret.second);
+		}
+
+		iterator	insert(iterator position, const_reference inp_data) {
+			return iterator(tree.insert_node(inp_data).first);
 		}
 
 #ifdef __APPLE__
@@ -940,8 +976,48 @@ namespace ft {
 			while (first != last) { erase(first++); }
 		}
 
+		void			swap(Map& other) {
+			t_node*	tmp_node = other.tree.root;
+			other.tree.root = this->tree.root;
+			this->tree.root = tmp_node;
+
+			tmp_node = other.tree.start_node;
+			other.tree.start_node = this->tree.start_node;
+			this->tree.start_node = tmp_node;
+
+			tmp_node = other.tree.end_node;
+			other.tree.end_node = this->tree.end_node;
+			this->tree.end_node = tmp_node;
+
+			size_type	tmp_size = other.tree.m_size;
+			other.tree.m_size = this->tree.m_size;
+			this->tree.m_size = tmp_size;
+		}
+
 		void			clear() {
 			erase(begin(), end());
+		}
+
+		/* Observers */
+
+		key_compare		key_comp() const {
+			return key_compare();
+		}
+
+		value_compare	value_comp() const {
+			return value_compare(key_compare());
+		}
+
+		/* Operations */
+
+		iterator		find(const key_type& key) {
+			t_node* ret = tree.search_node(key);
+			return (ret) ? iterator(ret) : end();
+		}
+
+		const_iterator	find(const key_type& key) const {
+			t_node* ret = tree.search_node(key);
+			return (ret) ? const_iterator(ret) : end();
 		}
 
 	}; // class Map
