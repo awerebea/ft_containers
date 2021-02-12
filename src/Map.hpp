@@ -81,16 +81,20 @@ namespace ft {
 				end_node = alloc_rebind.allocate(1);
 				end_node->data = alloc.allocate(1);
 				alloc.construct(end_node->data, data_type());
+				init_extreme_nodes();
+				m_size = 0;
+				}
+
+			~RBTree() {}
+
+			void		init_extreme_nodes() {
 				start_node->parent = end_node;
 				start_node->left = NULL;
 				start_node->right = NULL;
 				end_node->parent = start_node;
 				end_node->left = NULL;
 				end_node->right = NULL;
-				m_size = 0;
-				}
-
-			~RBTree() {}
+			}
 
 			std::pair<t_node*, bool>	insert_node(const_reference inp_data) {
 				t_node* node = root;
@@ -98,7 +102,7 @@ namespace ft {
 				unbind_extreme_nodes();
 				while (node != NULL) {
 					parent = node;
-					// INFO avoid nodes with duplicated keys
+					// INFO avoid insertion nodes with already existed keys
 					if (is_equal(inp_data.first, node->data->first)) {
 						bind_extreme_nodes();
 						return std::make_pair(node, false);
@@ -172,7 +176,7 @@ namespace ft {
 
 			void		rotate_left(t_node* node) {
 				t_node* tmp = node->right;
-					node->right = tmp->left;
+				node->right = tmp->left;
 				if (tmp->left) { tmp->left->parent = node; }
 				if (tmp) { tmp->parent = node->parent; }
 				if (node->parent) {
@@ -206,18 +210,46 @@ namespace ft {
 				if (node) { node->parent = tmp; }
 			}
 
+			void		delete_last_node() {
+				alloc.destroy(root->data);
+				alloc.deallocate(root->data, 1);
+				alloc_rebind.deallocate(root, 1);
+				init_extreme_nodes();
+				root = NULL;
+				m_size = 0;
+			}
+
 			void		delete_node(t_node* node) {
+				if (node == root && m_size == 1) { return delete_last_node(); }
+
+				if (!node || node == start_node || node == end_node) {
+					return ;
+				}
+
+				t_node* dealloc_node = node;
+
+				alloc.destroy(node->data);
+				alloc.deallocate(node->data, 1);
+
 				t_node* x_node = NULL;
 				t_node* y_node = NULL;
+
+				t_node tmp;
+				tmp.data = NULL;
+				tmp.parent = NULL;
+				tmp.left = &tmp;
+				tmp.right = &tmp;
+				tmp.is_black = true;
+
 				unbind_extreme_nodes();
-				if (!node) { return ; }
 				if (!node->left || !node->right) { y_node = node; }
 				else {
 					y_node = node->right;
 					while (y_node->left) { y_node = y_node->left; }
 				}
 				if (y_node->left) { x_node = y_node->left; }
-				else { x_node = y_node->right; }
+				else if (y_node->right) { x_node = y_node->right; }
+				else { x_node = &tmp; }
 				x_node->parent = y_node->parent;
 				if (y_node->parent) {
 					if (y_node == y_node->parent->left) {
@@ -228,9 +260,22 @@ namespace ft {
 				} else {
 					root = x_node;
 				}
-				if (y_node != node) { node->data = y_node->data; }
-				if (y_node->is_black) { delete_fixup(x_node); }
-				alloc_rebind.deallocate(y_node, 1);
+				if (y_node != node) {
+					node->data = y_node->data;
+					dealloc_node = y_node;
+				}
+				if (y_node->is_black) {
+					delete_fixup(x_node);
+				}
+				alloc_rebind.deallocate(dealloc_node, 1);
+				if (tmp.parent && tmp.parent->left == &tmp) {
+					tmp.parent->left = NULL;
+				}
+				if (tmp.parent && tmp.parent->right == &tmp) {
+					tmp.parent->right = NULL;
+				}
+				bind_extreme_nodes();
+				m_size--;
 			}
 
 			void		delete_fixup(t_node* node) {
@@ -288,6 +333,7 @@ namespace ft {
 						}
 					}
 				}
+				node->is_black = true;
 			}
 
 			void		unbind_extreme_nodes() {
@@ -324,18 +370,18 @@ namespace ft {
 				return (!compare(a, b) && !compare(b, a));
 			}
 
-			t_node*		search_node(const_reference inp_data) {
+			t_node*		search_node(const key_type& key) {
 				t_node* node = root;
 				unbind_extreme_nodes();
 				while (node) {
-					if (is_equal(inp_data.first, node->data->first)) {
+					if (is_equal(key, node->data->first)) {
 						bind_extreme_nodes();
 						return node;
 					} else {
-						if (compare(inp_data.first, node->data->first)) {
-							node->left = node;
+						if (compare(key, node->data->first)) {
+							node = node->left;
 						} else {
-							node->right = node;
+							node = node->right;
 						}
 					}
 				}
@@ -344,6 +390,9 @@ namespace ft {
 			}
 
 		}; // class RBTree
+
+		typedef typename allocator_type::template
+			rebind<typename RBTree::t_node>::other			node_allocator;
 
 		RBTree	tree;
 
@@ -401,7 +450,9 @@ namespace ft {
 			iterator&			operator++() {
 				if (node->right) {
 					node = node->right;
-					while (node->left) { node->left; }
+					while (node->left) {
+						node = node->left;
+					}
 				} else {
 					t_node* tmp = node->parent;
 					while (node == tmp->right) {
@@ -492,7 +543,9 @@ namespace ft {
 			const_iterator&			operator++() {
 				if (node->right) {
 					node = node->right;
-					while (node->left) { node->left; }
+					while (node->left) {
+						node = node->left;
+					}
 				} else {
 					t_node* tmp = node->parent;
 					while (node == tmp->right) {
@@ -729,27 +782,166 @@ namespace ft {
 		explicit Map(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) {}
 
-		~Map() {}
+		/* range (2) */
+#ifdef __APPLE__
+		template <class InputIterator>
+		Map(InputIterator first, InputIterator last,
+				const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
+				value>::type* = 0)
+#elif __linux__
+		Map(iterator first, iterator last,
+				const allocator_type& alloc = allocator_type())
+#endif
+		{
+			insert(first, last);
+		}
+
+#ifdef __linux__
+		Map(const_iterator first, const_iterator last,
+				const allocator_type& alloc = allocator_type()) {
+			insert(first, last);
+		}
+#endif
+
+#ifdef __linux__
+		Map(reverse_iterator first, reverse_iterator last,
+				const allocator_type& alloc = allocator_type()) {
+			insert(first, last);
+		}
+#endif
+
+		/* copy (3) */
+		Map(const Map& other) { *this = other; }
+
+		Map&			operator=(const Map& other) {
+			if (this == &other) { return *this; }
+			if (tree.m_size) { clear(); }
+			insert(other.begin(), other.end());
+			return *this;
+		}
+
+		~Map() {
+			if (tree.m_size) { clear(); }
+			allocator_type().destroy(tree.start_node->data);
+			allocator_type().deallocate(tree.start_node->data, 1);
+			node_allocator().deallocate(tree.start_node, 1);
+			allocator_type().destroy(tree.end_node->data);
+			allocator_type().deallocate(tree.end_node->data, 1);
+			node_allocator().deallocate(tree.end_node, 1);
+		}
+
+		/* Iterators */
+
+		iterator				begin() {
+			return iterator(tree.start_node->parent);
+		}
+
+		const_iterator			begin() const {
+			return const_iterator(tree.start_node->parent);
+		}
+
+		iterator				end() {
+			return iterator(tree.end_node);
+		}
+
+		const_iterator			end() const {
+			return const_iterator(tree.end_node);
+		}
+
+		reverse_iterator		rbegin() {
+			return reverse_iterator(tree.end_node);
+		}
+
+		const_reverse_iterator	rbegin() const {
+			return const_reverse_iterator(tree.end_node);
+		}
+
+		reverse_iterator		rend() {
+			return reverse_iterator(tree.start_node->parent);
+		}
+
+		const_reverse_iterator	rend() const {
+			return const_reverse_iterator(tree.start_node->parent);
+		}
+
+		/* Capacity */
+
+		bool			empty() const { return tree.m_size == 0; }
+
+		size_type		size() const { return tree.m_size; }
+
+		size_type		max_size(void) const {
+			return node_allocator().max_size();
+		}
+
+		/* Modifiers */
 
 		std::pair<iterator,bool>	insert(const_reference inp_data) {
 			std::pair<t_node*, bool> ret = tree.insert_node(inp_data);
 			return std::make_pair(iterator(ret.first), ret.second);
 		}
 
-		size_type		size() const { return tree.m_size; }
-
-		/* Iterators */
-
-		iterator		begin() { return iterator(tree.start_node->parent); }
-
-		iterator		end() { return iterator(tree.end_node); }
-
-		reverse_iterator	rbegin() {
-			return reverse_iterator(tree.end_node);
+#ifdef __APPLE__
+		template <class InputIterator>
+		void	insert(InputIterator first, InputIterator last,
+				it = 
+				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
+				value>::type* = 0)
+#elif __linux__
+		void	insert(iterator first, iterator last)
+#endif
+		{
+			while (first != last) { insert(*first++); }
 		}
 
-		reverse_iterator	rend() {
-			return reverse_iterator(tree.start_node->parent);
+#ifdef __linux__
+		void	insert(const_iterator first, const_iterator last) {
+			while (first != last) { insert(*first++); }
+		}
+#endif
+
+#ifdef __linux__
+		void	insert(reverse_iterator first, reverse_iterator last) {
+			while (first != last) { insert(*first++); }
+		}
+#endif
+
+		void			erase(iterator position) {
+			tree.delete_node(position.get_node());
+		}
+
+		void			erase(const_iterator position) {
+			tree.delete_node(position.get_node());
+		}
+
+		size_type		erase(const key_type& key) {
+			t_node* tmp = (tree.search_node(key));
+			if (!tmp) { return 0; }
+			tree.delete_node(tmp);
+			return 1;
+		}
+
+		void			erase(iterator first, iterator last) {
+			size_t key = first.get_node()->data->first;
+			size_t next_key = (++first).get_node()->data->first;
+			size_t last_key = (--last).get_node()->data->first;
+			iterator it;
+			while (key != last_key) {
+				erase(key);
+				key = next_key;
+				it = iterator(tree.search_node(next_key));
+				next_key = (++it).get_node()->data->first;
+			}
+			erase(key);
+		}
+
+		void			erase(const_iterator first, const_iterator last) {
+			while (first != last) { erase(first++); }
+		}
+
+		void			clear() {
+			erase(begin(), end());
 		}
 
 	}; // class Map

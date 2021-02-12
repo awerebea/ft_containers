@@ -646,7 +646,7 @@ TEST_F(Test_Vector, Modifiers_erase_position) {
 }
 
 TEST_F(Test_Vector, Modifiers_erase_range) {
-	std::cout << "----- ERASE (position) -----" << std::endl;
+	std::cout << "----- ERASE (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());

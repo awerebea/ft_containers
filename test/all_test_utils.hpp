@@ -53,4 +53,31 @@ void compare_size(const S& std, const F& ft, const std::string& txt = "") {
 	std::cout << " ft" << txt << " (size): " << ft.size() << std::endl;
 }
 
+
+
+
+
+template <typename T>
+void print_container_pair(T& obj) {
+	for (typename T::iterator it = obj.begin(); it != obj.end(); ++it) {
+		std::cout << " " << it->first << " (" << it->second << ")";
+	}
+	std::cout << std::endl;
+}
+
+template <typename S, typename F>
+void compare_content_pair(S& std, F& ft, const std::string& txt = "") {
+	std::cout << "std" << txt << ":"; print_container_pair(std);
+	std::cout << " ft" << txt << ":"; print_container_pair(ft);
+}
+
+template <typename S, typename F>
+void compare_iterators_pair(const S& std, const F& ft,
+							const std::string& txt = "") {
+	std::cout << "std" << txt << " (iterator): " << *std->first
+		<< " (" << *std->second << ")" << std::endl;
+	std::cout << " ft" << txt << " (iterator): k: " << *ft->first
+		<< " (" << *ft->second << ")" << std::endl;
+}
+
 #endif //FT_CONTAINERS_ALL_TEST_UTILS_HPP
