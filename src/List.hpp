@@ -473,8 +473,7 @@ namespace ft {
 
 #ifdef __APPLE__
 		template <class InputIterator>
-		void	assign(iterator position,
-				InputIterator first, InputIterator last,
+		void	assign(InputIterator first, InputIterator last,
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
 				value>::type* = 0)
 #elif __linux__
