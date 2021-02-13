@@ -627,25 +627,29 @@ namespace ft {
 
 		void			remove(const value_type& val) {
 			for (iterator it = begin(); it != end(); ) {
-				if (*it == val) { erase(it); }
-				++it;
+				if (*it == val) { it = erase(it); }
+				else { ++it; }
 			}
 		}
 
 		template <class Predicate>
 		void			remove_if(Predicate pred) {
 			for (iterator it = begin(); it != end(); ) {
-				if ((*pred)(*it)) { erase(it); }
-				++it;
+				if ((*pred)(*it)) { it = erase(it); }
+				else { ++it; }
 			}
 		}
 
 		void			unique() {
 			iterator it_prev = begin();
 			for (iterator it = ++begin(); it != end(); ) {
-				if (*it == *it_prev) { erase(it); }
-				else { ++it_prev; }
-				++it;
+				if (*it == *it_prev) {
+					it = erase(it);
+				}
+				else {
+					++it_prev;
+					++it;
+				}
 			}
 		}
 
@@ -653,9 +657,11 @@ namespace ft {
 		void			unique(BinaryPredicate binary_pred) {
 			iterator it_prev = begin();
 			for (iterator it = ++begin(); it != end(); ) {
-				if ((*binary_pred)(*it, *it_prev)) { erase(it); }
-				else { ++it_prev; }
-				++it;
+				if ((*binary_pred)(*it, *it_prev)) { it = erase(it); }
+				else {
+					++it_prev;
+					++it;
+				}
 			}
 		}
 
