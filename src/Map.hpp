@@ -421,6 +421,8 @@ namespace ft {
 			rebind<typename RBTree::t_node>::other			node_allocator;
 
 		RBTree	tree;
+		allocator_type	alloc;
+		Compare comp;
 
 		public:
 
@@ -687,7 +689,9 @@ namespace ft {
 			reverse_iterator&	operator--() {
 				if (node->right) {
 					node = node->right;
-					while (node->left) { node->left; }
+					while (node->left) {
+						node = node->left;
+					}
 				} else {
 					t_node* tmp = node->parent;
 					while (node == tmp->right) {
@@ -781,7 +785,9 @@ namespace ft {
 			const_reverse_iterator&		operator--() {
 				if (node->right) {
 					node = node->right;
-					while (node->left) { node->left; }
+					while (node->left) {
+						node = node->left;
+					}
 				} else {
 					t_node* tmp = node->parent;
 					while (node == tmp->right) {
@@ -806,33 +812,41 @@ namespace ft {
 
 		/* default (1) */
 		explicit Map(const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) {}
+				const allocator_type& alloc = allocator_type())
+			: alloc(alloc), comp(comp) {}
 
 		/* range (2) */
 #ifdef __APPLE__
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last,
 				const allocator_type& alloc = allocator_type(),
+				const key_compare& comp = key_compare(),
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
 				value>::type* = 0)
 #elif __linux__
 		Map(iterator first, iterator last,
+				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 #endif
+		: alloc(alloc), comp(comp)
 		{
 			insert(first, last);
 		}
 
 #ifdef __linux__
 		Map(const_iterator first, const_iterator last,
-				const allocator_type& alloc = allocator_type()) {
+				const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type())
+			: alloc(alloc), comp(comp) {
 			insert(first, last);
 		}
 #endif
 
 #ifdef __linux__
 		Map(reverse_iterator first, reverse_iterator last,
-				const allocator_type& alloc = allocator_type()) {
+				const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type())
+			: alloc(alloc), comp(comp) {
 			insert(first, last);
 		}
 #endif
@@ -915,13 +929,13 @@ namespace ft {
 		}
 
 		iterator	insert(iterator position, const value_type& val) {
+			(void)position;
 			return iterator(tree.insert_node(val).first);
 		}
 
 #ifdef __APPLE__
 		template <class InputIterator>
 		void	insert(InputIterator first, InputIterator last,
-				it = 
 				typename ft::enable_if<std::__is_input_iterator<InputIterator>::
 				value>::type* = 0)
 #elif __linux__
