@@ -940,7 +940,7 @@ namespace ft {
 		x.swap(y);
 	}
 
-	/* relational operators */
+	/* Relational operators */
 
 	template <class T, class Alloc>
 	bool	operator==(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {

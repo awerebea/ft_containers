@@ -54,7 +54,7 @@ protected:
 	ft::Map<int, int> * int_unsort_ft;
 };
 
-TEST_F(Test_Map, Constructor_default) {
+TEST_F(Test_Map, Constructor_Default) {
 	std::map<int, int> ctnr_std;
 	ft::Map<int, int> ctnr_ft;
 	std::cout << "----- CONSTRUCTOR (default) -----" << std::endl;
@@ -62,7 +62,7 @@ TEST_F(Test_Map, Constructor_default) {
 	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
-TEST_F(Test_Map, Constructor_range) {
+TEST_F(Test_Map, Constructor_Range) {
 	std::map<int, int>	ctnr_std_cpy(++(*int_sort_std).begin(),
 			--(*int_sort_std).end());
 	ft::Map<int, int>	ctnr_ft_cpy(++(*int_sort_ft).begin(),
@@ -77,7 +77,7 @@ TEST_F(Test_Map, Constructor_range) {
 	EXPECT_EQ(ctnr_std_cpy.size(), ctnr_ft_cpy.size());
 }
 
-TEST_F(Test_Map, Constructor_copy) {
+TEST_F(Test_Map, Constructor_Copy) {
 	std::map<int, int>	ctnr_std_cpy(*int_unsort_std);
 	ft::Map<int, int>	ctnr_ft_cpy(*int_unsort_ft);
 
@@ -99,7 +99,7 @@ TEST_F(Test_Map, Destructor) {
 	delete(ctnr_ft);
 }
 
-TEST_F(Test_Map, Operator_assign) {
+TEST_F(Test_Map, Operator_Assign) {
 	std::map<int, int>	ctnr_std_cpy;
 	ft::Map<int, int>	ctnr_ft_cpy;
 
@@ -119,7 +119,7 @@ TEST_F(Test_Map, Operator_assign) {
 	EXPECT_EQ(int_sort_ft->size(), ctnr_ft_cpy.size());
 }
 
-TEST_F(Test_Map, Iterators_begin) {
+TEST_F(Test_Map, Iterators_Begin) {
 	std::cout << "----- ITERATOR BEGIN -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_iterators_pair(int_sort_std->begin(), int_sort_ft->begin(),
@@ -130,7 +130,7 @@ TEST_F(Test_Map, Iterators_begin) {
 	EXPECT_EQ(*(++int_sort_std->begin()), *(++int_sort_ft->begin()));
 }
 
-TEST_F(Test_Map, Iterators_end) {
+TEST_F(Test_Map, Iterators_End) {
 	std::cout << "----- ITERATOR END -----" << std::endl;
 	std::map<int, int>::iterator it_std = --int_sort_std->end();
 	ft::Map<int, int>::iterator it_ft = --int_sort_ft->end();
@@ -141,7 +141,7 @@ TEST_F(Test_Map, Iterators_end) {
 	EXPECT_EQ(*(--it_std), *(--it_ft));
 }
 
-TEST_F(Test_Map, Iterators_rbegin) {
+TEST_F(Test_Map, Iterators_Rbegin) {
 	std::cout << "----- ITERATOR RBEGIN -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_iterators_pair(int_sort_std->rbegin(), int_sort_ft->rbegin(),
@@ -152,7 +152,7 @@ TEST_F(Test_Map, Iterators_rbegin) {
 	EXPECT_EQ(*(++int_sort_std->rbegin()), *(++int_sort_ft->rbegin()));
 }
 
-TEST_F(Test_Map, Iterators_rend) {
+TEST_F(Test_Map, Iterators_Rend) {
 	std::cout << "----- ITERATOR REND -----" << std::endl;
 	std::map<int, int>::reverse_iterator it_std = --int_sort_std->rend();
 	ft::Map<int, int>::reverse_iterator it_ft = --int_sort_ft->rend();
@@ -164,7 +164,7 @@ TEST_F(Test_Map, Iterators_rend) {
 	EXPECT_EQ(it_std->second, it_ft->second);
 }
 
-TEST_F(Test_Map, Capacity_empty) {
+TEST_F(Test_Map, Capacity_Empty) {
 	std::cout << "----- EMPTY -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
@@ -192,7 +192,7 @@ TEST_F(Test_Map, Capacity_empty) {
 	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
 }
 
-TEST_F(Test_Map, Capacity_size) {
+TEST_F(Test_Map, Capacity_Size) {
 	std::cout << "----- SIZE -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
@@ -210,14 +210,14 @@ TEST_F(Test_Map, Capacity_size) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Capacity_max_size) {
+TEST_F(Test_Map, Capacity_Max_size) {
 	std::cout << "----- MAX SIZE -----" << std::endl;
 	std::cout << "std max_size: " << int_sort_std->max_size() << std::endl;
 	std::cout << " ft max_size: " << int_sort_ft->max_size() << std::endl;
 	EXPECT_EQ(int_sort_std->max_size(), int_sort_ft->max_size());
 }
 
-TEST_F(Test_Map, Element_access_operator_square_braskets) {
+TEST_F(Test_Map, Element_access_Operator_square_braskets) {
 	std::cout << "----- OPERATOR [] -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
@@ -252,7 +252,7 @@ TEST_F(Test_Map, Element_access_operator_square_braskets) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Modifiers_insert_single_element) {
+TEST_F(Test_Map, Modifiers_Insert_single_element) {
 	std::cout << "----- INSERT (single element) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -330,7 +330,7 @@ TEST_F(Test_Map, Modifiers_insert_single_element) {
 	EXPECT_EQ(ret_std.second, ret_ft.second);
 }
 
-TEST_F(Test_Map, Modifiers_insert_hint) {
+TEST_F(Test_Map, Modifiers_Insert_hint) {
 	std::cout << "----- INSERT (hint) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -397,7 +397,7 @@ TEST_F(Test_Map, Modifiers_insert_hint) {
 	EXPECT_EQ(ret_std->second, ret_ft->second);
 }
 
-TEST_F(Test_Map, Modifiers_insert_range) {
+TEST_F(Test_Map, Modifiers_Insert_range) {
 	std::cout << "----- INSERT (range) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -420,7 +420,7 @@ TEST_F(Test_Map, Modifiers_insert_range) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Modifiers_erase_position) {
+TEST_F(Test_Map, Modifiers_Erase_position) {
 	std::cout << "----- ERASE (position) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -438,7 +438,7 @@ TEST_F(Test_Map, Modifiers_erase_position) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Modifiers_erase_key) {
+TEST_F(Test_Map, Modifiers_Erase_key) {
 	std::cout << "----- ERASE (key) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -474,7 +474,7 @@ TEST_F(Test_Map, Modifiers_erase_key) {
 	EXPECT_EQ(ret_std, ret_ft);
 }
 
-TEST_F(Test_Map, Modifiers_erase_range) {
+TEST_F(Test_Map, Modifiers_Erase_range) {
 	std::cout << "----- ERASE (range) -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -492,7 +492,7 @@ TEST_F(Test_Map, Modifiers_erase_range) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Modifiers_swap) {
+TEST_F(Test_Map, Modifiers_Swap) {
 	std::cout << "----- SWAP -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -536,7 +536,7 @@ TEST_F(Test_Map, Modifiers_swap) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_Map, Modifiers_clear) {
+TEST_F(Test_Map, Modifiers_Clear) {
 std::cout << "----- CLEAR -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -554,7 +554,7 @@ std::cout << "----- CLEAR -----" << std::endl;
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_Map, Observers_key_compare) {
+TEST_F(Test_Map, Observers_Key_compare) {
 	std::cout << "----- KEY COMPARE -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -579,7 +579,7 @@ TEST_F(Test_Map, Observers_key_compare) {
 	} while (mycomp_ft((*it_ft++).first, highest_ft));
 }
 
-TEST_F(Test_Map, Observers_value_compare) {
+TEST_F(Test_Map, Observers_Value_compare) {
 	std::cout << "----- VALUE COMPARE -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -601,7 +601,7 @@ TEST_F(Test_Map, Observers_value_compare) {
 	} while (int_sort_ft->value_comp()(*it_ft++, highest_ft));
 }
 
-TEST_F(Test_Map, Operations_find) {
+TEST_F(Test_Map, Operations_Find) {
 	std::cout << "----- FIND -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -637,7 +637,7 @@ TEST_F(Test_Map, Operations_find) {
 	EXPECT_EQ(int_sort_ft->find(42)->second, int_sort_ft->end()->second);
 }
 
-TEST_F(Test_Map, Operations_count) {
+TEST_F(Test_Map, Operations_Count) {
 	std::cout << "----- COUNT -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -658,7 +658,7 @@ TEST_F(Test_Map, Operations_count) {
 	EXPECT_EQ(int_sort_std->count(42), int_sort_ft->count(42));
 }
 
-TEST_F(Test_Map, Operations_lower_bound) {
+TEST_F(Test_Map, Operations_Lower_bound) {
 	std::cout << "----- LOWER BOUND -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -705,7 +705,7 @@ TEST_F(Test_Map, Operations_lower_bound) {
 				int_sort_ft->end()->second);
 }
 
-TEST_F(Test_Map, Operations_upper_bound) {
+TEST_F(Test_Map, Operations_Upper_bound) {
 	std::cout << "----- UPPER BOUND -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 
@@ -751,7 +751,8 @@ TEST_F(Test_Map, Operations_upper_bound) {
 	EXPECT_EQ(int_sort_ft->upper_bound(42)->second,
 				int_sort_ft->end()->second);
 }
-TEST_F(Test_Map, Operations_equal_range) {
+
+TEST_F(Test_Map, Operations_Equal_range) {
 	std::cout << "----- EQUAL RANGE -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 

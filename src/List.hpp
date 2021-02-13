@@ -750,7 +750,7 @@ namespace ft {
 		x.swap(y);
 	}
 
-	/* relational operators */
+	/* Relational operators */
 
 	template <class T, class Alloc>
 	bool	operator==(const List<T,Alloc>& lhs, const List<T,Alloc>& rhs) {

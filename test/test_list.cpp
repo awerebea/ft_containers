@@ -50,7 +50,7 @@ protected:
 	ft::List<int> * int_unsort_ft;
 };
 
-TEST_F(Test_List, Constructor_default) {
+TEST_F(Test_List, Constructor_Default) {
 	std::list<int> ctnr_std;
 	ft::List<int> ctnr_ft;
 	std::cout << "----- CONSTRUCTOR (default) -----" << std::endl;
@@ -60,7 +60,7 @@ TEST_F(Test_List, Constructor_default) {
 	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
-TEST_F(Test_List, Constructor_fill) {
+TEST_F(Test_List, Constructor_Fill) {
 	{
 		std::list<int> ctnr_std(2);
 		ft::List<int> ctnr_ft(2);
@@ -83,7 +83,7 @@ TEST_F(Test_List, Constructor_fill) {
 	}
 }
 
-TEST_F(Test_List, Constructor_range) {
+TEST_F(Test_List, Constructor_Range) {
 	std::list<int>	ctnr_std_cpy(++(*int_sort_std).begin(),
 			--(*int_sort_std).end());
 	ft::List<int>	ctnr_ft_cpy(++(*int_sort_ft).begin(),
@@ -98,7 +98,7 @@ TEST_F(Test_List, Constructor_range) {
 	EXPECT_EQ(ctnr_std_cpy.size(), ctnr_ft_cpy.size());
 }
 
-TEST_F(Test_List, Constructor_copy) {
+TEST_F(Test_List, Constructor_Copy) {
 	std::list<int>	ctnr_std_cpy(*int_unsort_std);
 	ft::List<int>	ctnr_ft_cpy(*int_unsort_ft);
 
@@ -120,7 +120,7 @@ TEST_F(Test_List, Destructor) {
 	delete(ctnr_ft);
 }
 
-TEST_F(Test_List, Operator_assign) {
+TEST_F(Test_List, Operator_Assign) {
 	std::list<int>	ctnr_std_cpy;
 	ft::List<int>	ctnr_ft_cpy;
 
@@ -136,7 +136,7 @@ TEST_F(Test_List, Operator_assign) {
 	EXPECT_EQ(int_sort_ft->size(), ctnr_ft_cpy.size());
 }
 
-TEST_F(Test_List, Iterators_begin) {
+TEST_F(Test_List, Iterators_Begin) {
 	std::cout << "----- ITERATOR BEGIN -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_iterators(int_sort_std->begin(), int_sort_ft->begin(), "   begin");
@@ -146,7 +146,7 @@ TEST_F(Test_List, Iterators_begin) {
 	EXPECT_EQ(*(++int_sort_std->begin()), *(++int_sort_ft->begin()));
 }
 
-TEST_F(Test_List, Iterators_end) {
+TEST_F(Test_List, Iterators_End) {
 	std::cout << "----- ITERATOR END -----" << std::endl;
 	std::list<int>::iterator it_std = --int_sort_std->end();
 	ft::List<int>::iterator it_ft = --int_sort_ft->end();
@@ -157,7 +157,7 @@ TEST_F(Test_List, Iterators_end) {
 	EXPECT_EQ(*(--it_std), *(--it_ft));
 }
 
-TEST_F(Test_List, Iterators_rbegin) {
+TEST_F(Test_List, Iterators_Rbegin) {
 	std::cout << "----- ITERATOR RBEGIN -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_iterators(int_sort_std->rbegin(), int_sort_ft->rbegin(),
@@ -168,7 +168,7 @@ TEST_F(Test_List, Iterators_rbegin) {
 	EXPECT_EQ(*(++int_sort_std->rbegin()), *(++int_sort_ft->rbegin()));
 }
 
-TEST_F(Test_List, Iterators_rend) {
+TEST_F(Test_List, Iterators_Rend) {
 	std::cout << "----- ITERATOR REND -----" << std::endl;
 	std::list<int>::reverse_iterator it_std = --int_sort_std->rend();
 	ft::List<int>::reverse_iterator it_ft = --int_sort_ft->rend();
@@ -179,7 +179,7 @@ TEST_F(Test_List, Iterators_rend) {
 	EXPECT_EQ(*(--it_std), *(--it_ft));
 }
 
-TEST_F(Test_List, Capacity_empty) {
+TEST_F(Test_List, Capacity_Empty) {
 	std::cout << "----- EMPTY -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
@@ -207,7 +207,7 @@ TEST_F(Test_List, Capacity_empty) {
 	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
 }
 
-TEST_F(Test_List, Capacity_size) {
+TEST_F(Test_List, Capacity_Size) {
 	std::cout << "----- SIZE -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
@@ -215,28 +215,28 @@ TEST_F(Test_List, Capacity_size) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Capacity_max_size) {
+TEST_F(Test_List, Capacity_Max_size) {
 	std::cout << "----- MAX SIZE -----" << std::endl;
 	std::cout << "std max_size: " << int_sort_std->max_size() << std::endl;
 	std::cout << " ft max_size: " << int_sort_ft->max_size() << std::endl;
 	EXPECT_EQ(int_sort_std->max_size(), int_sort_ft->max_size());
 }
 
-TEST_F(Test_List, Element_access_front) {
+TEST_F(Test_List, Element_access_Front) {
 	std::cout << "----- ELEMENT ACCESS FRONT -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_elements(int_sort_std->front(), int_sort_ft->front());
 	EXPECT_EQ(int_sort_std->front(), int_sort_ft->front());
 }
 
-TEST_F(Test_List, Element_access_back) {
+TEST_F(Test_List, Element_access_Back) {
 	std::cout << "----- ELEMENT ACCESS BACK -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft);
 	compare_elements(int_sort_std->back(), int_sort_ft->back());
 	EXPECT_EQ(int_sort_std->back(), int_sort_ft->back());
 }
 
-TEST_F(Test_List, Modifiers_assign_range) {
+TEST_F(Test_List, Modifiers_Assign_range) {
 	std::cout << "----- ASSIGN (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " original");
 
@@ -259,7 +259,7 @@ TEST_F(Test_List, Modifiers_assign_range) {
 	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
-TEST_F(Test_List, Modifiers_assign_fill) {
+TEST_F(Test_List, Modifiers_Assign_fill) {
 	std::cout << "----- ASSIGN (fill) -----" << std::endl;
 	std::list<int>	ctnr_std;
 	ft::List<int>	ctnr_ft;
@@ -278,7 +278,7 @@ TEST_F(Test_List, Modifiers_assign_fill) {
 	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
-TEST_F(Test_List, Modifiers_push_front) {
+TEST_F(Test_List, Modifiers_Push_front) {
 	std::cout << "----- PUSH_FRONT -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -297,7 +297,7 @@ TEST_F(Test_List, Modifiers_push_front) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_pop_front) {
+TEST_F(Test_List, Modifiers_Pop_front) {
 	std::cout << "----- POP_FRONT -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -314,7 +314,7 @@ TEST_F(Test_List, Modifiers_pop_front) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_push_back) {
+TEST_F(Test_List, Modifiers_Push_back) {
 	std::cout << "----- PUSH_BACK -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -333,7 +333,7 @@ TEST_F(Test_List, Modifiers_push_back) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_pop_back) {
+TEST_F(Test_List, Modifiers_Pop_back) {
 	std::cout << "----- POP_BACK -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -350,7 +350,7 @@ TEST_F(Test_List, Modifiers_pop_back) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_insert_single_element) {
+TEST_F(Test_List, Modifiers_Insert_single_element) {
 	std::cout << "----- INSERT (single element) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -369,7 +369,7 @@ TEST_F(Test_List, Modifiers_insert_single_element) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_insert_fill) {
+TEST_F(Test_List, Modifiers_Insert_fill) {
 	std::cout << "----- INSERT (fill) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -388,7 +388,7 @@ TEST_F(Test_List, Modifiers_insert_fill) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_insert_range) {
+TEST_F(Test_List, Modifiers_Insert_range) {
 	std::cout << "----- INSERT (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -416,7 +416,7 @@ TEST_F(Test_List, Modifiers_insert_range) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_erase_position) {
+TEST_F(Test_List, Modifiers_Erase_position) {
 	std::cout << "----- ERASE (position) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -440,7 +440,7 @@ TEST_F(Test_List, Modifiers_erase_position) {
 	EXPECT_EQ(*it_std, *it_ft);
 }
 
-TEST_F(Test_List, Modifiers_erase_range) {
+TEST_F(Test_List, Modifiers_Erase_range) {
 	std::cout << "----- ERASE (position) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -466,7 +466,7 @@ TEST_F(Test_List, Modifiers_erase_range) {
 	EXPECT_EQ(*it_std, *it_ft);
 }
 
-TEST_F(Test_List, Modifiers_swap) {
+TEST_F(Test_List, Modifiers_Swap) {
 	std::cout << "----- SWAP -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	std::cout << std::endl;
@@ -506,7 +506,7 @@ TEST_F(Test_List, Modifiers_swap) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_List, Capacity_resize_reduce) {
+TEST_F(Test_List, Capacity_Resize_reduce) {
 	std::cout << "----- RESIZE (reduce) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -524,7 +524,7 @@ TEST_F(Test_List, Capacity_resize_reduce) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Capacity_resize_incrase_default) {
+TEST_F(Test_List, Capacity_Resize_incrase_default) {
 	std::cout << "----- RESIZE (incrase default) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -543,7 +543,7 @@ TEST_F(Test_List, Capacity_resize_incrase_default) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Capacity_resize_incrase_fill) {
+TEST_F(Test_List, Capacity_Resize_incrase_fill) {
 	std::cout << "----- RESIZE (incrase fill) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -561,7 +561,7 @@ TEST_F(Test_List, Capacity_resize_incrase_fill) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Modifiers_clear) {
+TEST_F(Test_List, Modifiers_Clear) {
 	std::cout << "----- CLEAR -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -578,7 +578,7 @@ TEST_F(Test_List, Modifiers_clear) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Operations_splice_entire_list) {
+TEST_F(Test_List, Operations_Splice_entire_list) {
 	std::cout << "----- SPLICE (entire list) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -624,7 +624,7 @@ TEST_F(Test_List, Operations_splice_entire_list) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_List, Operations_splice_single_element) {
+TEST_F(Test_List, Operations_Splice_single_element) {
 	std::cout << "----- SPLICE (single element) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -671,7 +671,7 @@ TEST_F(Test_List, Operations_splice_single_element) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_List, Operations_splice_range) {
+TEST_F(Test_List, Operations_Splice_range) {
 	std::cout << "----- SPLICE (range) -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	compare_size(*int_sort_std, *int_sort_ft, "_first before");
@@ -720,7 +720,7 @@ TEST_F(Test_List, Operations_splice_range) {
 	EXPECT_EQ(int_unsort_std->size(), int_unsort_ft->size());
 }
 
-TEST_F(Test_List, Operations_remove) {
+TEST_F(Test_List, Operations_Remove) {
 	std::cout << "----- REMOVE -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -744,7 +744,7 @@ bool	is_odd(const int& val) {
 	return (val % 2) == 1;
 }
 
-TEST_F(Test_List, Operations_remove_if) {
+TEST_F(Test_List, Operations_Remove_if) {
 	std::cout << "----- REMOVE_IF -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 	compare_size(*int_sort_std, *int_sort_ft, " before");
@@ -762,7 +762,7 @@ TEST_F(Test_List, Operations_remove_if) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
-TEST_F(Test_List, Operations_unique_no_args_sorted) {
+TEST_F(Test_List, Operations_Unique_no_args_sorted) {
 	std::cout << "----- UNIQUE (no arguments sorted) -----" << std::endl;
 	std::list<int>	ctnr_std;
 	ft::List<int>	ctnr_ft;
@@ -787,7 +787,7 @@ TEST_F(Test_List, Operations_unique_no_args_sorted) {
 	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
-TEST_F(Test_List, Operations_unique_no_args_unsorted) {
+TEST_F(Test_List, Operations_Unique_no_args_unsorted) {
 	std::cout << "----- UNIQUE (no arguments unsorted) -----" << std::endl;
 	std::list<int>	ctnr_std;
 	ft::List<int>	ctnr_ft;
@@ -817,7 +817,7 @@ bool	same_integral_part(double first, double second) {
 	return ( int(first)==int(second) );
 }
 
-TEST_F(Test_List, Operations_unique_binary_pred) {
+TEST_F(Test_List, Operations_Unique_binary_pred) {
 	std::cout << "----- UNIQUE (binary predicate) -----" << std::endl;
 	std::list<double>	ctnr_std;
 	ft::List<double>	ctnr_ft;
@@ -842,7 +842,7 @@ TEST_F(Test_List, Operations_unique_binary_pred) {
 	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
-TEST_F(Test_List, Operations_merge_no_args_sort_small_in_big) {
+TEST_F(Test_List, Operations_Merge_no_args_sort_small_in_big) {
 	std::cout << "----- MERGE (no args sorted smaller into bigger) -----"
 		<< std::endl;
 
@@ -904,7 +904,7 @@ TEST_F(Test_List, Operations_merge_no_args_sort_small_in_big) {
 	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
-TEST_F(Test_List, Operations_merge_no_args_unsort_big_in_small) {
+TEST_F(Test_List, Operations_Merge_no_args_unsort_big_in_small) {
 	std::cout << "----- MERGE (no args unsorted bigger into smaller) -----"
 		<< std::endl;
 
@@ -971,7 +971,7 @@ bool	mycomparison(double first, double second) {
 	return ( int(first)<int(second) );
 }
 
-TEST_F(Test_List, Operations_merge_compare) {
+TEST_F(Test_List, Operations_Merge_compare) {
 	std::cout << "----- MERGE (compare) -----" << std::endl;
 
 	std::list<double>	ctnr_std_first;
@@ -1034,7 +1034,7 @@ TEST_F(Test_List, Operations_merge_compare) {
 	EXPECT_EQ(ctnr_std_second.size(), ctnr_ft_second.size());
 }
 
-TEST_F(Test_List, Operations_sort_no_args) {
+TEST_F(Test_List, Operations_Sort_no_args) {
 	std::cout << "----- SORT (no args) -----" << std::endl;
 	compare_content(*int_unsort_std, *int_unsort_ft, " before");
 
@@ -1062,7 +1062,7 @@ bool	compare_nocase(const std::string& first, const std::string& second) {
 	return ( first.length() < second.length() );
 }
 
-TEST_F(Test_List, Operations_sort_compare) {
+TEST_F(Test_List, Operations_Sort_compare) {
 	std::cout << "----- SORT (compare) -----" << std::endl;
 	std::list<std::string>	ctnr_std;
 	ctnr_std.push_back ("one");
@@ -1094,7 +1094,7 @@ TEST_F(Test_List, Operations_sort_compare) {
 	EXPECT_EQ(*(--ctnr_std.end()), *(--ctnr_ft.end()));
 }
 
-TEST_F(Test_List, Operations_reverse) {
+TEST_F(Test_List, Operations_Reverse) {
 	std::cout << "----- Reverse -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " before");
 
@@ -1123,7 +1123,7 @@ TEST_F(Test_List, Operations_reverse) {
 	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 }
 
-TEST_F(Test_List, relational_operators_equal) {
+TEST_F(Test_List, Relational_operators_Equal) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS == -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1160,7 +1160,7 @@ TEST_F(Test_List, relational_operators_equal) {
 	}
 }
 
-TEST_F(Test_List, relational_operators_not_equal) {
+TEST_F(Test_List, Relational_operators_Not_equal) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS != -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1197,7 +1197,7 @@ TEST_F(Test_List, relational_operators_not_equal) {
 	}
 }
 
-TEST_F(Test_List, relational_operators_less) {
+TEST_F(Test_List, Relational_operators_Less) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS < -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1234,7 +1234,7 @@ TEST_F(Test_List, relational_operators_less) {
 	}
 }
 
-TEST_F(Test_List, relational_operators_less_or_equal) {
+TEST_F(Test_List, Relational_operators_Less_or_equal) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS <= -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1271,7 +1271,7 @@ TEST_F(Test_List, relational_operators_less_or_equal) {
 	}
 }
 
-TEST_F(Test_List, relational_operators_more) {
+TEST_F(Test_List, Relational_operators_More) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS > -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1308,7 +1308,7 @@ TEST_F(Test_List, relational_operators_more) {
 	}
 }
 
-TEST_F(Test_List, relational_operators_more_or_equal) {
+TEST_F(Test_List, Relational_operators_More_or_equal) {
 	{
 		std::cout << "----- RELATIONAL OPERATORS >= -----" << std::endl;
 		compare_content(*int_sort_std, *int_sort_ft, "_first");
@@ -1345,7 +1345,7 @@ TEST_F(Test_List, relational_operators_more_or_equal) {
 	}
 }
 
-TEST_F(Test_List, Non_member_overload_swap) {
+TEST_F(Test_List, Non_member_overload_Swap) {
 	std::cout << "----- NON-MEMBER OVERLOAD SWAP -----" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, "_first before");
 	std::cout << std::endl;
