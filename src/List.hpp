@@ -367,13 +367,15 @@ namespace ft {
 		/* Constructors: */
 
 		/* default (1) */
-		explicit	List(const allocator_type& alloc = allocator_type()) {
+		explicit	List(const allocator_type& alloc = allocator_type())
+							: alloc(alloc) {
 			end_node_init();
 		}
 
 		/* fill (2) */
 		explicit	List(size_type n, const_reference val = value_type(),
-						const allocator_type& alloc = allocator_type()) {
+						const allocator_type& alloc = allocator_type())
+							: alloc(alloc) {
 			end_node_init();
 			for (size_type i = 0; i < n; ++i) {
 				insert(end(), val);
@@ -391,6 +393,7 @@ namespace ft {
 		List(iterator first, iterator last,
 				const allocator_type& alloc = allocator_type())
 #endif
+		: alloc(alloc)
 		{
 			end_node_init();
 			while (first != last) { insert(end(), *first++); }
@@ -398,7 +401,7 @@ namespace ft {
 
 #ifdef __linux__
 		List(reverse_iterator first, reverse_iterator last,
-				const allocator_type& alloc = allocator_type()) {
+				const allocator_type& alloc = allocator_type()) : alloc(alloc) {
 			end_node_init();
 			while (first != last) { insert(end(), *first++); }
 		}
