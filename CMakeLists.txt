@@ -14,6 +14,8 @@ set(SOURCE_FILES
         test/test_list.cpp
         test/test_vector.cpp
         test/test_map.cpp
+        test/test_stack.cpp
+        test/test_queue.cpp
         )
 
 add_executable(ft_containers ${SOURCE_FILES})
