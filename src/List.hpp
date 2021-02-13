@@ -61,7 +61,7 @@ namespace ft {
 			m_size = 0;
 		}
 
-		t_node*			new_node_init(const_reference val) {
+		t_node*			new_node_init(const value_type& val) {
 			t_node* new_node = alloc_rebind.allocate(1);
 			new_node->data = alloc.allocate(1);
 			alloc.construct(new_node->data, val);
@@ -491,7 +491,7 @@ namespace ft {
 		}
 #endif
 
-		void		assign(size_type n, const_reference val) {
+		void		assign(size_type n, const value_type& val) {
 			if (m_size) { clear(); }
 			for (size_type i = 0; i < n; ++i) { insert(end(), val); }
 		}
@@ -504,7 +504,7 @@ namespace ft {
 
 		void		pop_back() { erase(--end()); }
 
-		iterator	insert(iterator position, const_reference val) {
+		iterator	insert(iterator position, const value_type& val) {
 			t_node* tmp = position.getNode();
 			t_node* new_node = new_node_init(val);
 			tmp->prev->next = new_node;
@@ -514,7 +514,7 @@ namespace ft {
 			return iterator(new_node);
 		}
 
-		void	insert(iterator position, size_type n, const_reference val) {
+		void	insert(iterator position, size_type n, const value_type& val) {
 			for (size_type i = 0; i < n; ++i) { insert(position, val); }
 		}
 
@@ -622,7 +622,7 @@ namespace ft {
 			}
 		}
 
-		void			remove(const_reference val) {
+		void			remove(const value_type& val) {
 			for (iterator it = begin(); it != end(); ) {
 				if (*it == val) { erase(it); }
 				++it;
