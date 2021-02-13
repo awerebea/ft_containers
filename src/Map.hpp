@@ -1020,6 +1020,57 @@ namespace ft {
 			return (ret) ? const_iterator(ret) : end();
 		}
 
+		size_type		count(const key_type& key) { // FIXME should be const
+			t_node* ret = tree.search_node(key);
+			return (ret) ? 1 : 0;
+		}
+
+		iterator		lower_bound(const key_type& k) {
+			for (iterator it = begin(); it != end(); ++it) {
+				if (tree.compare(k, it->first) || tree.is_equal(k, it->first)) {
+					return it;
+				}
+			}
+			return end();
+		}
+
+		const_iterator	lower_bound(const key_type& k) const {
+			for (const_iterator it = begin(); it != end(); ++it) {
+				if (tree.compare(k, it->first) || tree.is_equal(k, it->first)) {
+					return it;
+				}
+			}
+			return end();
+		}
+
+		iterator		upper_bound(const key_type& k) {
+			for (iterator it = begin(); it != end(); ++it) {
+				if (tree.compare(k, it->first)) {
+					return it;
+				}
+			}
+			return end();
+		}
+
+		const_iterator	upper_bound(const key_type& k) const {
+			for (const_iterator it = begin(); it != end(); ++it) {
+				if (tree.compare(k, it->first)) {
+					return it;
+				}
+			}
+			return end();
+		}
+
+		std::pair<const_iterator, const_iterator>	equal_range(const
+															key_type& k) const {
+			return std::make_pair(lower_bound(k), upper_bound(k));
+		}
+
+		std::pair<iterator,iterator>				equal_range(const
+															key_type& k) {
+			return std::make_pair(lower_bound(k), upper_bound(k));
+		}
+
 	}; // class Map
 
 } // namespace ft

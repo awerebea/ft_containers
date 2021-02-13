@@ -59,7 +59,7 @@ TEST_F(Test_Map, Constructor_default) {
 	ft::Map<int, int> ctnr_ft;
 	std::cout << "----- CONSTRUCTOR (default) -----" << std::endl;
 	compare_size(ctnr_std, ctnr_ft);
-	 EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
+	EXPECT_EQ(ctnr_std.size(), ctnr_ft.size());
 }
 
 TEST_F(Test_Map, Constructor_range) {
@@ -122,9 +122,10 @@ TEST_F(Test_Map, Operator_assign) {
 TEST_F(Test_Map, Iterators_begin) {
 	std::cout << "----- ITERATOR BEGIN -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
-	compare_iterators_pair(int_sort_std->begin(), int_sort_ft->begin(), "   begin");
+	compare_iterators_pair(int_sort_std->begin(), int_sort_ft->begin(),
+			"   begin");
 	compare_iterators_pair(++int_sort_std->begin(), ++int_sort_ft->begin(),
-					  " ++begin");
+			" ++begin");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(*(++int_sort_std->begin()), *(++int_sort_ft->begin()));
 }
@@ -144,9 +145,9 @@ TEST_F(Test_Map, Iterators_rbegin) {
 	std::cout << "----- ITERATOR RBEGIN -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_iterators_pair(int_sort_std->rbegin(), int_sort_ft->rbegin(),
-					  "   rbegin");
+			"   rbegin");
 	compare_iterators_pair(++int_sort_std->rbegin(), ++int_sort_ft->rbegin(),
-					  " ++rbegin");
+			" ++rbegin");
 	EXPECT_EQ(*int_sort_std->rbegin(), *int_sort_ft->rbegin());
 	EXPECT_EQ(*(++int_sort_std->rbegin()), *(++int_sort_ft->rbegin()));
 }
@@ -168,9 +169,9 @@ TEST_F(Test_Map, Capacity_empty) {
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
 	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
-			  << std::endl;
+		<< std::endl;
 	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
-			  << std::endl;
+		<< std::endl;
 
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
@@ -183,9 +184,9 @@ TEST_F(Test_Map, Capacity_empty) {
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
 	std::cout << "std empty: " << std::boolalpha << int_sort_std->empty()
-			  << std::endl;
+		<< std::endl;
 	std::cout << " ft empty: " << std::boolalpha << int_sort_ft->empty()
-			  << std::endl;
+		<< std::endl;
 
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(int_sort_std->empty(), int_sort_ft->empty());
@@ -220,18 +221,34 @@ TEST_F(Test_Map, Element_access_operator_square_braskets) {
 	std::cout << "----- OPERATOR [] -----" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
+	std::cout << std::endl;
+	std::cout << "Query for existing elements:" << std::endl;
 	compare_elements((*int_sort_std)[1], (*int_sort_ft)[1], "[1]");
 	compare_elements((*int_sort_std)[3], (*int_sort_ft)[3], "[3]");
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
 	EXPECT_EQ((*int_sort_std)[1], (*int_sort_ft)[1]);
 	EXPECT_EQ((*int_sort_std)[3], (*int_sort_ft)[3]);
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
 	std::cout << std::endl;
-	std::cout << " Ask for non-existed element '4':" << std::endl;
+	std::cout << "Query for non-existent element [4]:" << std::endl;
 	compare_elements((*int_sort_std)[4], (*int_sort_ft)[4], "[4]");
+	std::cout << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft);
 	compare_size(*int_sort_std, *int_sort_ft);
 	EXPECT_EQ((*int_sort_std)[4], (*int_sort_ft)[4]);
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "Query non-existent element [6] with value assignment:"
+		<< std::endl;
+	compare_elements((*int_sort_std)[6] = 6, (*int_sort_ft)[6] = 6, "[4]");
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+	compare_size(*int_sort_std, *int_sort_ft);
+	EXPECT_EQ((*int_sort_std)[6], (*int_sort_ft)[6]);
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
@@ -341,9 +358,9 @@ TEST_F(Test_Map, Modifiers_insert_hint) {
 	std::cout << "Insert '-100 (-100)'" << std::endl;
 
 	ret_std = int_sort_std->insert(int_sort_std->begin(),
-								   std::make_pair(-100, -100));
+			std::make_pair(-100, -100));
 	ret_ft = int_sort_ft->insert(int_sort_ft->begin(),
-								 std::make_pair(-100, -100));
+			std::make_pair(-100, -100));
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
@@ -355,10 +372,8 @@ TEST_F(Test_Map, Modifiers_insert_hint) {
 	std::cout << std::boolalpha << std::endl;
 	std::cout << "Insert '0 (0)'" << std::endl;
 
-	ret_std = int_sort_std->insert(int_sort_std->begin(),
-								   std::make_pair(0, 0));
-	ret_ft = int_sort_ft->insert(int_sort_ft->begin(),
-								 std::make_pair(0, 0));
+	ret_std = int_sort_std->insert(int_sort_std->begin(), std::make_pair(0, 0));
+	ret_ft = int_sort_ft->insert(int_sort_ft->begin(), std::make_pair(0, 0));
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
@@ -371,9 +386,8 @@ TEST_F(Test_Map, Modifiers_insert_hint) {
 	std::cout << "Insert '3 (888)' (duplicate!)" << std::endl;
 
 	ret_std = int_sort_std->insert(int_sort_std->begin(),
-								   std::make_pair(3, 888));
-	ret_ft = int_sort_ft->insert(int_sort_ft->begin(),
-								 std::make_pair(3, 888));
+			std::make_pair(3, 888));
+	ret_ft = int_sort_ft->insert(int_sort_ft->begin(), std::make_pair(3, 888));
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
@@ -394,13 +408,11 @@ TEST_F(Test_Map, Modifiers_insert_range) {
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
 	std::cout << std::endl;
-	std::cout << "Insert to first "
-			  << "from second range [++begin(), --end())" << std::endl;
+	std::cout << "Insert to first " << "from second range [++begin(), --end())"
+		<< std::endl;
 
-	int_sort_std->insert(++int_unsort_std->begin(),
-				   --int_unsort_std->end());
-	int_sort_ft->insert( ++int_unsort_ft->begin(),
-				   --int_unsort_ft->end());
+	int_sort_std->insert(++int_unsort_std->begin(), --int_unsort_std->end());
+	int_sort_ft->insert( ++int_unsort_ft->begin(), --int_unsort_ft->end());
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, "_first after");
 	compare_size(*int_sort_std, *int_sort_ft, "_first after");
@@ -595,20 +607,233 @@ TEST_F(Test_Map, Operations_find) {
 
 	std::cout << std::endl;
 	std::cout << "Find [3]" << std::endl;
-	compare_iterators_pair(int_sort_std->find(3), int_sort_std->find(3));
+	compare_iterators_pair(int_sort_std->find(3), int_sort_ft->find(3));
 	std::cout << std::endl;
 	std::cout << "Find [7]" << std::endl;
-	compare_iterators_pair(int_sort_std->find(7), int_sort_std->find(7));
+	compare_iterators_pair(int_sort_std->find(7), int_sort_ft->find(7));
 	std::cout << std::endl;
-	std::cout << "Find [42] (non-existed)" << std::endl;
-	compare_iterators_pair(int_sort_std->find(4), int_sort_std->find(4));
+	std::cout << "Find [42] (non-existent)" << std::endl;
+	std::cout << "std find(42): "
+		<< int_sort_std->lower_bound(42)->first << " ("
+		<< int_sort_std->lower_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+	std::cout << " ft find(42): "
+		<< int_sort_std->lower_bound(42)->first << " ("
+		<< int_sort_std->lower_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+
 	std::cout << std::endl;
-	std::cout << "end()" << std::endl;
-	compare_iterators_pair(int_sort_std->end(), int_sort_std->end());
+	compare_content_pair(*int_sort_std, *int_sort_ft);
 
 	EXPECT_EQ(int_sort_std->find(3)->first, int_sort_ft->find(3)->first);
 	EXPECT_EQ(int_sort_std->find(3)->second, int_sort_ft->find(3)->second);
-	EXPECT_EQ(*int_sort_std->find(42), *int_sort_std->end());
-	EXPECT_EQ(*int_sort_ft->find(42), *int_sort_ft->end());
+	EXPECT_EQ(int_sort_std->find(7)->first, int_sort_ft->find(7)->first);
+	EXPECT_EQ(int_sort_std->find(7)->second, int_sort_ft->find(7)->second);
+	EXPECT_EQ(int_sort_std->find(42)->first, int_sort_std->end()->first);
+	EXPECT_EQ(int_sort_std->find(42)->second, int_sort_std->end()->second);
+	EXPECT_EQ(int_sort_ft->find(42)->first, int_sort_ft->end()->first);
+	EXPECT_EQ(int_sort_ft->find(42)->second, int_sort_ft->end()->second);
 }
 
+TEST_F(Test_Map, Operations_count) {
+	std::cout << "----- COUNT -----" << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	std::cout << std::endl;
+	std::cout << "Count [3]" << std::endl;
+	compare_elements(int_sort_std->count(3), int_sort_ft->count(3));
+	std::cout << std::endl;
+	std::cout << "Count [7]" << std::endl;
+	compare_elements(int_sort_std->count(7), int_sort_ft->count(7));
+	std::cout << std::endl;
+	std::cout << "Count [42] (non-existent)" << std::endl;
+	compare_elements(int_sort_std->count(42), int_sort_ft->count(42));
+
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->count(3), int_sort_ft->count(3));
+	EXPECT_EQ(int_sort_std->count(42), int_sort_ft->count(42));
+}
+
+TEST_F(Test_Map, Operations_lower_bound) {
+	std::cout << "----- LOWER BOUND -----" << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	std::cout << std::endl;
+	std::cout << "Lower bound [3]" << std::endl;
+	compare_iterators_pair(int_sort_std->lower_bound(3),
+						int_sort_ft->lower_bound(3));
+	std::cout << std::endl;
+	std::cout << "Lower bound [4] (non-existent, middle value)" << std::endl;
+	compare_iterators_pair(int_sort_std->lower_bound(4),
+			int_sort_ft->lower_bound(4));
+	std::cout << std::endl;
+	std::cout << "Lower bound [42] (non-existent, upper then all others), "
+		"compare with end()" << std::endl;
+	std::cout << "std lower_bound(42): "
+		<< int_sort_std->lower_bound(42)->first << " ("
+		<< int_sort_std->lower_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+	std::cout << " ft lower_bound(42): "
+		<< int_sort_std->lower_bound(42)->first << " ("
+		<< int_sort_std->lower_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->lower_bound(3)->first,
+				int_sort_ft->lower_bound(3)->first);
+	EXPECT_EQ(int_sort_std->lower_bound(3)->second,
+				int_sort_ft->lower_bound(3)->second);
+	EXPECT_EQ(int_sort_std->lower_bound(4)->first,
+				int_sort_ft->lower_bound(4)->first);
+	EXPECT_EQ(int_sort_std->lower_bound(4)->second,
+				int_sort_ft->lower_bound(4)->second);
+	EXPECT_EQ(int_sort_std->lower_bound(42)->first,
+				int_sort_std->end()->first);
+	EXPECT_EQ(int_sort_std->lower_bound(42)->second,
+				int_sort_std->end()->second);
+	EXPECT_EQ(int_sort_ft->lower_bound(42)->first,
+				int_sort_ft->end()->first);
+	EXPECT_EQ(int_sort_ft->lower_bound(42)->second,
+				int_sort_ft->end()->second);
+}
+
+TEST_F(Test_Map, Operations_upper_bound) {
+	std::cout << "----- UPPER BOUND -----" << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	std::cout << std::endl;
+	std::cout << "Upper bound [3]" << std::endl;
+	compare_iterators_pair(int_sort_std->upper_bound(3),
+			int_sort_ft->upper_bound(3));
+	std::cout << std::endl;
+	std::cout << "Upper bound [4] (non-existent, middle value)" << std::endl;
+	compare_iterators_pair(int_sort_std->upper_bound(4),
+			int_sort_ft->upper_bound(4));
+	std::cout << std::endl;
+	std::cout << "Upper bound [42] (non-existent, upper then all others), "
+		"compare with end()" << std::endl;
+	std::cout << "std upper_bound(42): "
+		<< int_sort_std->upper_bound(42)->first << " ("
+		<< int_sort_std->upper_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+	std::cout << " ft upper_bound(42): "
+		<< int_sort_std->upper_bound(42)->first << " ("
+		<< int_sort_std->upper_bound(42)->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->upper_bound(3)->first,
+				int_sort_ft->upper_bound(3)->first);
+	EXPECT_EQ(int_sort_std->upper_bound(3)->second,
+				int_sort_ft->upper_bound(3)->second);
+	EXPECT_EQ(int_sort_std->upper_bound(4)->first,
+				int_sort_ft->upper_bound(4)->first);
+	EXPECT_EQ(int_sort_std->upper_bound(4)->second,
+				int_sort_ft->upper_bound(4)->second);
+	EXPECT_EQ(int_sort_std->upper_bound(42)->first,
+				int_sort_std->end()->first);
+	EXPECT_EQ(int_sort_std->upper_bound(42)->second,
+				int_sort_std->end()->second);
+	EXPECT_EQ(int_sort_ft->upper_bound(42)->first,
+				int_sort_ft->end()->first);
+	EXPECT_EQ(int_sort_ft->upper_bound(42)->second,
+				int_sort_ft->end()->second);
+}
+TEST_F(Test_Map, Operations_equal_range) {
+	std::cout << "----- EQUAL RANGE -----" << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator>
+		eq_range_std;
+	std::pair<ft::Map<int, int>::iterator, ft::Map<int, int>::iterator>
+		eq_range_ft;
+
+	std::cout << std::endl;
+	std::cout << "Equal range [3]" << std::endl;
+	eq_range_std = int_sort_std->equal_range(3);
+	eq_range_ft = int_sort_ft->equal_range(3);
+	compare_iterators_pair(eq_range_std.first, eq_range_ft.first, " first");
+	compare_iterators_pair(eq_range_std.second, eq_range_ft.second, " second");
+
+	std::cout << std::endl;
+	std::cout << "Equal range [4] (non-existent, middle value)" << std::endl;
+	eq_range_std = int_sort_std->equal_range(4);
+	eq_range_ft = int_sort_ft->equal_range(4);
+	compare_iterators_pair(eq_range_std.first, eq_range_ft.first, " first");
+	compare_iterators_pair(eq_range_std.second, eq_range_ft.second, " second");
+
+	std::cout << std::endl;
+	std::cout << "Equal range [42] (non-existent, upper then all others), "
+		"compare with end()" << std::endl;
+	eq_range_std = int_sort_std->equal_range(42);
+	eq_range_ft = int_sort_ft->equal_range(42);
+	std::cout << "std equal_range(42)->first: "
+		<< eq_range_std.first->first << " ("
+		<< eq_range_std.first->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+	std::cout << "std equal_range(42)->second: "
+		<< eq_range_std.second->first << " ("
+		<< eq_range_std.second->second << "), end(): "
+		<< int_sort_std->end()->first << " ("
+		<< int_sort_std->end()->second << ")" << std::endl;
+	std::cout << std::endl;
+	std::cout << " ft equal_range(42)->first: "
+		<< eq_range_ft.first->first << " ("
+		<< eq_range_ft.first->second << "), end(): "
+		<< int_sort_ft->end()->first << " ("
+		<< int_sort_ft->end()->second << ")" << std::endl;
+	std::cout << " ft equal_range(42)->second: "
+		<< eq_range_ft.second->first << " ("
+		<< eq_range_ft.second->second << "), end(): "
+		<< int_sort_ft->end()->first << " ("
+		<< int_sort_ft->end()->second << ")" << std::endl;
+
+	std::cout << std::endl;
+	compare_content_pair(*int_sort_std, *int_sort_ft);
+
+	EXPECT_EQ(int_sort_std->equal_range(3).first->first,
+				int_sort_ft->equal_range(3).first->first);
+	EXPECT_EQ(int_sort_std->equal_range(3).first->second,
+				int_sort_ft->equal_range(3).first->second);
+	EXPECT_EQ(int_sort_std->equal_range(3).second->first,
+				int_sort_ft->equal_range(3).second->first);
+	EXPECT_EQ(int_sort_std->equal_range(3).second->second,
+				int_sort_ft->equal_range(3).second->second);
+	EXPECT_EQ(int_sort_std->equal_range(4).first->first,
+				int_sort_ft->equal_range(4).first->first);
+	EXPECT_EQ(int_sort_std->equal_range(4).first->second,
+				int_sort_ft->equal_range(4).first->second);
+	EXPECT_EQ(int_sort_std->equal_range(4).second->first,
+				int_sort_ft->equal_range(4).second->first);
+	EXPECT_EQ(int_sort_std->equal_range(4).second->second,
+				int_sort_ft->equal_range(4).second->second);
+	EXPECT_EQ(int_sort_std->equal_range(42).first->first,
+				int_sort_std->end()->first);
+	EXPECT_EQ(int_sort_std->equal_range(42).first->second,
+				int_sort_std->end()->second);
+	EXPECT_EQ(int_sort_std->equal_range(42).second->first,
+				int_sort_std->end()->first);
+	EXPECT_EQ(int_sort_std->equal_range(42).second->second,
+				int_sort_std->end()->second);
+	EXPECT_EQ(int_sort_ft->equal_range(42).first->first,
+				int_sort_ft->end()->first);
+	EXPECT_EQ(int_sort_ft->equal_range(42).first->second,
+				int_sort_ft->end()->second);
+	EXPECT_EQ(int_sort_ft->equal_range(42).second->first,
+				int_sort_ft->end()->first);
+	EXPECT_EQ(int_sort_ft->equal_range(42).second->second,
+				int_sort_ft->end()->second);
+}
