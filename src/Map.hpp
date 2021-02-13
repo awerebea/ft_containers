@@ -113,18 +113,18 @@ namespace ft {
 				end_node->right = NULL;
 			}
 
-			std::pair<t_node*, bool>	insert_node(const_reference inp_data) {
+			std::pair<t_node*, bool>	insert_node(const value_type& val) {
 				t_node* node = root;
 				t_node* parent = NULL;
 				unbind_extreme_nodes();
 				while (node != NULL) {
 					parent = node;
 					// INFO avoid insertion nodes with already existed keys
-					if (is_equal(inp_data.first, node->data->first)) {
+					if (is_equal(val.first, node->data->first)) {
 						bind_extreme_nodes();
 						return std::make_pair(node, false);
 					}
-					if (compare(inp_data.first, node->data->first)) {
+					if (compare(val.first, node->data->first)) {
 						node = node->left;
 					} else {
 						node = node->right;
@@ -132,14 +132,14 @@ namespace ft {
 				}
 				node = alloc_rebind.allocate(1);
 				node->data = alloc.allocate(1);
-				alloc.construct(node->data, inp_data);
+				alloc.construct(node->data, val);
 				node->parent = parent;
 				node->left = NULL;
 				node->right = NULL;
 				node->is_black = false;
 				if (!parent) { root = node; }
 				else {
-					if (compare(inp_data.first, parent->data->first)) {
+					if (compare(val.first, parent->data->first)) {
 						parent->left = node;
 					} else {
 						parent->right = node;
@@ -396,15 +396,15 @@ namespace ft {
 				return (!compare(a, b) && !compare(b, a));
 			}
 
-			t_node*		search_node(const key_type& key) {
+			t_node*		search_node(const key_type& k) {
 				t_node* node = root;
 				unbind_extreme_nodes();
 				while (node) {
-					if (is_equal(key, node->data->first)) {
+					if (is_equal(k, node->data->first)) {
 						bind_extreme_nodes();
 						return node;
 					} else {
-						if (compare(key, node->data->first)) {
+						if (compare(k, node->data->first)) {
 							node = node->left;
 						} else {
 							node = node->right;
@@ -909,13 +909,13 @@ namespace ft {
 
 		/* Modifiers */
 
-		std::pair<iterator, bool>	insert(const_reference inp_data) {
-			std::pair<t_node*, bool> ret = tree.insert_node(inp_data);
+		std::pair<iterator, bool>	insert(const value_type& val) {
+			std::pair<t_node*, bool> ret = tree.insert_node(val);
 			return std::make_pair(iterator(ret.first), ret.second);
 		}
 
-		iterator	insert(iterator position, const_reference inp_data) {
-			return iterator(tree.insert_node(inp_data).first);
+		iterator	insert(iterator position, const value_type& val) {
+			return iterator(tree.insert_node(val).first);
 		}
 
 #ifdef __APPLE__
@@ -951,8 +951,8 @@ namespace ft {
 			tree.delete_node(position.get_node());
 		}
 
-		size_type		erase(const key_type& key) {
-			t_node* tmp = (tree.search_node(key));
+		size_type		erase(const key_type& k) {
+			t_node* tmp = (tree.search_node(k));
 			if (!tmp) { return 0; }
 			tree.delete_node(tmp);
 			return 1;
@@ -1010,18 +1010,18 @@ namespace ft {
 
 		/* Operations */
 
-		iterator		find(const key_type& key) {
-			t_node* ret = tree.search_node(key);
+		iterator		find(const key_type& k) {
+			t_node* ret = tree.search_node(k);
 			return (ret) ? iterator(ret) : end();
 		}
 
-		const_iterator	find(const key_type& key) const {
-			t_node* ret = tree.search_node(key);
+		const_iterator	find(const key_type& k) const {
+			t_node* ret = tree.search_node(k);
 			return (ret) ? const_iterator(ret) : end();
 		}
 
-		size_type		count(const key_type& key) { // FIXME should be const
-			t_node* ret = tree.search_node(key);
+		size_type		count(const key_type& k) { // FIXME should be const
+			t_node* ret = tree.search_node(k);
 			return (ret) ? 1 : 0;
 		}
 
