@@ -539,7 +539,7 @@ namespace ft {
 		}
 
 		/* fill (2) */
-		explicit	Vector(size_type n, const_reference val = value_type(),
+		explicit	Vector(size_type n, const value_type& val = value_type(),
 						const allocator_type& alloc = allocator_type())
 			: m_alloc(alloc) {
 			start_elem = m_alloc.allocate(n);
@@ -685,7 +685,7 @@ namespace ft {
 #endif
 
 
-		void		assign(size_type n, const_reference val) {
+		void		assign(size_type n, const value_type& val) {
 			if (m_size) { clear(); }
 			if (n > m_capacity) { reserve(n); }
 			for (size_type i = 0; i < n; ++i) {
@@ -700,12 +700,12 @@ namespace ft {
 			if (m_size) { m_alloc.destroy(start_elem + --m_size); }
 		}
 
-		iterator	insert(iterator position, const_reference val) {
+		iterator	insert(iterator position, const value_type& val) {
 			insert(position, 1, val);
 			return iterator(position);
 		}
 
-		void	insert(iterator position, size_type n, const_reference val) {
+		void	insert(iterator position, size_type n, const value_type& val) {
 			size_type new_elem_ind = &(*position) - start_elem;
 			if (m_capacity < m_size + n) {
 				pointer old_start = start_elem;
