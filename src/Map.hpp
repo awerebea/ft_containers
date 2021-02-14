@@ -810,7 +810,7 @@ namespace ft {
 
 		/* Constructors: */
 
-		/* default (1) */
+		/* empty (1) */
 		explicit Map(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			: alloc(alloc), comp(comp) {}

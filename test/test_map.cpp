@@ -349,6 +349,7 @@ TEST_F(Test_Map, Modifiers_Insert_hint) {
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
+	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(ret_std->first, ret_ft->first);
@@ -364,6 +365,7 @@ TEST_F(Test_Map, Modifiers_Insert_hint) {
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
+	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(ret_std->first, ret_ft->first);
@@ -377,6 +379,7 @@ TEST_F(Test_Map, Modifiers_Insert_hint) {
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
+	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(ret_std->first, ret_ft->first);
@@ -391,6 +394,7 @@ TEST_F(Test_Map, Modifiers_Insert_hint) {
 
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_iterators_pair(ret_std, ret_ft);
+	compare_size(*int_sort_std, *int_sort_ft, " before");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 	EXPECT_EQ(ret_std->first, ret_ft->first);
