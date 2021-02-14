@@ -55,8 +55,7 @@ HEADERS = -I src/ -I test/
 all : $(TESTS)
 
 clean:
-	rm -f	test_list.o test_vector.o test_map.o test_queue.o test_stack.o \
-			gtest_main.o gtest-all.o gtest_main.a gtest.a
+	rm -f	gtest_main.a gtest.a *.o
 
 fclean:	clean
 	rm -f	$(TESTS)
@@ -65,6 +64,7 @@ fclean:	clean
 	rm -f	test_map
 	rm -f	test_queue
 	rm -f	test_stack
+	rm -f	test_set
 
 run_all: all
 	./$(TESTS)
@@ -137,8 +137,12 @@ test_stack : test_stack.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_stack
 
-test_stack.o : $(USER_DIR)/test_stack.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_stack.cpp
+test_set.o : $(USER_DIR)/test_set.cpp $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_set.cpp
+
+test_set : test_set.o gtest_main.a
+	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	./test_set
 
 $(TESTS) :	test_list.o test_vector.o test_map.o test_queue.o test_stack.o \
 			gtest_main.a
