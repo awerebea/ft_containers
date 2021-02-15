@@ -382,14 +382,45 @@ TEST_F(Test_Set, Modifiers_Erase_position) {
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
+	std::cout << std::endl;
+	std::cout << "Erase begin() element" << std::endl;
+
 	int_sort_std->erase(int_sort_std->begin());
 	int_sort_ft->erase(int_sort_ft->begin());
 
-	std::cout << std::endl;
-	std::cout << "Erase begin() element" << std::endl;
 	compare_content(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+
+	std::set<int>::iterator it_std_first = --int_sort_std->end();
+	ft::Set<int>::iterator it_ft_first = --int_sort_ft->end();
+
+	std::set<int>::iterator it_std_second = it_std_first;
+	ft::Set<int>::iterator it_ft_second = it_ft_first;
+
+	--it_std_second;
+	--it_ft_second;
+
+	compare_iterators(it_std_first, it_ft_first, " --end()  before");
+
+	std::cout << std::endl;
+	std::cout << "Erase --(--end())" << std::endl;
+
+	int_sort_std->erase(it_std_second);
+	int_sort_ft->erase(it_ft_second);
+
+	compare_content(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+
+	std::cout << std::endl;
+	std::cout << "Check iterators (should be the same)" << std::endl;
+	compare_iterators(it_std_first, it_ft_first, " --end() after");
+
+	EXPECT_EQ(*(--int_sort_std->end()), *(--int_sort_ft->end()));
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 

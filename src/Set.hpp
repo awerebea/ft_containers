@@ -219,6 +219,21 @@ namespace ft {
 				m_size = 0;
 			}
 
+			void		relink_node(t_node* a, t_node* b) {
+				a->left = b->left;
+				a->right = b->right;
+				a->parent = b->parent;
+				a->is_black = b->is_black;
+				if (a->parent) {
+					if (a->parent->left == b) { a->parent->left = a; }
+					if (a->parent->right == b) { a->parent->right = a; }
+				} else {
+					root = a;
+				}
+				if (a->left) { a->left->parent = a; }
+				if (a->right) { a->right->parent = a; }
+			}
+
 			void		delete_node(t_node* node) {
 				if (node == root && m_size == 1) { return delete_last_node(); }
 
@@ -226,10 +241,10 @@ namespace ft {
 					return ;
 				}
 
-				t_node* dealloc_node = node;
-
 				alloc.destroy(node->data);
 				alloc.deallocate(node->data, 1);
+
+				bool need_relink = false;
 
 				t_node* x_node = NULL;
 				t_node* y_node = NULL;
@@ -261,19 +276,25 @@ namespace ft {
 					root = x_node;
 				}
 				if (y_node != node) {
-					node->data = y_node->data;
-					dealloc_node = y_node;
+					need_relink = true;
 				}
 				if (y_node->is_black) {
 					delete_fixup(x_node);
 				}
-				alloc_rebind.deallocate(dealloc_node, 1);
+				if (need_relink) {
+					relink_node(y_node, node);
+				}
+				if (y_node->left == &tmp) { y_node->left = NULL; }
+				if (y_node->right == &tmp) { y_node->right = NULL; }
+				if (node->left == &tmp) { node->left = NULL; }
+				if (node->right == &tmp) { node->right = NULL; }
 				if (tmp.parent && tmp.parent->left == &tmp) {
 					tmp.parent->left = NULL;
 				}
 				if (tmp.parent && tmp.parent->right == &tmp) {
 					tmp.parent->right = NULL;
 				}
+				alloc_rebind.deallocate(node, 1);
 				bind_extreme_nodes();
 				m_size--;
 			}
@@ -950,17 +971,7 @@ namespace ft {
 		}
 
 		void			erase(iterator first, iterator last) {
-			value_type val = *first.get_node()->data;
-			value_type next_val = *(++first).get_node()->data;
-			value_type last_val = *(--last).get_node()->data;
-			iterator it;
-			while (val != last_val) {
-				erase(val);
-				val = next_val;
-				it = iterator(tree.search_node(next_val));
-				next_val = *(++it).get_node()->data;
-			}
-			erase(val);
+			while (first != last) { erase(first++); }
 		}
 
 		void			erase(const_iterator first, const_iterator last) {
