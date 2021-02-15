@@ -431,14 +431,51 @@ TEST_F(Test_Map, Modifiers_Erase_position) {
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
+	std::cout << std::endl;
+	std::cout << "Erase begin() element" << std::endl;
+
 	int_sort_std->erase(int_sort_std->begin());
 	int_sort_ft->erase(int_sort_ft->begin());
 
-	std::cout << std::endl;
-	std::cout << "Erase begin() element" << std::endl;
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
-	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
+	EXPECT_EQ(int_sort_std->begin()->first,
+			int_sort_ft->begin()->first);
+	EXPECT_EQ(int_sort_std->begin()->second,
+			int_sort_ft->begin()->second);
+	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
+
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+
+	std::map<int, int>::iterator it_std_first = --int_sort_std->end();
+	ft::Map<int, int>::iterator it_ft_first = --int_sort_ft->end();
+
+	std::map<int, int>::iterator it_std_second = it_std_first;
+	ft::Map<int, int>::iterator it_ft_second = it_ft_first;
+
+	--it_std_second;
+	--it_ft_second;
+
+	compare_iterators_pair(it_std_first, it_ft_first, " --end()  before");
+
+	std::cout << std::endl;
+	std::cout << "Erase --(--end())" << std::endl;
+
+	int_sort_std->erase(it_std_second);
+	int_sort_ft->erase(it_ft_second);
+
+	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
+
+	std::cout << std::endl;
+	std::cout << "Check iterators (should be the same)" << std::endl;
+	compare_iterators_pair(it_std_first, it_ft_first, " --end() after");
+
+	EXPECT_EQ((--int_sort_std->end())->first,
+			(--int_sort_ft->end())->first);
+	EXPECT_EQ((--int_sort_std->end())->second,
+			(--int_sort_ft->end())->second);
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 }
 
