@@ -16,6 +16,9 @@
 #include <iostream>
 #include <limits>
 
+#include <queue>
+#include <iomanip>
+
 namespace ft {
 
 #ifdef __APPLE__
@@ -1095,6 +1098,72 @@ namespace ft {
 															key_type& k) {
 			return std::make_pair(lower_bound(k), upper_bound(k));
 		}
+
+		// DEBUG print tree
+		private:
+		void		print_tree_line(int width, t_node * node) {
+			std::stringstream ss;
+			std::string str;
+			std::cout.width(width);
+			if (node && node->data) {
+				ss << node->data->first;
+				str = ss.str();
+				if (!node->is_black) {
+					str = "\x1b[31;1m" + ss.str() + "\x1b[0m";
+					width += 11;
+				}
+				std::cout << std::setw(width) << str ;
+			}
+			// INFO Print extreme nodes
+			// else if (node) { std::cout << "__edge__"; }
+			// else { std::cout << "__null__"; }
+		}
+
+		void		print_tree()
+		{
+			std::queue<t_node*> q;
+			t_node* node;
+			bool print_time;
+			int on_the_line = 1;
+			int need_to_print = 1;
+			int width_st = 128;
+			int width;
+			q.push(tree.root);
+			while (!q.empty()) {
+				node = q.front();
+				q.pop();
+				print_time = on_the_line == need_to_print;
+				width = print_time ?
+					(width_st / on_the_line / 2) : (width_st / on_the_line);
+				print_tree_line(width, node);
+				--need_to_print;
+				if (node) {
+					q.push(node->left);
+					q.push(node->right);
+				}
+				else {
+					q.push(nullptr);
+					q.push(nullptr);
+				}
+				if (need_to_print == 0) {
+					on_the_line *= 2;
+					need_to_print = on_the_line;
+					std::cout << std::endl;
+				}
+				if (on_the_line == 16) { break; }
+			}
+			std::cout << std::endl;
+			std::cout << std::setfill('.') << std::setw(120) << " "
+				<< std::endl;
+			std::cout.fill(' ');
+			std::cout << std::endl;
+		}
+
+	// public:
+	private:
+		void print() { print_tree(); }
+
+		// end of DEBUG print tree
 
 	}; // class Map
 

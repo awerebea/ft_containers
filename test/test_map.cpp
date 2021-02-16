@@ -19,14 +19,14 @@ class Test_Map : public ::testing::Test {
 protected:
 	void SetUp() {
 		int_sort_std= new std::map<int, int>;
-		for (int i = 0; i < 10; ) {
+		for (int i = 0; i < 9; ) {
 			int_sort_std->insert(std::make_pair(i + 1, i + 1));
-			i += 2;
+			i += 1;
 		}
 		int_sort_ft = new ft::Map<int, int>;
-		for (int i = 0; i < 10; ) {
+		for (int i = 0; i < 9; ) {
 			int_sort_ft->insert(std::make_pair(i + 1, i + 1));
-			i += 2;
+			i += 1;
 		}
 		int unsort_int_arr[] = { 8, 0, 6, 9, 7, 33, 44, 11, 22 };
 		int_unsort_std = new std::map<int, int>;
@@ -522,11 +522,51 @@ TEST_F(Test_Map, Modifiers_Erase_range) {
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
 	EXPECT_EQ(int_sort_std->size(), int_sort_ft->size());
 
-	int_sort_std->erase(++int_sort_std->begin(), --int_sort_std->end());
-	int_sort_ft->erase(++int_sort_ft->begin(), --int_sort_ft->end());
+	std::map<int, int>::iterator it_std_first = ++int_sort_std->begin();
+	std::map<int, int>::iterator it_std_second = --int_sort_std->end();
+	ft::Map<int, int>::iterator it_ft_first = ++int_sort_ft->begin();
+	ft::Map<int, int>::iterator it_ft_second = --int_sort_ft->end();
+
+	// DEBUG
+//	int_sort_ft->print();
+
+	std::cout << std::endl;
+	std::cout << "Create iterators" << std::endl;
+	for (int i = 0; i < 3; i++) {
+		++it_std_first;
+		++it_ft_first;
+		--it_std_second;
+		--it_ft_second;
+	}
+
+//	for (int i = 0; i < 4; i++) {
+//		++it_std_first;
+//		++it_ft_first;
+//	}
+//	it_std_second = it_std_first;
+//	it_ft_second = it_ft_first;
+//	for (int i = 0; i < 3; i++) {
+//		++it_std_second;
+//		++it_ft_second;}
+
+	compare_iterators_pair(it_std_first, it_ft_first, "_first");
+	compare_iterators_pair(it_std_second, it_ft_second, "_second");
+
+	std::cout << std::endl;
+	std::cout << "Erase range" << std::endl;
+	int_sort_std->erase(it_std_first, it_std_second);
+	int_sort_ft->erase(it_ft_first, it_ft_second);
+
+	// DEBUG
+//	int_sort_ft->print();
+
+	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
+	compare_size(*int_sort_std, *int_sort_ft, " after");
 
 	std::cout << std::endl;
 	std::cout << "Erase range [++begin(), --end())" << std::endl;
+	int_sort_std->erase(++int_sort_std->begin(), --int_sort_std->end());
+	int_sort_ft->erase(++int_sort_ft->begin(), --int_sort_ft->end());
 	compare_content_pair(*int_sort_std, *int_sort_ft, " after");
 	compare_size(*int_sort_std, *int_sort_ft, " after");
 	EXPECT_EQ(*int_sort_std->begin(), *int_sort_ft->begin());
