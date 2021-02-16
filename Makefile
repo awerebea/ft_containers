@@ -37,7 +37,7 @@ USER_DIR=test
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -Werror -pthread
+CXXFLAGS += -Wall -Wextra -Werror -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -85,11 +85,11 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 # conservative and not optimized.  This is fine as Google Test
 # compiles fast and for ordinary users its source rarely changes.
 gtest-all.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+	clang++ $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
 	$(GTEST_DIR)/src/gtest-all.cc
 
 gtest_main.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+	clang++ $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
 	$(GTEST_DIR)/src/gtest_main.cc
 
 gtest.a : gtest-all.o
@@ -103,50 +103,50 @@ gtest_main.a : gtest-all.o gtest_main.o
 # function.
 
 test_list.o : $(USER_DIR)/test_list.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_list.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_list.cpp
 
 test_list : test_list.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_list
 
 test_vector.o : $(USER_DIR)/test_vector.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_vector.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_vector.cpp
 
 test_vector : test_vector.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_vector
 
 test_map.o : $(USER_DIR)/test_map.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_map.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_map.cpp
 
 test_map : test_map.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_map
 
 test_queue.o : $(USER_DIR)/test_queue.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_queue.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_queue.cpp
 
 test_queue : test_queue.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_queue
 
 test_stack.o : $(USER_DIR)/test_stack.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_stack.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_stack.cpp
 
 test_stack : test_stack.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_stack
 
 test_set.o : $(USER_DIR)/test_set.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_set.cpp
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -c $(USER_DIR)/test_set.cpp
 
 test_set : test_set.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 	./test_set
 
 $(TESTS) :	test_list.o test_vector.o test_map.o test_queue.o test_stack.o \
 			gtest_main.a
-	$(CXX) $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
+	clang++ $(CPPFLAGS) $(HEADERS) $(CXXFLAGS) -lpthread $^ -o $@
 
 .PHONY:	all \
 		clean \
